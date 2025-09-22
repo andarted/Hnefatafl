@@ -1,5 +1,9 @@
 package org.andarted.hnefatafl.view;
 
+
+import org.andarted.hnefatafl.common.SquareType;
+import org.andarted.hnefatafl.common.PieceType;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

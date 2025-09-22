@@ -1,5 +1,8 @@
 package org.andarted.hnefatafl.view;
 
+import org.andarted.hnefatafl.common.SquareType;
+import org.andarted.hnefatafl.common.PieceType;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;

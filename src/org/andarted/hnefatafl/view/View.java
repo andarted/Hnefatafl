@@ -1,6 +1,8 @@
 package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.presenter.IPresenter;
+import org.andarted.hnefatafl.common.SquareType;
+import org.andarted.hnefatafl.common.PieceType;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

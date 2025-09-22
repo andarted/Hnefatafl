@@ -1,5 +1,8 @@
 package org.andarted.hnefatafl.model;
 
+import org.andarted.hnefatafl.common.SquareType;
+import org.andarted.hnefatafl.common.PieceType;
+
 import java.util.Map;
 import java.util.EnumMap;
 

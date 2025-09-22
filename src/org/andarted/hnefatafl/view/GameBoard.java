@@ -1,5 +1,8 @@
 package org.andarted.hnefatafl.view;
 
+import org.andarted.hnefatafl.common.SquareType;
+import org.andarted.hnefatafl.common.PieceType;
+
 class GameBoard {
 	private final int boardSize;
 	private final SquareType[][] squares;

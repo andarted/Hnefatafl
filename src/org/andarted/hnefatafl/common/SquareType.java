@@ -3,7 +3,7 @@ package org.andarted.hnefatafl.common;
 import java.awt.Color;
 import java.awt.Point;
 
-enum SquareType {
+public enum SquareType {
 	EMPTY(Color.WHITE, "", new Point(0, 1)),
 	THRONE(Color.LIGHT_GRAY, "", new Point(0, 2)),
 	ESCAPE(new Color(150, 150, 200), "", new Point(0, 3)),
