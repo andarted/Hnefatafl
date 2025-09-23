@@ -1,6 +1,7 @@
 package org.andarted.hnefatafl.view;
 
 
+import org.andarted.hnefatafl.common.GameBoard;
 import org.andarted.hnefatafl.common.SquareType;
 import org.andarted.hnefatafl.common.PieceType;
 

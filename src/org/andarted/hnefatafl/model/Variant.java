@@ -1,6 +1,6 @@
 package org.andarted.hnefatafl.model;
 
-enum Variant {
+public enum Variant {
 	STANDARD,
 	ALTERNATIVE;
 

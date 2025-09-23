@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.EnumMap;
 
 
-
 public enum LineUp {
 	SIZE_7(7,
 			Map.of(
@@ -108,12 +107,10 @@ public enum LineUp {
 		char[][] lineUpQuadrant = new char [heightQuadrant][widthQuadrant];
 		
 		lineUpQuadrant = genLineUpQuadrant(seed);
-		
 		mapAlphaQuadrant(lineUpQuadrant);
 		mapBetaQuadrant(lineUpQuadrant);
 		mapDeltaQuadrant(lineUpQuadrant);
 		mapGammaQuadrant(lineUpQuadrant);
-		
 		placeKing(lineUpQuadrant);
 		
 		return lineUpBoard;

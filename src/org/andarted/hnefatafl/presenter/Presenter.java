@@ -1,5 +1,8 @@
 package org.andarted.hnefatafl.presenter;
 
+import org.andarted.hnefatafl.common.GameBoard;
+import org.andarted.hnefatafl.model.IModel;
+import org.andarted.hnefatafl.model.Variant;
 import org.andarted.hnefatafl.view.IView;
 
 import java.awt.Color;
@@ -7,7 +10,9 @@ import java.awt.Color;
 
 public class Presenter implements IPresenter {
     private final IView view;
-    private String[][] board = new String[11][11];
+    private final IModel model;
+    private GameBoard gameBoard;
+    // private String[][] board = new String[11][11];
     
     private final char charForAnarchist = 'A';
     private final char charForRoyalist = 'R';
@@ -16,15 +21,27 @@ public class Presenter implements IPresenter {
     private char currentPiece = charForEmptySpace;
     private char activePlayer = currentPiece;
 
-    public Presenter(IView view) {
+    
+    // - - - CONSTRUCTOR - - -
+    
+    public Presenter(IView view, IModel model) {
         this.view = view;
-        // Einfach initialisieren (Model-Teil, Beispiel)
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
-                board[i][j] = ".";
-            }
-        }
+        this.model = model;
+
+        // startDefaultGame();
+        GameBoard gameBoard = model.newGame(9, Variant.STANDARD);
+        this.gameBoard = gameBoard;
+        
+        view.setGameBoard(gameBoard);
     }
+    
+    /*
+    private void startDefaultGame() {
+    	GameBoard gameBoard = model.newGame(9, Variant.STANDARD);
+    }
+    */
+    
+    // - - - DEBUG BUTTONS - - -
     
     void updateDisplayToAnarchists() {
 		activePlayer = charForAnarchist;

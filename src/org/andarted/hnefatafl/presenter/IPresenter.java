@@ -15,4 +15,6 @@ public interface IPresenter {
     
     void handleDebugShowRoyalistDeathZoneButton();
     void handleDebugShowAnarchistDeathZoneButton();
+    
+    // void startDefaultGame();
 }

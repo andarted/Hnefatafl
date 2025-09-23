@@ -1,5 +1,8 @@
 package org.andarted.hnefatafl.view;
 
+import org.andarted.hnefatafl.presenter.Presenter;
+import org.andarted.hnefatafl.common.GameBoard;
+
 public interface IView {
 	
 	void initializeView();
@@ -15,5 +18,7 @@ public interface IView {
 	void delegateClearHighlight();
 	void delegateSetHighlightAt(int row, int col);
 	void delegateClearHighlightAt(int row, int col);
+	void initializePresenter(Presenter presenter);
+	void setGameBoard(GameBoard gameBoard);
 
 }

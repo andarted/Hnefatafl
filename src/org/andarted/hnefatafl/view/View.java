@@ -1,8 +1,10 @@
 package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.presenter.IPresenter;
+import org.andarted.hnefatafl.presenter.Presenter;
 import org.andarted.hnefatafl.common.SquareType;
 import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.common.GameBoard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -69,9 +71,9 @@ public class View implements IView {
 	// - - - Konstruktor - - -
 	
 	public View() {
-		this.gameBoard = new GameBoard(11);
+		// this.gameBoard = new GameBoard(11);
 		currendRenderer = new RendererSwing();
-		initializeView();
+		// initializeView();
 	}
 	
 	
@@ -279,7 +281,8 @@ public class View implements IView {
     
     // - - - VERBINDUNG ZUM PRESENTER - - -
     
-    public void initializePresenter(IPresenter presenter) {
+    @Override
+    public void initializePresenter(Presenter presenter) {
         this.presenter = presenter;
         if (boardPanel != null) {
         	boardPanel.setBoardPanelListener((row, col)->{ // Listener wird in die BoardPanel-Instanz 
@@ -300,12 +303,16 @@ public class View implements IView {
 			boardPanelWrapper.remove(boardPanel);
 		}
 		
+		/*
+		
 		// initialize neues Model & Renderer
 		this.gameBoard = new GameBoard(size);
 		// this.renderer = new RendererSwing();
 		// this.boardPanel = new BoardPanel(gameBoard, new RendererSwing(), BASE_COLOR);
 		this.renderer = currendRenderer;
 		this.boardPanel = new BoardPanel(gameBoard, currendRenderer, BASE_COLOR);
+		
+		*/
 		
 		// registriere neuen Listener
 		if (presenter != null) {
@@ -415,5 +422,10 @@ public class View implements IView {
 	public Color getBaseColor() {return BASE_COLOR;}
 
 	
+	// - - - SETTER - - -
+	public void setGameBoard(GameBoard gameBoard) {
+		this.gameBoard = gameBoard;
+	}
+
     
 }
