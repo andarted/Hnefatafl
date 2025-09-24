@@ -1,9 +1,12 @@
 package org.andarted.hnefatafl.presenter;
 
-import org.andarted.hnefatafl.common.GameBoard;
 import org.andarted.hnefatafl.model.IModel;
-import org.andarted.hnefatafl.model.Variant;
 import org.andarted.hnefatafl.view.IView;
+
+import org.andarted.hnefatafl.common.GameBoard;
+import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.common.Variant;
+
 
 import java.awt.Color;
 
@@ -18,9 +21,11 @@ public class Presenter implements IPresenter {
     private final char charForRoyalist = 'R';
     private final char charForKing = 'K';
     private final char charForEmptySpace = '.';
-    private char currentPiece = charForEmptySpace;
-    private char activePlayer = currentPiece;
-
+    private char currentPieceChar = charForEmptySpace;
+    private char activePlayer = currentPieceChar;
+    
+    private PieceType currentPiece = PieceType.NOBODY;
+    
     
     // - - - CONSTRUCTOR - - -
     
@@ -41,6 +46,12 @@ public class Presenter implements IPresenter {
     }
     */
     
+    private void deligateSetPiece(PieceType pieceType, int row, int col) {
+    	switch (pieceType) {
+    	case NOBODY: model.setPiece(pieceType, row, col);
+    	}
+    }
+    
     // - - - DEBUG BUTTONS - - -
     
     void updateDisplayToAnarchists() {
@@ -58,7 +69,8 @@ public class Presenter implements IPresenter {
     @Override
     public void onSquareClicked(int row, int col) {
 
-        System.out.println("Presenter: Feld (" + row + "," + col + ") gesetzt!");
+        System.out.println("Presenter: Kilck auf Feld (" + row + "," + col + ").");
+        /*
         switch (currentPiece) {
         case 'A':
         	view.setAnarchist(row, col);
@@ -73,12 +85,18 @@ public class Presenter implements IPresenter {
         	view.removePiece(row, col);
         	break;
         	}
+        */
     }
     
     
     @Override
-    public void handleNewGameItem(int size, boolean altSetUp) {
-    	view.initializeNewGame(size);
+    public void handleNewGameItem(int size, Variant variant) {
+    	this.gameBoard = model.newGame(size, variant);
+    	System.out.println("Presenter: handleNewGameItem (" + size + ", " + variant.toString() + ")");
+    	
+    	view.setGameBoard(gameBoard);
+    	view.initializeNewGame(gameBoard);
+    	
     }
     
     @Override
@@ -88,22 +106,38 @@ public class Presenter implements IPresenter {
     
     @Override
     public void handleDebugGetRoyalist() {
-    	currentPiece = 'R';
+    	currentPiece = PieceType.ROYALIST;
+		System.out.println("Presenter: debug set royalist pieces is now active");
+		view.updateDebugDisplay("<html>Mode<br><br>Drop Royalists</html>");
+		
+    	currentPieceChar = 'R';
     }
     
     @Override
     public void handleDebugGetAnarchist() {
-    	currentPiece = 'A';
+    	currentPiece = PieceType.ANARCHIST;
+		System.out.println("Presenter: debug set anarchist pieces is now active");
+		view.updateDebugDisplay("<html>Mode<br><br>Drop Anarchists</html>");
+		
+    	currentPieceChar = 'A';
     }
     
     @Override
     public void handleDebugGetKing() {
-    	currentPiece = 'K';
+    	currentPiece = PieceType.KING;
+		System.out.println("Presenter: debug set king pieces is now active");
+		view.updateDebugDisplay("<html>Mode<br><br>Drop Kings</html>");
+		
+    	currentPieceChar = 'K';
     }
     
     @Override
     public void handleDebugGetRemove() {
-    	currentPiece ='.';
+    	currentPiece = PieceType.NOBODY;
+		System.out.println("Presenter: debug remove pieces is now active");
+		view.updateDebugDisplay("<html>Mode<br><br>Remove Pieces</html>");
+		
+    	currentPieceChar ='.';
     }
 
 	@Override
@@ -132,12 +166,12 @@ public class Presenter implements IPresenter {
 	@Override
 	public void handleDebugShowRoyalistDeathZoneButton() {
 		// TODO Auto-generated method stub
-		view.highlightReach(3, 3, 1, 7, 2, 5); // temp tests:
+		// view.highlightReach(3, 3, 1, 7, 2, 5); // temp tests:
 	}
 	
 	@Override
 	public void handleDebugShowAnarchistDeathZoneButton() {
 		// TODO Auto-generated method stub
-		view.delegateClearHighlight(); // temp tests:
+		// view.delegateClearHighlight(); // temp tests:
 	}
 }

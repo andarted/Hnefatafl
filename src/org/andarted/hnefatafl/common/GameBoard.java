@@ -1,11 +1,9 @@
 package org.andarted.hnefatafl.common;
 
-import org.andarted.hnefatafl.model.Variant;
-
 public class GameBoard {
 	private final int boardSize;
 	private final SquareType[][] squares;
-	private final PieceType[][] pieces;
+	public final PieceType[][] pieces;
 	
 	private boolean[][] squareSelection;
 	
@@ -25,6 +23,7 @@ public class GameBoard {
 		lefCol = 0;
 		rigCol = boardSize-1;
 		centre = boardSize/2;
+		// boolean isThisTheAlt = variant.isThisTheAlt();
 		
 		squares = new SquareType[size][size];
 		pieces = new PieceType[size][size];

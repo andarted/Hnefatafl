@@ -22,7 +22,6 @@ public class Main {
 		View view = new View();									// Anlegen View
 		Model model = new Model();								// Anlegen Model
 		
-		// Presenter presenter = new Presenter(view);
 		Presenter presenter = new Presenter(view, model);		// Anlegen Presenter für View & Model
 		
 		view.initializePresenter(presenter);					// View zurück zu Presenter verbinden
@@ -30,7 +29,8 @@ public class Main {
 		
 		// - - - BOOTEN - - - 
 		
-		view.initializeView();									// GUI und alles erstellen
+		view.initializeView();
+		// presenter.deligateInitializeView();		// GUI und alles erstellen
 	}
 
 }

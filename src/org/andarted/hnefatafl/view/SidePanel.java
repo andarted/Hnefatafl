@@ -23,10 +23,14 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 	
 	
 	private JPanel debugPanel;
-	// private JPanel infoPanel;
+	private JPanel infoPanel;
 	
     private JLabel activePlayerLabel;
     private String activePlayer = "nicht festgelegt";
+    private JLabel mousePositionLabel = new JLabel("pos. -1 -1");
+    private int mouseXAxis = -1;
+    private int mouseYAxis = -1;
+	
     
     public void setSidePanelListener(SidePanelListener listener){
     	this.listener = listener;
@@ -41,7 +45,8 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		addActivePlayerModul();
 		addDebugModul();
-		// addInfoModul();
+		addInfoModul();
+		addMouseModul();
     }
     
     public void setActivePlayerDisplay(String newActivePlayer) {
@@ -52,6 +57,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
     	}
     }
 	
+	// - - - ACTIVE PLAYER MODUL - - -
 	
 	private void addActivePlayerModul() {
 		JPanel activePlayerPanel = new JPanel();
@@ -68,6 +74,8 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 	    add(activePlayerPanel);
         add(Box.createRigidArea(new Dimension(0, 10))); // Abstand
 	}
+	
+	// - - - DEBUG MODUL - - -
 	
 	private void addDebugModul() {
 		debugPanel = new JPanel();
@@ -197,8 +205,9 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		// sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 	}
+		
+	// - - - INFO MODUL - - -
 	
-	/*
 	private void addInfoModul() {
 		infoPanel = new JPanel();
 		
@@ -238,5 +247,44 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		
 	}
-	*/
+	
+	
+	// – – – MOUSE MODUL - - -
+	
+	private void addMouseModul() {
+		JPanel mousePositionPanel = new JPanel();
+		
+		mousePositionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		mousePositionPanel.setMaximumSize(MODUL_MAX_DIMENSION);
+		mousePositionPanel.setBorder(BorderFactory.createTitledBorder("aktive player"));
+				
+		mousePositionPanel.setLayout(new BorderLayout());
+		// mousePositionLabel = new JLabel(mousePosition);
+		mousePositionLabel.setFont(new Font("Arial", Font.BOLD, 10));
+		mousePositionPanel.add(mousePositionLabel, BorderLayout.NORTH);
+	    
+	    add(mousePositionLabel);
+        add(Box.createRigidArea(new Dimension(0, 10))); // Abstand
+	}
+	
+	public void updateMousePositionDisplay(int screenX, int screenY) {
+		mouseXAxis = screenX;
+		mouseYAxis = screenY;
+		mousePositionLabel.setText("pos. " + mouseXAxis + " " + mouseYAxis);
+	}
+	
+	
+	// - - - METHODS - - - 
+	
+	public void streamMouseXAxis(int screenX) {
+		mouseXAxis = screenX;
+	};
+	
+	public void streamMouseYAxis(int screenY) {
+		mouseYAxis = screenY;
+	};
+	
+	private void streamMousePosition(int screenX, int screenY) {
+		
+	}
 }

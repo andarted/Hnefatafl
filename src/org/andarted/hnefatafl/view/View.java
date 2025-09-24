@@ -2,9 +2,12 @@ package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.presenter.IPresenter;
 import org.andarted.hnefatafl.presenter.Presenter;
+
+import org.andarted.hnefatafl.common.GameBoard;
+import org.andarted.hnefatafl.common.Variant;
 import org.andarted.hnefatafl.common.SquareType;
 import org.andarted.hnefatafl.common.PieceType;
-import org.andarted.hnefatafl.common.GameBoard;
+
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -73,7 +76,6 @@ public class View implements IView {
 	public View() {
 		// this.gameBoard = new GameBoard(11);
 		currendRenderer = new RendererSwing();
-		// initializeView();
 	}
 	
 	
@@ -87,6 +89,8 @@ public class View implements IView {
 		createSidePanel();
 		createBoardPanelWrapper();
 		assembleElements();
+		
+		initializeListener();
 		
         mainFrame.setVisible(true);
 	}
@@ -148,15 +152,15 @@ public class View implements IView {
 		
 		// newGame.addActionListener(e -> presenter.handleNewGameItem())
 		exitItem.addActionListener(e -> presenter.handleExitItem());
-		sizeSevenItem.addActionListener(e -> presenter.handleNewGameItem(7, false));
-		sizeNineItem.addActionListener(e -> presenter.handleNewGameItem(9, false));
-		sizeElevenItem.addActionListener(e -> presenter.handleNewGameItem(11, false));
-		sizeThirdteenItem.addActionListener(e -> presenter.handleNewGameItem(13, false));
+		sizeSevenItem.addActionListener(e -> presenter.handleNewGameItem(7, Variant.STANDARD));
+		sizeNineItem.addActionListener(e -> presenter.handleNewGameItem(9, Variant.STANDARD));
+		sizeElevenItem.addActionListener(e -> presenter.handleNewGameItem(11, Variant.STANDARD));
+		sizeThirdteenItem.addActionListener(e -> presenter.handleNewGameItem(13, Variant.STANDARD));
 		
-		sizeSevenAltSetUpItem.addActionListener(e -> presenter.handleNewGameItem(7, true));
-		sizeNineAltSetUpItem.addActionListener(e -> presenter.handleNewGameItem(9, true));
-		sizeElevenAltSetUpItem.addActionListener(e -> presenter.handleNewGameItem(11, true));
-		sizeThirdteenAltSetUpItem.addActionListener(e -> presenter.handleNewGameItem(13, true));
+		sizeSevenAltSetUpItem.addActionListener(e -> presenter.handleNewGameItem(7, Variant.ALTERNATIVE));
+		sizeNineAltSetUpItem.addActionListener(e -> presenter.handleNewGameItem(9, Variant.ALTERNATIVE));
+		sizeElevenAltSetUpItem.addActionListener(e -> presenter.handleNewGameItem(11, Variant.ALTERNATIVE));
+		sizeThirdteenAltSetUpItem.addActionListener(e -> presenter.handleNewGameItem(13, Variant.ALTERNATIVE));
 		
 		setSpriteRenderer.addActionListener(e -> {
 			IRender spriteRenderer101 = null;
@@ -216,10 +220,7 @@ public class View implements IView {
 		boardPanelWrapper.add(Box.createGlue());
 	}
 	
-	private void createBoardPanel(){
-		String sheetPath = "";
-		// renderer = new RendererSwing();
-		// boardPanel = new BoardPanel(gameBoard, new RendererSwing(), BASE_COLOR);		
+	private void createBoardPanel(){		
 		renderer = currendRenderer;
 		boardPanel = new BoardPanel(gameBoard, currendRenderer, BASE_COLOR);
 		boardPanel.setOpaque(false);
@@ -266,6 +267,14 @@ public class View implements IView {
 			}
 		});
 	}
+	
+	void deligateStreamMouseXAxis(int row) {
+		
+	}
+	
+	void deligateStreamMouseYAxis(int col) {
+		
+	}
     
 	
     // - - - ASSEMBLE - - -
@@ -279,11 +288,46 @@ public class View implements IView {
     }
     
     
+    // - - - LISTENER - - -
+    
+    
+    private void initializeListener() {
+    	if(boardPanel != null) {
+    		boardPanel.setBoardPanelListener(new BoardPanelListener() {
+    			@Override
+    			public void onFieldClick(int row, int col) {
+    				if (presenter != null) {
+    					presenter.onSquareClicked(row,col);
+    				}
+    			}
+    			@Override
+    			public void onMouseHover(int row, int col, int screenX, int screenY) {
+    				if (presenter != null) {
+    					sidePanel.updateMousePositionDisplay(screenX, screenY);
+    				}
+    			}
+    		});
+    	}
+    }
+    
+    /*
+    private void initializeListener() {
+    	this.presenter = presenter;
+		if (presenter != null) {
+			boardPanel.setBoardPanelListener((row,col) ->{
+				presenter.onSquareClicked(row, col);
+			});
+		}
+    }
+    */
+    
     // - - - VERBINDUNG ZUM PRESENTER - - -
     
     @Override
     public void initializePresenter(Presenter presenter) {
         this.presenter = presenter;
+        
+        /*
         if (boardPanel != null) {
         	boardPanel.setBoardPanelListener((row, col)->{ // Listener wird in die BoardPanel-Instanz 
         		if (presenter != null) {
@@ -291,35 +335,33 @@ public class View implements IView {
         		}
         	});
         }
+        */
+        
+        
     }
+    
+
 
     
     // - - - @OVERRIDE - - -
     
+    
 	@Override
-	public void initializeNewGame(int size) {
+	public void initializeNewGame(GameBoard gameBoard) {		// <- Löschen???
 		// weg mit dem alten
 		if (boardPanel != null && boardPanelWrapper != null) {
 			boardPanelWrapper.remove(boardPanel);
+			System.out.println("View initializeNewGame: altes Fenster wird gelöscht");
 		}
 		
-		/*
-		
-		// initialize neues Model & Renderer
-		this.gameBoard = new GameBoard(size);
-		// this.renderer = new RendererSwing();
-		// this.boardPanel = new BoardPanel(gameBoard, new RendererSwing(), BASE_COLOR);
+		this.gameBoard = gameBoard;
 		this.renderer = currendRenderer;
 		this.boardPanel = new BoardPanel(gameBoard, currendRenderer, BASE_COLOR);
 		
-		*/
+		System.out.println("View: [initializeNewGame]");
 		
 		// registriere neuen Listener
-		if (presenter != null) {
-			boardPanel.setBoardPanelListener((row,col) ->{
-				presenter.onSquareClicked(row, col);
-			});
-		}
+		initializeListener();
 		
 		// neues boardPanel ins layout adden & gesamtes GUI refreshen - boardPanelWrapper - Edition
 		boardPanelWrapper.removeAll();
@@ -334,14 +376,11 @@ public class View implements IView {
 		mainFrame.setLocationRelativeTo(null);
 	}
 	
-	/*
-	public SquareType[][] assambleReachSquares(){
-		
-		
-		return 
-	}
-	*/
+	
 
+    
+    
+    /*
 	@Override
 	public void setAnarchist(int row, int col) {
     	gameBoard.setPieceAt(PieceType.ANARCHIST, row, col);
@@ -369,7 +408,7 @@ public class View implements IView {
     	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
     	boardPanel.repaint();
 	}
-	
+	*/
 	@Override
 	public void setActivePlayerDisplay(String newActivePlayer) {
 		if (activePlayerLabel != null) {
@@ -417,7 +456,16 @@ public class View implements IView {
     public void delegateSetRenderer(IRender newRenderer) {
     	boardPanel.setRenderer(newRenderer);
     }
-	
+    /*
+	private void set
+    boardPanel.setBoardPanelListener(new BoardPanelListener(){
+		@Override
+		public void onMouseHover(int row, int col, int screenX, int screenY) {
+			
+		}
+	});
+	*/
+    
 	// - - - GETTER - - -
 	public Color getBaseColor() {return BASE_COLOR;}
 
