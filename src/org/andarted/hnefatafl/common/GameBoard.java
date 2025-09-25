@@ -1,11 +1,15 @@
 package org.andarted.hnefatafl.common;
 
+import java.awt.Point;
+
 public class GameBoard {
 	private final int boardSize;
 	private final SquareType[][] squares;
 	public final PieceType[][] pieces;
 	
 	private boolean[][] squareSelection;
+	private int mouseHoverPosX = 0;
+	private int mouseHoverPosY = 0;
 	
 	private final int lefCol;
 	private final int rigCol;
@@ -106,22 +110,21 @@ public class GameBoard {
     		squareSelection[i][row] = true;
     	}
 	}
-	
-    public void setHighlightAt(int row, int col) {
-    	squareSelection[row][col] = true;
-    }
     
-    public void clearHighlightAt(int row, int col) {
-    	squareSelection[row][col] = true;
+    private void highlightHoverPosition() {
+    	this.mouseHoverPosX = 1;
+    	this.mouseHoverPosY = 1;
     }
     
     public void ClearHighlight() {
     	initializeHighlight();
     }
 	
-	private void resetHighlightMap() {
+	
+	public void clearHoverPosition() {
 		initializeHighlight();
 	}
+	
 			// - - - - - - - - - /SPECIAL PAINT REACH MAP METHODE - - - - - - - - -
 	
 	
@@ -142,6 +145,26 @@ public class GameBoard {
 		pieces[row][col] = piece;
 		System.out.println("GameBoard: setPieceAt (" + row + "," + col + ") ");
 	}
+	
+    public void setHighlightAt(int row, int col) {
+    	squareSelection[row][col] = true;
+    }
+    
+    public void clearHighlightAt(int row, int col) {
+    	squareSelection[row][col] = true;
+    }
+	
+	public void setMouseHoverPos(int row, int col){
+		this.mouseHoverPosX = row;
+		this.mouseHoverPosY = col;
+		clearHoverPosition();
+		if (row != -1 || col != -1) {
+			squareSelection[row][col] = true;
+		}
+		System.out.println("GameBoard setMouseHoverPos: check.");;
+	}
+	
+
 	
 	
 }

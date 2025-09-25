@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import org.andarted.hnefatafl.common.GameBoard;
 import org.andarted.hnefatafl.common.PieceType;
 import org.andarted.hnefatafl.presenter.IPresenter;
-import org.andarted.hnefatafl.presenter.Presenter;
 import org.andarted.hnefatafl.common.LineUp;
 import org.andarted.hnefatafl.common.Variant;
 
@@ -139,7 +138,6 @@ public class Model implements IModel {
     		}
     	return charMap;
     }
-    
  
     private static int findMaxCol(String[] stringArray) {
     	int maxStringLength = 0;

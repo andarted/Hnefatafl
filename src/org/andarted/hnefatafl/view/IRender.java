@@ -12,6 +12,8 @@ interface IRender {
 	void setSquare(Graphics2D g, int row, int col, SquareType square);
 	void setPiece(Graphics2D g, int row, int col, PieceType piece);
 	void setBoardBorder();
+	void showMouseHoverIndicator(int row, int col);
+	void clearMouseHoverIndicator();
 	Point screenToGrid(int screenX, int screenY, int cellSize);
 
 }

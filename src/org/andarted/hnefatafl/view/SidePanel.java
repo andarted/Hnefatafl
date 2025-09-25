@@ -267,7 +267,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
         add(Box.createRigidArea(new Dimension(0, 10))); // Abstand
 	}
 	
-	public void updateMousePositionDisplay(int screenX, int screenY) {
+	public void updateHoverPos(int screenX, int screenY) {
 		mouseXAxis = screenX;
 		mouseYAxis = screenY;
 		mousePositionLabel.setText("pos. " + mouseXAxis + " " + mouseYAxis);

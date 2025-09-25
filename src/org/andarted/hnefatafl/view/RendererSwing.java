@@ -39,6 +39,8 @@ class RendererSwing implements IRender {
             g.drawString(symbol, x + cellSize/2 - 4, y + cellSize/2 + 5);
         }
     }
+    
+    
 
 
     @Override
@@ -54,6 +56,19 @@ class RendererSwing implements IRender {
 	public Point screenToGrid(int screenX, int screenY, int cellSize) {
 		int col = screenX / cellSize;
 		int row = screenY / cellSize;
+		System.out.println("RendererSwing screenToGrid: check - übernehmen Sie BoardPanel handleMouseMoved()");
 		return new Point (col, row);
+	}
+
+
+	@Override
+	public void showMouseHoverIndicator(int row, int col) {
+		
+		
+	}
+	
+	@Override
+	public void clearMouseHoverIndicator() {
+		
 	}
 }

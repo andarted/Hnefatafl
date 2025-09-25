@@ -65,6 +65,8 @@ public class View implements IView {
     
 	private GameBoard gameBoard;
 	private BoardPanel boardPanel;
+	private int mouseHoverPosX = 0;
+	private int mouseHoverPosY = 0;
 	
 	
 	
@@ -301,9 +303,12 @@ public class View implements IView {
     				}
     			}
     			@Override
-    			public void onMouseHover(int row, int col, int screenX, int screenY) {
+    			public void delegateOnFieldHover(int row, int col, int screenX, int screenY) {
     				if (presenter != null) {
-    					sidePanel.updateMousePositionDisplay(screenX, screenY);
+    					sidePanel.updateHoverPos(screenX, screenY);
+    					System.out.println("view initializeListener @O delegateOnFieldHover: check - übernehmen Sie sidePanel updateHoverPos.");
+    					presenter.onFieldHover(row, col);
+    					System.out.println("view initializeListener @O delegateOnFieldHover: check - übernehmen Sie presenter onFieldHover.");
     				}
     			}
     		});
@@ -437,6 +442,7 @@ public class View implements IView {
     	boardPanel.repaint();
     }
     
+	/*
     @Override
     public void delegateClearHighlight() {
     	gameBoard.ClearHighlight();
@@ -452,6 +458,7 @@ public class View implements IView {
     public void delegateClearHighlightAt(int row, int col) {
     	gameBoard.clearHighlightAt(row, col);
     }
+    */
     
     public void delegateSetRenderer(IRender newRenderer) {
     	boardPanel.setRenderer(newRenderer);
@@ -475,5 +482,44 @@ public class View implements IView {
 		this.gameBoard = gameBoard;
 	}
 
+
+	@Override
+	public void onFieldHover(int row, int col, int screenX, int screenY) {
+		if (presenter != null) {
+			presenter.onFieldHover(row, col);
+		}
+		
+	}
+
+	@Override
+	public void setMouseHoverPos(int row, int col) {
+		this.mouseHoverPosX = row;
+		this.mouseHoverPosY = col;
+		renderer.clearMouseHoverIndicator();
+		renderer.showMouseHoverIndicator(row, col);
+	}
+
+
+	@Override
+	public void setMouseHoverHighlight(int row, int col) {
+		// renderer.showMouseHoverIndicator(row,col);
+	}
+
+
+	@Override
+	public void delegateRepaint() {
+		boardPanel.repaint();
+		System.out.println("view delegateRepaint: check.");
+	}
+
+	/*
+	@Override
+	public void highlightOnHoverSquare(int row, int col) {
+		// gameBoard.paintReachMap(originRow, originCol, fromRow, toRow, fromCol, toCol);
+		// renderer.renderCell();
+    	boardPanel.repaint();
+		
+	}
+	*/
     
 }

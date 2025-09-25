@@ -19,6 +19,8 @@ public interface IPresenter {
     void handleDebugShowRoyalistDeathZoneButton();
     void handleDebugShowAnarchistDeathZoneButton();
     
+    void onFieldHover(int row, int col);
+    
     // void deligateInitializeView();
     
     // void startDefaultGame();

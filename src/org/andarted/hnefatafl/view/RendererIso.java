@@ -86,6 +86,12 @@ public class RendererIso implements IRender{
 		// draw square
 		g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileHeight, sx, sy, sx + tileWidth, sy + tileHeight, null);
 		
+		// highlight
+		if (highlight) {
+			g.setColor(new Color(255, 255, 0, 80));
+			g.fillRect(x, y, cellSize, cellSize);
+		}
+		
 		// draw Piece
 		if (piece != null && piece != PieceType.NOBODY) {
 			int py = piece.getSpriteSheetPosX()*tileWidth;
@@ -100,11 +106,7 @@ public class RendererIso implements IRender{
 			// System.out.println(row+","+col+" -- SQUARE|PIECE: "+square+" ("+sx+"/"+sy+") | "+piece+" ("+px+"/"+py+")");
 		}
 		
-		// highlight
-		if (highlight) {
-			g.setColor(new Color(255, 255, 0, 80));
-			g.fillRect(x, y, cellSize, cellSize);
-		}
+
 		
 	}
 	
@@ -158,6 +160,18 @@ public class RendererIso implements IRender{
 		double row = offgesettetesScreenY / (double)tileHeightHalf - offgesettetesScreenX / (double)tileWidth;
 
 		return new Point ((int)Math.floor(col), (int)Math.ceil(row));
+	}
+
+	@Override
+	public void showMouseHoverIndicator(int row, int col) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearMouseHoverIndicator() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

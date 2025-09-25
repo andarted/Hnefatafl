@@ -90,4 +90,16 @@ class RendererSprites implements IRender{
 		return new Point (col, row);
 	}
 
+	@Override
+	public void showMouseHoverIndicator(int row, int col) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearMouseHoverIndicator() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -16,11 +16,19 @@ public interface IView {
 	void removePiece(int row, int col);
 	*/
 	void congratWin(String string);
+	// void highlightOnHoverSquare(int row, int col);
 	void highlightReach(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol);
+	/*
 	void delegateClearHighlight();
 	void delegateSetHighlightAt(int row, int col);
 	void delegateClearHighlightAt(int row, int col);
+	*/
 	void initializePresenter(Presenter presenter);
 	void setGameBoard(GameBoard gameBoard);
+	void onFieldHover(int row, int col, int screenX, int screenY);
+	void setMouseHoverPos(int row, int col);
+	void setMouseHoverHighlight(int row, int col);
+	
+	void delegateRepaint();
 
 }

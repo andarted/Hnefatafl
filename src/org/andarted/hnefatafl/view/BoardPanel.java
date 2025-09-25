@@ -23,9 +23,10 @@ class BoardPanel extends JPanel{
 	private final int cellSize = 40;
 	private BoardPanelListener listener;
 	
+	/*
 	private int mouseOverRow = -1;
 	private int mouseOverCol = -1;
-	
+	*/
 	
 	// - - - Konstuktor - - -
 	
@@ -45,6 +46,7 @@ class BoardPanel extends JPanel{
 		
 		setBackground(baseColor);
 	}
+	
 	
 	// - - - REGISTRIERUNG LISTENER - - -
 	
@@ -68,6 +70,7 @@ class BoardPanel extends JPanel{
 		}
 	}
 	
+	
 	// - - - METHODS / LISTENER - - - 
 	
 	private MouseListener createMouseListener() {
@@ -82,11 +85,12 @@ class BoardPanel extends JPanel{
 			public void mouseEntered(MouseEvent e) {
 				handleMouseEntered(e.getX(),e.getY());
 			}
+			*/
 			@Override
 			public void mouseExited(MouseEvent e) {
 				handleMouseExited(e.getX(),e.getY());
 			}
-			*/
+			
 		};
 	}
 	
@@ -104,11 +108,11 @@ class BoardPanel extends JPanel{
 		Point gridCoordinates = renderer.screenToGrid(screenX, screenY, cellSize);
 		int col = gridCoordinates.x;
 		int row = gridCoordinates.y;
+		System.out.println("BaordPanel handleClick: MouseClick registered at " + screenX + " / " + screenY);
 		if(isInsideBoard(row,col) && listener != null) {
-			listener.onFieldClick(row, col);
 			System.out.println("BaordPanel handleClick: MouseClick registered on " + row + " / " + col);
+			listener.onFieldClick(row, col);
 		}
-		System.out.println("BaordPane: MouseClick registered at " + screenX + " / " + screenY);
 	}
 	
 	private boolean isInsideBoard(int row, int col) {
@@ -121,21 +125,14 @@ class BoardPanel extends JPanel{
 		Point gridCoordinates = renderer.screenToGrid(screenX, screenY, cellSize);
 		int col = gridCoordinates.x;
 		int row = gridCoordinates.y;
+		System.out.println("BoardPanel handleMouseMoved: check - BoardPanelListener überbringen Sie folgendes: übernehmen Sie View onMouseHover.");
 		if(isInsideBoard(row,col) && listener != null) {
-			this.mouseOverRow = row;
-			this.mouseOverCol = col;			
+			listener.delegateOnFieldHover(row, col, screenX, screenY);
+			/*
+			gameBoard.setHighlightAt(row, col);
 			repaint();
+			*/
 		}
-		else {
-			this.mouseOverRow = -1;
-			this.mouseOverCol = -1;
-			repaint();
-		}
-		// System.out.println("BoardPanel handleMouseMoved: Mouse Position:" + row + " " + col);
-		if (listener != null) {
-			listener.onMouseHover(row, col, screenX, screenY);
-		}
-		
 	}
 	
 	/*
@@ -149,18 +146,23 @@ class BoardPanel extends JPanel{
 		}
 		System.out.println("BaordPanel handleMouseEntered: MouseEntered registered at " + screenX + " / " + screenY);
 	}
+	*/
 	
 	public void handleMouseExited(int screenX, int screenY) {
-		Point gridCoordinates = renderer.screenToGrid(screenX, screenY, cellSize);
+		listener.delegateOnFieldHover(-1, -1, -1, -1);
+		System.out.println("BaordPanel handleMouseExited: MouseExited registered at " + screenX + " / " + screenY);
+		// Point gridCoordinates = renderer.screenToGrid(screenX, screenY, cellSize);
+		
+		/*
 		int col = gridCoordinates.x;
 		int row = gridCoordinates.y;
-		if(isInsideBoard(row,col) && listener != null) {
-			listener.onFieldClick(row, col);
-			System.out.println("BaordPanel handleMouseExited: MouseExited registered on " + row + " / " + col);
+		if(!isInsideBoard(row,col) && listener != null) {
+			listener.onMouseHover(-1, -1, -1, -1);
+			// System.out.println("BaordPanel handleMouseExited: MouseExited registered on " + row + " / " + col);
 		}
-		System.out.println("BaordPanel handleMouseExited: MouseExited registered at " + screenX + " / " + screenY);
+		*/
 	}
-	*/
+	
 	
 	
 	private void paintGrid(Graphics2D g) {
@@ -180,12 +182,14 @@ class BoardPanel extends JPanel{
 		g.drawRect(x,y,cellSize, cellSize);
 	}
 
+	
 		// - - - SETTER - - -
 	
 	public void setRenderer(IRender newRenderer) {
 		this.renderer = newRenderer;
 		repaint();
 	}
+	
 	
 	// - - - OVERRIDES - - -
 	

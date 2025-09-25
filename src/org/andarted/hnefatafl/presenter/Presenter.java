@@ -26,6 +26,8 @@ public class Presenter implements IPresenter {
     
     private PieceType currentPiece = PieceType.NOBODY;
     
+    private boolean fieldHoverIsActive = false;
+    
     
     // - - - CONSTRUCTOR - - -
     
@@ -173,5 +175,19 @@ public class Presenter implements IPresenter {
 	public void handleDebugShowAnarchistDeathZoneButton() {
 		// TODO Auto-generated method stub
 		// view.delegateClearHighlight(); // temp tests:
+	}
+
+	@Override
+	public void onFieldHover(int row, int col) {
+		// gameBoard.setMouseHoverPosition(row, col);
+		gameBoard.setMouseHoverPos(row,col);
+		System.out.println("presenter onFieldHover: check - übernehmen Sie gameBoard gameBoard setMouseHoverPosition.");
+		view.delegateRepaint();
+		System.out.println("presenter onFieldHover: check - übernehmen Sie view gelegateRepaint.");
+		/*
+		if(row != -1 && col != -1 || fieldHoverIsActive != false) {
+			view.setMouseHoverHighlight(row, col);
+		}
+		*/
 	}
 }
