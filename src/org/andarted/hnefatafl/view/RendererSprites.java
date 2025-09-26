@@ -39,30 +39,34 @@ class RendererSprites implements IRender{
 	public void renderCell(Graphics2D g, int row, int col, int cellSize, SquareType square, PieceType piece,
 			boolean highlight) {
 		// koordinaten am board
-		int x = col*cellSize;
-		int y = row*cellSize;
+		int x = col*tileWidth;
+		int y = row*tileWidth;
 		
 		// koordinaten im sprite sheet
 		int sy = square.getSpriteSheetPosX()*tileWidth;
 		int sx = square.getSpriteSheetPosY()*tileHeight;
 		
 		// draw square
-		g.drawImage(spriteSheet, x, y, x + cellSize, y + cellSize, sx, sy, sx + tileWidth, sy + tileHeight, null);
+		g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sx, sy, sx + tileWidth, sy + tileHeight, null);
+		
+		// highlight
+		if (highlight) {
+			int syH = SquareType.HIGHLIGHTED.getSpriteSheetPosX()*tileWidth;
+			int sxH = SquareType.HIGHLIGHTED.getSpriteSheetPosY()*tileWidth;
+			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sxH, syH, sxH + tileWidth, syH + tileHeight, null);
+			/*
+			g.setColor(new Color(255, 255, 0, 80));
+			g.fillRect(x, y, cellSize, cellSize);
+			*/
+		}
 		
 		// draw Piece
 		if (piece != null && piece != PieceType.NOBODY) {
 			int py = piece.getSpriteSheetPosX()*tileWidth;
 			int px = piece.getSpriteSheetPosY()*tileHeight;
-			g.drawImage(spriteSheet, x, y, x + cellSize, y + cellSize, px, py, px + tileWidth, py + tileHeight, null);
-			System.out.println(row+","+col+" -- SQUARE|PIECE: "+square+" ("+sx+"/"+sy+") | "+piece+" ("+px+"/"+py+")");
+			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, px, py, px + tileWidth, py + tileHeight, null);
+			// System.out.println(row+","+col+" -- SQUARE|PIECE: "+square+" ("+sx+"/"+sy+") | "+piece+" ("+px+"/"+py+")");
 		}
-		
-		// highlight
-		if (highlight) {
-			g.setColor(new Color(255, 255, 0, 80));
-			g.fillRect(x, y, cellSize, cellSize);
-		}
-		
 	}
 
 	@Override
@@ -85,8 +89,8 @@ class RendererSprites implements IRender{
 	
 	@Override
 	public Point screenToGrid(int screenX, int screenY, int cellSize) {
-		int col = screenX / cellSize;
-		int row = screenY / cellSize;
+		int col = screenX / tileWidth;
+		int row = screenY / tileWidth;
 		return new Point (col, row);
 	}
 
