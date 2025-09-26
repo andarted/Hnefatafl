@@ -88,8 +88,13 @@ public class RendererIso implements IRender{
 		
 		// highlight
 		if (highlight) {
+			int syH = SquareType.HIGHLIGHTED.getSpriteSheetPosX()*tileWidth;
+			int sxH = SquareType.HIGHLIGHTED.getSpriteSheetPosY()*tileWidth;
+			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sxH, syH, sxH + tileWidth, syH + tileHeight, null);
+			/*
 			g.setColor(new Color(255, 255, 0, 80));
 			g.fillRect(x, y, cellSize, cellSize);
+			*/
 		}
 		
 		// draw Piece
@@ -153,6 +158,9 @@ public class RendererIso implements IRender{
 	
 	@Override
 	public Point screenToGrid(int screenX, int screenY, int tileSize) {
+		
+		// - - - !!! - - - NEEDS REPAIR - - - !!! - - - NEEDS REPAIR - - - !!! - - - NEEDS REPAIR - - - !!! - - -
+		
 		double offgesettetesScreenX = screenX - screenOffsetX; 
 		double offgesettetesScreenY = screenY - screenOffsetY;
 		
