@@ -3,6 +3,7 @@ package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.common.GameBoard;
 import org.andarted.hnefatafl.common.SquareType;
+import org.andarted.hnefatafl.common.TraceLogger;
 import org.andarted.hnefatafl.common.PieceType;
 
 import java.awt.*;
@@ -98,6 +99,9 @@ class BoardPanel extends JPanel{
 		return new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
+				System.out.println("- - - USER HOVERS MOUSE OVER SQUARE - - -");
+				System.out.println(" CLASS                          METHOD                               CHECK                    METHOD CALL");
+				TraceLogger.log("MouseMotionAda… [@boardPanel]", "mouseMoved:", true, "boardPanel.handleMouseMoved()");
 				handleMouseMoved(e.getX(),e.getY());
 			}
 		};
@@ -122,12 +126,15 @@ class BoardPanel extends JPanel{
 	
 	
 	public void handleMouseMoved(int screenX, int screenY) {
+		TraceLogger.log("boardPanel", "handleMouseMoved[1/2]:", true, "renderer.screendToGrid()");
 		Point gridCoordinates = renderer.screenToGrid(screenX, screenY, cellSize);
 		int col = gridCoordinates.x;
 		int row = gridCoordinates.y;
-		System.out.println("BoardPanel handleMouseMoved: check - BoardPanelListener überbringen Sie folgendes: übernehmen Sie View onMouseHover.");
+		
 		if(isInsideBoard(row,col) && listener != null) {
-			listener.delegateOnFieldHover(row, col, screenX, screenY);
+			TraceLogger.log("boardPanel", "handleMouseMoved[2/2]:", true, "listener.delegateOnFieldHoverToView()");
+			// System.out.println("BoardPanel handleMouseMoved: check - BoardPanelListener überbringen Sie folgendes: übernehmen Sie View onMouseHover.");
+			listener.delegateOnFieldHoverToView(row, col, screenX, screenY);
 			/*
 			gameBoard.setHighlightAt(row, col);
 			repaint();
@@ -149,8 +156,10 @@ class BoardPanel extends JPanel{
 	*/
 	
 	public void handleMouseExited(int screenX, int screenY) {
-		listener.delegateOnFieldHover(-1, -1, -1, -1);
-		System.out.println("BaordPanel handleMouseExited: MouseExited registered at " + screenX + " / " + screenY);
+		listener.delegateOnFieldHoverToView(-1, -1, -1, -1);
+		TraceLogger.log("boardPanel", "handleMouseExited:", true, "- - -");
+		System.out.println("- - - MouseExited registered at " + screenX + " / " + screenY + "\n");
+		
 		// Point gridCoordinates = renderer.screenToGrid(screenX, screenY, cellSize);
 		
 		/*

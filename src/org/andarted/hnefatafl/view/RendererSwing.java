@@ -1,6 +1,7 @@
 package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.common.SquareType;
+import org.andarted.hnefatafl.common.TraceLogger;
 import org.andarted.hnefatafl.common.PieceType;
 
 import java.awt.Color;
@@ -56,7 +57,8 @@ class RendererSwing implements IRender {
 	public Point screenToGrid(int screenX, int screenY, int cellSize) {
 		int col = screenX / cellSize;
 		int row = screenY / cellSize;
-		System.out.println("RendererSwing screenToGrid: check - übernehmen Sie BoardPanel handleMouseMoved()");
+		TraceLogger.log("RendererSwing", "screenToGrid:", true, "↺ [return Point (row, col)] ");
+
 		return new Point (col, row);
 	}
 

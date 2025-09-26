@@ -30,5 +30,6 @@ public interface IView {
 	void setMouseHoverHighlight(int row, int col);
 	
 	void delegateRepaint();
+	void delegateOnFieldHoverToPresenter(int row,int col);
 
 }

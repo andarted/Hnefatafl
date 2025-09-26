@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
+import org.andarted.hnefatafl.common.TraceLogger;
+
 class SidePanel extends JPanel { // Listener Interface wird in der Methode setSideListener() "implementiert"
 	private static final Dimension MODUL_MAX_DIMENSION = new Dimension(180, Integer.MAX_VALUE);
 	private static final Dimension BUTTON_MAX_DIMENSION = new Dimension(Integer.MAX_VALUE, 24);
@@ -270,6 +272,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 	public void updateHoverPos(int screenX, int screenY) {
 		mouseXAxis = screenX;
 		mouseYAxis = screenY;
+		TraceLogger.log("sidePanel", "updateHoverPos:", true, "- - -");
 		mousePositionLabel.setText("pos. " + mouseXAxis + " " + mouseYAxis);
 	}
 	

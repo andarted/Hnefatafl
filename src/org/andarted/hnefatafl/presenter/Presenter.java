@@ -5,6 +5,7 @@ import org.andarted.hnefatafl.view.IView;
 
 import org.andarted.hnefatafl.common.GameBoard;
 import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.common.TraceLogger;
 import org.andarted.hnefatafl.common.Variant;
 
 
@@ -180,10 +181,11 @@ public class Presenter implements IPresenter {
 	@Override
 	public void onFieldHover(int row, int col) {
 		// gameBoard.setMouseHoverPosition(row, col);
-		gameBoard.setMouseHoverPos(row,col);
-		System.out.println("presenter onFieldHover: check - übernehmen Sie gameBoard gameBoard setMouseHoverPosition.");
+		TraceLogger.log("presenter", "onFieldHover [1/2]:", true, "model.delegateSetMouseHoverPos()");
+		model.delegateSetMouseHoverPos(row,col);
+		
+		TraceLogger.log("presenter", "onFieldHover [2/2]:", true, "view.delegateRepaint()");
 		view.delegateRepaint();
-		System.out.println("presenter onFieldHover: check - übernehmen Sie view gelegateRepaint.");
 		/*
 		if(row != -1 && col != -1 || fieldHoverIsActive != false) {
 			view.setMouseHoverHighlight(row, col);

@@ -161,7 +161,8 @@ public class GameBoard {
 		if (row != -1 || col != -1) {
 			squareSelection[row][col] = true;
 		}
-		System.out.println("GameBoard setMouseHoverPos: check.");;
+		
+		TraceLogger.log("gameBoard", "SetMouseHoverPos:", true, "– – –");
 	}
 	
 

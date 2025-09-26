@@ -7,6 +7,7 @@ import org.andarted.hnefatafl.common.GameBoard;
 import org.andarted.hnefatafl.common.Variant;
 import org.andarted.hnefatafl.common.SquareType;
 import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.common.TraceLogger;
 
 
 import java.awt.BorderLayout;
@@ -303,12 +304,14 @@ public class View implements IView {
     				}
     			}
     			@Override
-    			public void delegateOnFieldHover(int row, int col, int screenX, int screenY) {
+    			public void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY) {
     				if (presenter != null) {
-    					sidePanel.updateHoverPos(screenX, screenY);
-    					System.out.println("view initializeListener @O delegateOnFieldHover: check - übernehmen Sie sidePanel updateHoverPos.");
-    					presenter.onFieldHover(row, col);
-    					System.out.println("view initializeListener @O delegateOnFieldHover: check - übernehmen Sie presenter onFieldHover.");
+    					TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [1/2]:", true, "view.passingOnUpdateHoverPosToSidePanel()");
+    					passingOnUpdateHoverPosToSidePanel(screenX, screenY);
+    					
+    					TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [2/2]:", true, "delegateOnFieldHoverToPresenter()");
+    					delegateOnFieldHoverToPresenter(row, col);
+    					// presenter.onFieldHover(row, col);
     				}
     			}
     		});
@@ -509,7 +512,20 @@ public class View implements IView {
 	@Override
 	public void delegateRepaint() {
 		boardPanel.repaint();
-		System.out.println("view delegateRepaint: check.");
+		TraceLogger.log("view", "delegateRepaint", true, "boardPanel.repaint()");
+		System.out.println("END\n");
+	}
+
+
+	@Override
+	public void delegateOnFieldHoverToPresenter(int row, int col) {
+		TraceLogger.log("view", "delegateOnFieldHoverToPresenter:", true, "presenter.onFieldHover()");
+		presenter.onFieldHover(row, col);
+	}
+	
+	public void passingOnUpdateHoverPosToSidePanel(int screenX, int screenY) {
+		TraceLogger.log("view", "delegateUpdateHoverPosToSidePanel:", true, "sidePanel.updateHoverPos()");
+		sidePanel.updateHoverPos(screenX, screenY);
 	}
 
 	/*

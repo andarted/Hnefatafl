@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.andarted.hnefatafl.common.GameBoard;
 import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.common.TraceLogger;
 import org.andarted.hnefatafl.presenter.IPresenter;
 import org.andarted.hnefatafl.common.LineUp;
 import org.andarted.hnefatafl.common.Variant;
@@ -188,4 +189,11 @@ public class Model implements IModel {
     public void setPiece(PieceType pieceType, int row, int col) {
     	this.currentState[row][col] = pieceType;
     }
+
+
+	@Override
+	public void delegateSetMouseHoverPos(int row, int col) {
+		TraceLogger.log("model", "delegateSetMouseHoverPos:", true, "gameBoard.setMouseHoverPos()");
+		gameBoard.setMouseHoverPos(row,col);
+	}
 }

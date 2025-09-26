@@ -14,6 +14,8 @@ public interface IModel {
 	void setFreshLineUp(int size, Variant variant);
 	void setPiece(PieceType pieceType, int row, int col);
 	
+	void delegateSetMouseHoverPos(int row,int col);
+	
 	// void initializePresenter(Presenter presenter);
 	
 }
