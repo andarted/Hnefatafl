@@ -26,6 +26,7 @@ public class RendererIso implements IRender{
 	
 	private final static String DEFAULT_STRITESHEET_PATH = "/sprites/spriteSheetIso00_64.png";
 	
+	/*
 	private final int[] mouseListenerX = new int[] {
 			7, 7, 6, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0,
 			0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7
@@ -33,6 +34,8 @@ public class RendererIso implements IRender{
 	private final int[] mouseListenerY = new int[] {
 			0, 1, 2, 3, 4, 5, 6, 7, 7, 6, 5, 4, 3, 2, 1, 0
 	};
+	*/
+	
 	// private Map <SquareType, Point> tileCoordOnSpriteSheet;
 	
 	public RendererIso(String sheetResourcePath, int tileWidth, int tileHeight) throws IOException {

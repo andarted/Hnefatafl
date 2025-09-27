@@ -70,10 +70,6 @@ public class View implements IView {
 	private int mouseHoverPosY = 0;
 	
 	
-	
-	
-    
-	
 	// - - - Konstruktor - - -
 	
 	public View() {

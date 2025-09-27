@@ -131,7 +131,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 				// presenter.handleDebugFreeMovementButton();
 		});
 		
-		debugPanel.add(freeMovementButton);
+		// debugPanel.add(freeMovementButton);
 		// sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
 	}
 	
@@ -287,7 +287,8 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		mouseYAxis = screenY;
 	};
 	
-	private void streamMousePosition(int screenX, int screenY) {
-		
+	/*
+	private void streamMousePosition(int screenX, int screenY) {	
 	}
+	*/
 }
