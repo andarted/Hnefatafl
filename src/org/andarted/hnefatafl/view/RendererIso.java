@@ -1,7 +1,6 @@
 package org.andarted.hnefatafl.view;
 
-import org.andarted.hnefatafl.common.SquareType;
-import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.model.SquareType;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -62,7 +61,7 @@ public class RendererIso implements IRender{
 	}
 
 	@Override
-	public void renderCell(Graphics2D g, int row, int col, int cellSize, SquareType square, PieceType piece,
+	public void renderCell(Graphics2D g, int row, int col, int cellSize, SquareAppearance square, PieceAppearance piece,
 			boolean highlight) {
 		
 		
@@ -83,16 +82,18 @@ public class RendererIso implements IRender{
 		int y = isoY + screenOffsetY;
 		
 		// koordinaten im sprite sheet
-		int sy = square.getSpriteSheetPosX()*tileWidth;
-		int sx = square.getSpriteSheetPosY()*tileHeight;
+		Point spritePos = square.spritePos();
+		int sPosY = spritePos.x * tileWidth; 
+		int sPosX = spritePos.y * tileHeight;
 		
 		// draw square
-		g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileHeight, sx, sy, sx + tileWidth, sy + tileHeight, null);
+		g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileHeight, sPosX, sPosY, sPosX + tileWidth, sPosY + tileHeight, null);
 		
 		// highlight
 		if (highlight) {
-			int syH = SquareType.HIGHLIGHTED.getSpriteSheetPosX()*tileWidth;
-			int sxH = SquareType.HIGHLIGHTED.getSpriteSheetPosY()*tileWidth;
+			SquareAppearance mouseHover = SquareTypeAppearanceMapper.getAppearance(SquareType.MOUSE_HOVER);
+			int syH = mouseHover.spritePos.x * tileWidth;
+			int sxH = mouseHover.spritePos.x * tileWidth;
 			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sxH, syH, sxH + tileWidth, syH + tileHeight, null);
 			
 			/*
@@ -102,10 +103,9 @@ public class RendererIso implements IRender{
 		}
 		
 		// draw Piece
-		if (piece != null && piece != PieceType.NOBODY) {
-			int py = piece.getSpriteSheetPosX()*tileWidth;
-			int px = piece.getSpriteSheetPosY()*tileHeight;
-			
+		if (piece != null) {
+			int py = piece.spritePos().x * tileWidth;
+			int px = piece.spritePos().y * tileHeight;
 			// hier die vertikalverschiebung der pieces
 			int pieceOffsetY = y - tileHeightHalf - 2;
 			
@@ -142,17 +142,7 @@ public class RendererIso implements IRender{
 	}
 	*/
 
-	@Override
-	public void setSquare(Graphics2D g, int row, int col, SquareType square) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPiece(Graphics2D g, int row, int col, PieceType piece) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void setBoardBorder() {
@@ -178,6 +168,21 @@ public class RendererIso implements IRender{
 		 
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		double offgesettetesScreenX = screenX - screenOffsetX; 
 		double offgesettetesScreenY = screenY - screenOffsetY;
 		
@@ -196,6 +201,19 @@ public class RendererIso implements IRender{
 
 	@Override
 	public void clearMouseHoverIndicator() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {
 		// TODO Auto-generated method stub
 		
 	}

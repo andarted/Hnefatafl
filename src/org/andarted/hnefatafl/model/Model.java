@@ -3,11 +3,10 @@ package org.andarted.hnefatafl.model;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import org.andarted.hnefatafl.common.GameBoard;
-import org.andarted.hnefatafl.common.PieceType;
+// import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.common.TraceLogger;
 import org.andarted.hnefatafl.presenter.IPresenter;
-import org.andarted.hnefatafl.common.LineUp;
 import org.andarted.hnefatafl.common.Variant;
 
 public class Model implements IModel {
@@ -25,7 +24,7 @@ public class Model implements IModel {
 	
 	// - - - CONSTRUCTOR - - -
 	public Model() {
-		
+		// gameBoard = newDefaultGame();
 	}
 
 	
@@ -33,32 +32,34 @@ public class Model implements IModel {
 	
     public void initializePresenter(IPresenter presenter) {
         this.presenter = presenter;
+        QLog.log("model", "initializePresenter", "model initialisiert presenter");
     }
     
 	
 	// - - - METHODES - - - 
     
+    
     @Override
     public GameBoard newDefaultGame() {
+    	QLog.log("model", "newDefaultGame", "-> model.newGame([default Einstellungen])");
     	newGame(9, Variant.STANDARD);
     	return this.gameBoard;
     }
     
+    
     @Override
     public GameBoard newGame(int size, Variant variant) {
+    	QLog.log("model", "newGame[1/2]", "this.gameBoard ist neues GameBoard");
     	this.gameBoard = new GameBoard(size, variant);
-    	setlineUp(size, variant);
+    	QLog.log("model", "newGame[2/2]", "-> model.setLineUp() [squares & pieces werden gemäß Aufstellung neu initialisiert");
+    	setLineUp(size, variant);
     	return gameBoard;
     }
     
     @Override
     public GameBoard newGameBoard(int size, Variant variant) {
-    	
     	this.gameBoard = new GameBoard(size, variant);
-    	
     	recallSpecificLineUp(size, variant);
-    	
-    	
     	return gameBoard;
     }
     
@@ -70,7 +71,7 @@ public class Model implements IModel {
     
     // - - - METHODS / LINE UP PIECES - - -
     
-    private void setlineUp(int size, Variant variant){
+    private void setLineUp(int size, Variant variant){
     	int height = size;
     	int width = size;
     	PieceType piece = PieceType.NOBODY;
@@ -97,7 +98,7 @@ public class Model implements IModel {
     	
     	default: 
     		System.out.println("model.recallPieceAt(): How the Fuck messed I up???");
-    		return PieceType.ERROR;
+    		return PieceType.PIECE_ERROR;
     		
     	}
     }
@@ -185,7 +186,22 @@ public class Model implements IModel {
     // - - - GETTER - - -
     
     public GameBoard getGameBoard() {
-    	return gameBoard;
+    	return this.gameBoard;
+    }
+    
+    @Override
+    public int getBoardSize() {
+    	return gameBoard.getBoardSize();
+    }
+    
+    @Override
+    public SquareType getSquareAt(int row, int col) {
+    	return gameBoard.getSquareAt(row, col);
+    }
+    
+    @Override
+    public PieceType getPieceAt(int row, int col) {
+    	return gameBoard.getPieceAt(row,  col);
     }
 
     
@@ -194,7 +210,8 @@ public class Model implements IModel {
     public void setFreshLineUp(int size, Variant variant) {	
     	// generateLineUp(lineUpFromSize(size), variant);
     }
-    
+
+	@Override
     public void setPiece(PieceType pieceType, int row, int col) {
     	this.currentState[row][col] = pieceType;
     }
@@ -205,5 +222,9 @@ public class Model implements IModel {
 		TraceLogger.log("model", "delegateSetMouseHoverPos:", true, "gameBoard.setMouseHoverPos()");
 		gameBoard.setMouseHoverPos(row,col);
 	}
+
+
+
+
 	
 }

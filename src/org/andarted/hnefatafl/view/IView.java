@@ -1,7 +1,9 @@
 package org.andarted.hnefatafl.view;
 
+import org.andarted.hnefatafl.model.GameBoard;
+import org.andarted.hnefatafl.model.PieceType;
+import org.andarted.hnefatafl.model.SquareType;
 import org.andarted.hnefatafl.presenter.Presenter;
-import org.andarted.hnefatafl.common.GameBoard;
 
 public interface IView {
 	
@@ -24,11 +26,14 @@ public interface IView {
 	void delegateClearHighlightAt(int row, int col);
 	*/
 	void initializePresenter(Presenter presenter);
-	void setGameBoard(GameBoard gameBoard);
+	void setGameBoard();
 	void onFieldHover(int row, int col, int screenX, int screenY);
 	void setMouseHoverPos(int row, int col);
 	
 	void delegateRepaint();
 	void delegateOnFieldHoverToPresenter(int row,int col);
+	
+	SquareType getSquareAt(int row, int col);
+	PieceType getPieceAr(int row, int col);
 
 }

@@ -1,8 +1,8 @@
 package org.andarted.hnefatafl.view;
 
-import org.andarted.hnefatafl.common.SquareType;
 import org.andarted.hnefatafl.common.TraceLogger;
-import org.andarted.hnefatafl.common.PieceType;
+// import org.andarted.hnefatafl.model.SquareType;
+// import org.andarted.hnefatafl.model.PieceType;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -11,12 +11,12 @@ import java.awt.Point;
 class RendererSwing implements IRender {
 
     @Override
-    public void renderCell(Graphics2D g, int row, int col, int cellSize, SquareType square, PieceType piece, boolean highlight) {
+    public void renderCell(Graphics2D g, int row, int col, int cellSize, SquareAppearance square, PieceAppearance piece, boolean highlight) {
         int x = col * cellSize;
         int y = row * cellSize;
-
+        
         // Hintergrund
-        g.setColor(square.getColor());
+        g.setColor(square.color());
         g.fillRect(x, y, cellSize, cellSize);
 
         // Optional: Selektion hervorheben
@@ -30,14 +30,14 @@ class RendererSwing implements IRender {
         g.drawRect(x, y, cellSize, cellSize);
 
         // Spielfigur als Kreis
-        if (piece != null && piece != PieceType.NOBODY) {
-            g.setColor(piece.getColor());
+        if (piece != null) {
+            g.setColor(piece.color());
             g.fillOval(x + cellSize/4, y + cellSize/4, cellSize/2, cellSize/2);
 
             // Optional: Zeichen für Figurentyp
             g.setColor(Color.BLACK);
-            String symbol = piece.getSymbol();
-            g.drawString(symbol, x + cellSize/2 - 4, y + cellSize/2 + 5);
+            String initial = String.valueOf(piece.initial());
+            g.drawString(initial, x + cellSize/2 - 4, y + cellSize/2 + 5);
         }
     }
     
@@ -45,9 +45,9 @@ class RendererSwing implements IRender {
 
 
     @Override
-    public void setSquare(Graphics2D g, int row, int col, SquareType square) {}
+    public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {}
     @Override
-    public void setPiece(Graphics2D g, int row, int col, PieceType piece) {}
+    public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {}
     @Override
     public void setBoardBorder() {}
     // @Override

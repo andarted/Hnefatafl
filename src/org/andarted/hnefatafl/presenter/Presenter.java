@@ -1,10 +1,11 @@
 package org.andarted.hnefatafl.presenter;
 
+import org.andarted.hnefatafl.model.GameBoard;
 import org.andarted.hnefatafl.model.IModel;
+import org.andarted.hnefatafl.model.PieceType;
+import org.andarted.hnefatafl.model.SquareType;
 import org.andarted.hnefatafl.view.IView;
-
-import org.andarted.hnefatafl.common.GameBoard;
-import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.common.TraceLogger;
 import org.andarted.hnefatafl.common.Variant;
 
@@ -33,16 +34,17 @@ public class Presenter implements IPresenter {
     // - - - CONSTRUCTOR - - -
     
     public Presenter(IView view, IModel model) {
-        this.view = view;
-        this.model = model;
-
+    	this.model = model;
+    	this.view = view;
         startDefaultGame();
-
-        view.setGameBoard(gameBoard);
+        QLog.log("presenter", "", "presenter wird konstruiert, initialisiert model & view, -> model.startDefaultGame()");
     }
 
     
+    // - - - METHODEN - - -
+    
 	private void startDefaultGame() {
+		QLog.log("presenter", "startDefaultGame()", "-> model.newDefaultGame()");
 		this.gameBoard = model.newDefaultGame();
 	}
     
@@ -98,8 +100,8 @@ public class Presenter implements IPresenter {
     	this.gameBoard = model.newGame(size, variant);
     	System.out.println("Presenter: handleNewGameItem (" + size + ", " + variant.toString() + ")");
     	
-    	view.setGameBoard(gameBoard);
-    	view.initializeNewGame(gameBoard);
+    	// view.setGameBoard(model.getGameBoard());    	
+    	view.initializeNewGame(model.getGameBoard());
     	
     }
     
@@ -193,4 +195,29 @@ public class Presenter implements IPresenter {
 		}
 		*/
 	}
+	
+	@Override
+	public int getBoardSize() {
+		return model.getBoardSize();
+	}
+
+
+	@Override
+	public SquareType getSquareAt(int row, int col) {
+		return model.getSquareAt(row, col);
+	}
+
+
+	@Override
+	public PieceType getPieceAr(int row, int col) {
+		return model.getPieceAt(row, col);
+	}
+
+
+	@Override
+	public GameBoard getGameBoard() {
+		return model.getGameBoard();
+	}
+	
+	
 }

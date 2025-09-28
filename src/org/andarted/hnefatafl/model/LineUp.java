@@ -1,6 +1,6 @@
-package org.andarted.hnefatafl.common;
+package org.andarted.hnefatafl.model;
 
-public enum LineUp {
+enum LineUp {
 	SIZE_7_STANDART(7, new String[] {
 			"..AAA..",
 			"...A...",

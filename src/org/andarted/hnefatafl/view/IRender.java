@@ -8,9 +8,9 @@ import java.awt.Point;
 
 interface IRender {
 	
-	void renderCell(Graphics2D g, int row, int col, int cellSize, SquareType square, PieceType piece, boolean selected);
-	void setSquare(Graphics2D g, int row, int col, SquareType square);
-	void setPiece(Graphics2D g, int row, int col, PieceType piece);
+	void renderCell(Graphics2D g, int row, int col, int cellSize, SquareAppearance square, PieceAppearance piece, boolean selected);
+	void setSquare(Graphics2D g, int row, int col, SquareAppearance square);
+	void setPiece(Graphics2D g, int row, int col, PieceAppearance piece);
 	void setBoardBorder();
 	void showMouseHoverIndicator(int row, int col);
 	void clearMouseHoverIndicator();

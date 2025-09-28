@@ -1,6 +1,11 @@
-package org.andarted.hnefatafl.common;
+package org.andarted.hnefatafl.model;
 
 import java.awt.Point;
+
+// import org.andarted.hnefatafl.model.PieceType;
+// import org.andarted.hnefatafl.model.SquareType;
+import org.andarted.hnefatafl.common.TraceLogger;
+import org.andarted.hnefatafl.common.Variant;
 
 public class GameBoard {
 	private final int boardSize;

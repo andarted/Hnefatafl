@@ -1,10 +1,11 @@
 package org.andarted.hnefatafl.view;
 
 
-import org.andarted.hnefatafl.common.GameBoard;
-import org.andarted.hnefatafl.common.SquareType;
+
 import org.andarted.hnefatafl.common.TraceLogger;
-import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.model.GameBoard;
+import org.andarted.hnefatafl.model.SquareType;
+import org.andarted.hnefatafl.model.PieceType;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -31,16 +32,16 @@ class BoardPanel extends JPanel{
 	
 	// - - - Konstuktor - - -
 	
-	BoardPanel(GameBoard board, IRender renderer, Color baseColor) {
+	BoardPanel(int boardSize, IRender renderer, Color baseColor) {
 		/*
 		// - - - gibt mir genauere Fehlermeldung aus - - -
 		if(board == null) throw new IllegalArgumentException("GameBoard must not be null");
 		if(renderer == null) throw new IllegalArgumentException("Renderer must not be null");
 		*/
-		this.gameBoard = board;
+		// this.gameBoard = gameBoard;
 		this.renderer = renderer;
-		this.boardSize = gameBoard.getBoardSize();
-		int panelSize = board.getBoardSize() * cellSize;
+		this.boardSize = boardSize;
+		int panelSize = boardSize * cellSize;
 		setPreferredSize(new Dimension(panelSize + 570, panelSize));
 		addMouseListener(createMouseListener());
 		addMouseMotionListener(createMouseMotionListener());
@@ -59,18 +60,35 @@ class BoardPanel extends JPanel{
 	// - - - METHODEN - - - 
 
 	private void paintBoard(Graphics2D g) {
+		
+		if(gameBoard == null) {
+		    System.out.println("gameBoard ist NULL bei paintBoard! Überprüfung nötig!");
+		    return; // oder: throw new IllegalStateException(...)
+		}
+		
 		for (int row = 0; row < boardSize; row++) {
 			for (int col = 0; col < boardSize; col++) {
 				
-				SquareType square = gameBoard.getSquareAt(row, col);
-				PieceType piece = gameBoard.getPieceAt(row, col);
+				SquareType squareType = gameBoard.getSquareAt(row, col);
+				PieceType pieceType = gameBoard.getPieceAt(row, col);
 				boolean highlight = gameBoard.isHighlighted(row, col);
-				renderer.renderCell(g, row, col, cellSize, square, piece, highlight);
+				
+				SquareAppearance squareAppearance = SquareTypeAppearanceMapper.getAppearance(squareType);
+				PieceAppearance pieceAppearance =
+						(pieceType == PieceType.NOBODY) ? null :PieceTypeAppearanceMapper.getAppearance(pieceType);
+						// Bei NOBODY ist pieceAppearance null, damit der Render weiß, dass da nix hingehört.
+				
+				// if (squareAppearance == null) continue; // Defensive: Feld wird nicht gerendert
+				
+				if (squareType == null) System.out.println("squareType null bei " + row + "," + col);
+				if (squareAppearance == null) System.out.println("squareAppearance null bei sqType " + squareType + " @ " + row + "," + col);
+				if (pieceAppearance == null && pieceType != PieceType.NOBODY) System.out.println("pieceAppearance null trotz pieceType=" + pieceType + " bei " + row + "," + col);
+				
+				renderer.renderCell(g, row, col, cellSize, squareAppearance, pieceAppearance, highlight);
 				
 			}
 		}
 	}
-	
 	
 	// - - - METHODS / LISTENER - - - 
 	
@@ -199,12 +217,23 @@ class BoardPanel extends JPanel{
 		repaint();
 	}
 	
+	public void setGameBoard(GameBoard gameBoard) {
+		this.gameBoard = gameBoard;
+		repaint();
+	}
+	
 	
 	// - - - OVERRIDES - - -
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		if (gameBoard == null) {
+	        System.out.println("paintComponent: gameBoard ist null -> KEIN Drawing");
+	        return;
+	    }
+		
 		paintBoard((Graphics2D) g);
 		// Eigenes Zeichnen hier
 		

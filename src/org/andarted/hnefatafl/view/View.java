@@ -2,11 +2,11 @@ package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.presenter.IPresenter;
 import org.andarted.hnefatafl.presenter.Presenter;
-
-import org.andarted.hnefatafl.common.GameBoard;
 import org.andarted.hnefatafl.common.Variant;
-import org.andarted.hnefatafl.common.SquareType;
-import org.andarted.hnefatafl.common.PieceType;
+import org.andarted.hnefatafl.model.GameBoard;
+import org.andarted.hnefatafl.model.PieceType;
+import org.andarted.hnefatafl.model.SquareType;
+import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.common.TraceLogger;
 
 
@@ -73,7 +73,6 @@ public class View implements IView {
 	// - - - Konstruktor - - -
 	
 	public View() {
-		// this.gameBoard = new GameBoard(11);
 		currendRenderer = new RendererSwing();
 	}
 	
@@ -81,6 +80,7 @@ public class View implements IView {
     
     @Override
     public void initializePresenter(Presenter presenter) {
+    	QLog.log("view", "initializePresenter", "view initialisiert presenter");
         this.presenter = presenter;
     }
 
@@ -88,16 +88,23 @@ public class View implements IView {
 	// - - - Methoden - - -
 	
 	public void initializeView() {
+		QLog.log("view", "initializeView()", "-> view.createMainFrame()");
 		createMainFrame();
+		QLog.log("view", "initializeView()", "-> view.createMenuBar()");
 		createMenuBar();
+		QLog.log("view", "initializeView()", "-> view.createMainPanel()");
 		createMainPanel();
+		QLog.log("view", "initializeView()", "-> view.createBoardPanel()");
 		createBoardPanel();
+		QLog.log("view", "initializeView()", "-> view.createSidePanel()");
 		createSidePanel();
+		QLog.log("view", "initializeView()", "-> view.createBoardPanelWrapper()");
 		createBoardPanelWrapper();
+		QLog.log("view", "initializeView()", "-> view.assembleElements()");
 		assembleElements();
 		
 		// initializeBoardPanelListener();
-		
+		QLog.log("view", "initializeView()", "-> view.mainFrame.setVisibile()");
         mainFrame.setVisible(true);
 	}
 	
@@ -229,9 +236,10 @@ public class View implements IView {
 		boardPanelWrapper.add(Box.createGlue());
 	}
 	
-	private void createBoardPanel(){		
+	private void createBoardPanel(){	
 		renderer = currendRenderer;
-		boardPanel = new BoardPanel(gameBoard, currendRenderer, BASE_COLOR);
+		int boardSize = presenter.getBoardSize();
+		boardPanel = new BoardPanel(boardSize, currendRenderer, BASE_COLOR);
 		boardPanel.setOpaque(false);
 		
 		initializeBoardPanelListener();
@@ -319,6 +327,12 @@ public class View implements IView {
     }
     
     
+    // - - - METHODS FOR VIEW - - -
+    
+    int getBoardSize() {
+    	return presenter.getBoardSize();
+    }
+    
     // - - - @OVERRIDE - - -
     
     
@@ -332,7 +346,7 @@ public class View implements IView {
 		
 		this.gameBoard = gameBoard;
 		this.renderer = currendRenderer;
-		this.boardPanel = new BoardPanel(gameBoard, currendRenderer, BASE_COLOR);
+		this.boardPanel = new BoardPanel(presenter.getBoardSize(), currendRenderer, BASE_COLOR);
 		
 		System.out.println("View: [initializeNewGame]");
 		
@@ -449,9 +463,13 @@ public class View implements IView {
 
 	
 	// - - - SETTER - - -
-	public void setGameBoard(GameBoard gameBoard) {
-		this.gameBoard = gameBoard;
+	
+	@Override
+	public void setGameBoard() {
+		this.gameBoard = presenter.getGameBoard();
+		boardPanel.setGameBoard(gameBoard);
 	}
+	
 
 
 	@Override
@@ -489,6 +507,18 @@ public class View implements IView {
 		TraceLogger.log("view", "delegateUpdateHoverPosToSidePanel:", true, "sidePanel.updateHoverPos()");
 		sidePanel.updateHoverPos(screenX, screenY);
 	}
+
+	@Override
+	public SquareType getSquareAt(int row, int col) {
+		return presenter.getSquareAt(row, col);
+	}
+
+	@Override
+	public PieceType getPieceAr(int row, int col) {
+		return presenter.getPieceAr(row, col);
+	}
+
+
 
     
 }
