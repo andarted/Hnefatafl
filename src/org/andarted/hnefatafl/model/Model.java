@@ -27,12 +27,21 @@ public class Model implements IModel {
 	public Model() {
 		
 	}
+
 	
-	
-	// - - - METHODES - - - 
+    // - - - VERBINDUNG ZUM PRESENTER - - -
 	
     public void initializePresenter(IPresenter presenter) {
         this.presenter = presenter;
+    }
+    
+	
+	// - - - METHODES - - - 
+    
+    @Override
+    public GameBoard newDefaultGame() {
+    	newGame(9, Variant.STANDARD);
+    	return this.gameBoard;
     }
     
     @Override
@@ -196,4 +205,5 @@ public class Model implements IModel {
 		TraceLogger.log("model", "delegateSetMouseHoverPos:", true, "gameBoard.setMouseHoverPos()");
 		gameBoard.setMouseHoverPos(row,col);
 	}
+	
 }

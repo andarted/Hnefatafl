@@ -10,6 +10,7 @@ public interface IModel {
 
 	GameBoard newGameBoard(int size, Variant variant);
 	GameBoard newGame(int size, Variant variant);
+	GameBoard newDefaultGame();
 
 	void setFreshLineUp(int size, Variant variant);
 	void setPiece(PieceType pieceType, int row, int col);

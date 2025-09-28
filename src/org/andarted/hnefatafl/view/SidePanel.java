@@ -258,18 +258,18 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		
 		mousePositionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mousePositionPanel.setMaximumSize(MODUL_MAX_DIMENSION);
-		mousePositionPanel.setBorder(BorderFactory.createTitledBorder("aktive player"));
+		mousePositionPanel.setBorder(BorderFactory.createTitledBorder("Mouse Position"));
 				
 		mousePositionPanel.setLayout(new BorderLayout());
-		// mousePositionLabel = new JLabel(mousePosition);
 		mousePositionLabel.setFont(new Font("Arial", Font.BOLD, 10));
 		mousePositionPanel.add(mousePositionLabel, BorderLayout.NORTH);
+		add(mousePositionPanel);
 	    
-	    add(mousePositionLabel);
-        add(Box.createRigidArea(new Dimension(0, 10))); // Abstand
+        // add(Box.createRigidArea(new Dimension(0, 10))); // Abstand
 	}
 	
-	public void updateHoverPos(int screenX, int screenY) {
+	
+	void updateHoverPos(int screenX, int screenY) {
 		mouseXAxis = screenX;
 		mouseYAxis = screenY;
 		TraceLogger.log("sidePanel", "updateHoverPos:", true, "- - -");
@@ -279,6 +279,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 	
 	// - - - METHODS - - - 
 	
+	/*
 	public void streamMouseXAxis(int screenX) {
 		mouseXAxis = screenX;
 	};
@@ -286,6 +287,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 	public void streamMouseYAxis(int screenY) {
 		mouseYAxis = screenY;
 	};
+	*/
 	
 	/*
 	private void streamMousePosition(int screenX, int screenY) {	

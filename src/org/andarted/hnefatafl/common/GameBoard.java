@@ -133,6 +133,7 @@ public class GameBoard {
 	public SquareType getSquareAt(int row, int col) {return squares[row][col];}
 	public PieceType getPieceAt(int row, int col) {return pieces[row][col];}
 	public int getBoardSize() {return boardSize;}
+	public int getCentre() {return centre;}
 	public boolean isHighlighted(int row, int col) {return squareSelection[row][col];}
 	
 		// - - - SETTER - - -

@@ -36,24 +36,24 @@ public class Presenter implements IPresenter {
         this.view = view;
         this.model = model;
 
-        // startDefaultGame();
-        GameBoard gameBoard = model.newGame(9, Variant.STANDARD);
-        this.gameBoard = gameBoard;
-        
+        startDefaultGame();
+
         view.setGameBoard(gameBoard);
     }
+
     
-    /*
-    private void startDefaultGame() {
-    	GameBoard gameBoard = model.newGame(9, Variant.STANDARD);
-    }
-    */
+	private void startDefaultGame() {
+		this.gameBoard = model.newDefaultGame();
+	}
     
+	
+	/*
     private void deligateSetPiece(PieceType pieceType, int row, int col) {
     	switch (pieceType) {
     	case NOBODY: model.setPiece(pieceType, row, col);
     	}
     }
+    */
     
     // - - - DEBUG BUTTONS - - -
     
@@ -68,6 +68,7 @@ public class Presenter implements IPresenter {
 		System.out.println("Presenter: Royalists turn");
 		view.updateDebugDisplay("Royalists");
 	}
+
 
     @Override
     public void onSquareClicked(int row, int col) {
@@ -111,7 +112,7 @@ public class Presenter implements IPresenter {
     public void handleDebugGetRoyalist() {
     	currentPiece = PieceType.ROYALIST;
 		System.out.println("Presenter: debug set royalist pieces is now active");
-		view.updateDebugDisplay("<html>Mode<br><br>Drop Royalists</html>");
+		view.updateDebugDisplay("Mode: Drop Royalists");
 		
     	currentPieceChar = 'R';
     }
@@ -120,7 +121,7 @@ public class Presenter implements IPresenter {
     public void handleDebugGetAnarchist() {
     	currentPiece = PieceType.ANARCHIST;
 		System.out.println("Presenter: debug set anarchist pieces is now active");
-		view.updateDebugDisplay("<html>Mode<br><br>Drop Anarchists</html>");
+		view.updateDebugDisplay("Mode: Drop Anarchists");
 		
     	currentPieceChar = 'A';
     }
@@ -129,7 +130,7 @@ public class Presenter implements IPresenter {
     public void handleDebugGetKing() {
     	currentPiece = PieceType.KING;
 		System.out.println("Presenter: debug set king pieces is now active");
-		view.updateDebugDisplay("<html>Mode<br><br>Drop Kings</html>");
+		view.updateDebugDisplay("Mode: Drop Kings");
 		
     	currentPieceChar = 'K';
     }
@@ -138,7 +139,7 @@ public class Presenter implements IPresenter {
     public void handleDebugGetRemove() {
     	currentPiece = PieceType.NOBODY;
 		System.out.println("Presenter: debug remove pieces is now active");
-		view.updateDebugDisplay("<html>Mode<br><br>Remove Pieces</html>");
+		view.updateDebugDisplay("Mode: Remove Pieces");
 		
     	currentPieceChar ='.';
     }

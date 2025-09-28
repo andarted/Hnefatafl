@@ -94,6 +94,7 @@ public class RendererIso implements IRender{
 			int syH = SquareType.HIGHLIGHTED.getSpriteSheetPosX()*tileWidth;
 			int sxH = SquareType.HIGHLIGHTED.getSpriteSheetPosY()*tileWidth;
 			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sxH, syH, sxH + tileWidth, syH + tileHeight, null);
+			
 			/*
 			g.setColor(new Color(255, 255, 0, 80));
 			g.fillRect(x, y, cellSize, cellSize);
@@ -163,6 +164,19 @@ public class RendererIso implements IRender{
 	public Point screenToGrid(int screenX, int screenY, int tileSize) {
 		
 		// - - - !!! - - - NEEDS REPAIR - - - !!! - - - NEEDS REPAIR - - - !!! - - - NEEDS REPAIR - - - !!! - - -
+		// koordinaten am board
+		int gridX = -1;
+		int gridY = -1;
+				
+		int actualScreenX = screenX - screenOffsetX;
+		int actualScreenY = screenY - screenOffsetY;
+		
+		int halfRow = actualScreenY / tileSize / 2 - 1;
+		int halfCol = actualScreenX / tileSize - 1;
+		
+		 
+		 
+		
 		
 		double offgesettetesScreenX = screenX - screenOffsetX; 
 		double offgesettetesScreenY = screenY - screenOffsetY;
@@ -171,6 +185,7 @@ public class RendererIso implements IRender{
 		double row = offgesettetesScreenY / (double)tileHeightHalf - offgesettetesScreenX / (double)tileWidth;
 
 		return new Point ((int)Math.floor(col), (int)Math.ceil(row));
+		
 	}
 
 	@Override

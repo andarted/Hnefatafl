@@ -27,7 +27,6 @@ public interface IView {
 	void setGameBoard(GameBoard gameBoard);
 	void onFieldHover(int row, int col, int screenX, int screenY);
 	void setMouseHoverPos(int row, int col);
-	void setMouseHoverHighlight(int row, int col);
 	
 	void delegateRepaint();
 	void delegateOnFieldHoverToPresenter(int row,int col);

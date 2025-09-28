@@ -77,6 +77,13 @@ public class View implements IView {
 		currendRenderer = new RendererSwing();
 	}
 	
+    // - - - VERBINDUNG ZUM PRESENTER - - -
+    
+    @Override
+    public void initializePresenter(Presenter presenter) {
+        this.presenter = presenter;
+    }
+
 	
 	// - - - Methoden - - -
 	
@@ -89,7 +96,7 @@ public class View implements IView {
 		createBoardPanelWrapper();
 		assembleElements();
 		
-		initializeListener();
+		// initializeBoardPanelListener();
 		
         mainFrame.setVisible(true);
 	}
@@ -209,6 +216,9 @@ public class View implements IView {
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 	}
 	
+	
+	// - - - BOARD PANEL - - -
+	
 	private void createBoardPanelWrapper() {
 		boardPanelWrapper = new JPanel();
 		boardPanelWrapper.setLayout(new BoxLayout(boardPanelWrapper, BoxLayout.Y_AXIS));
@@ -223,15 +233,45 @@ public class View implements IView {
 		renderer = currendRenderer;
 		boardPanel = new BoardPanel(gameBoard, currendRenderer, BASE_COLOR);
 		boardPanel.setOpaque(false);
+		
+		initializeBoardPanelListener();
 	}
+	
+    private void initializeBoardPanelListener() {
+    	if(boardPanel != null) {
+    		this.boardPanel.setBoardPanelListener(new BoardPanelListener() {
+    			@Override
+    			public void onFieldClick(int row, int col) {
+    				if (presenter != null) {
+    					presenter.onSquareClicked(row,col);
+    				}
+    			}
+    			@Override
+    			public void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY) {
+    				if (presenter != null) {
+    					TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [1/2]:", true, "view.passingOnUpdateHoverPosToSidePanel()");
+    					passingOnUpdateHoverPosToSidePanel(screenX, screenY);
+    					
+    					TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [2/2]:", true, "delegateOnFieldHoverToPresenter()");
+    					delegateOnFieldHoverToPresenter(row, col);
+    					// presenter.onFieldHover(row, col);
+    				}
+    			}
+    		});
+    	}
+    }
     
 	
 	// - - - SIDE PANEL - - -
 	
 	private void createSidePanel() {
-		sidePanel = new SidePanel();
+		this.sidePanel = new SidePanel();
 		
-		sidePanel.setSidePanelListener(new SidePanelListener() {
+		initializeSidePanelListener();
+	}
+	
+    private void initializeSidePanelListener() {
+    	this.sidePanel.setSidePanelListener(new SidePanelListener() {
 			@Override
 			public void clickOnSkipButton() {
 				presenter.handleDebugSkipButton();
@@ -265,16 +305,8 @@ public class View implements IView {
 				presenter.handleDebugShowAnarchistDeathZoneButton();
 			}
 		});
-	}
+    }
 	
-	void deligateStreamMouseXAxis(int row) {
-		
-	}
-	
-	void deligateStreamMouseYAxis(int col) {
-		
-	}
-    
 	
     // - - - ASSEMBLE - - -
     
@@ -286,66 +318,6 @@ public class View implements IView {
     	mainFrame.setLocationRelativeTo(null);
     }
     
-    
-    // - - - LISTENER - - -
-    
-    
-    private void initializeListener() {
-    	if(boardPanel != null) {
-    		boardPanel.setBoardPanelListener(new BoardPanelListener() {
-    			@Override
-    			public void onFieldClick(int row, int col) {
-    				if (presenter != null) {
-    					presenter.onSquareClicked(row,col);
-    				}
-    			}
-    			@Override
-    			public void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY) {
-    				if (presenter != null) {
-    					TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [1/2]:", true, "view.passingOnUpdateHoverPosToSidePanel()");
-    					passingOnUpdateHoverPosToSidePanel(screenX, screenY);
-    					
-    					TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [2/2]:", true, "delegateOnFieldHoverToPresenter()");
-    					delegateOnFieldHoverToPresenter(row, col);
-    					// presenter.onFieldHover(row, col);
-    				}
-    			}
-    		});
-    	}
-    }
-    
-    /*
-    private void initializeListener() {
-    	this.presenter = presenter;
-		if (presenter != null) {
-			boardPanel.setBoardPanelListener((row,col) ->{
-				presenter.onSquareClicked(row, col);
-			});
-		}
-    }
-    */
-    
-    // - - - VERBINDUNG ZUM PRESENTER - - -
-    
-    @Override
-    public void initializePresenter(Presenter presenter) {
-        this.presenter = presenter;
-        
-        /*
-        if (boardPanel != null) {
-        	boardPanel.setBoardPanelListener((row, col)->{ // Listener wird in die BoardPanel-Instanz 
-        		if (presenter != null) {
-        			presenter.onSquareClicked(row,col);
-        		}
-        	});
-        }
-        */
-        
-        
-    }
-    
-
-
     
     // - - - @OVERRIDE - - -
     
@@ -365,7 +337,7 @@ public class View implements IView {
 		System.out.println("View: [initializeNewGame]");
 		
 		// registriere neuen Listener
-		initializeListener();
+		initializeBoardPanelListener();
 		
 		// neues boardPanel ins layout adden & gesamtes GUI refreshen - boardPanelWrapper - Edition
 		boardPanelWrapper.removeAll();
@@ -500,12 +472,6 @@ public class View implements IView {
 
 
 	@Override
-	public void setMouseHoverHighlight(int row, int col) {
-		// renderer.showMouseHoverIndicator(row,col);
-	}
-
-
-	@Override
 	public void delegateRepaint() {
 		boardPanel.repaint();
 		TraceLogger.log("view", "delegateRepaint", true, "boardPanel.repaint()");
@@ -524,14 +490,5 @@ public class View implements IView {
 		sidePanel.updateHoverPos(screenX, screenY);
 	}
 
-	/*
-	@Override
-	public void highlightOnHoverSquare(int row, int col) {
-		// gameBoard.paintReachMap(originRow, originCol, fromRow, toRow, fromCol, toCol);
-		// renderer.renderCell();
-    	boardPanel.repaint();
-		
-	}
-	*/
     
 }
