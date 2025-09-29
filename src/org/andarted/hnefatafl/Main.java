@@ -27,12 +27,13 @@ public class Main {
 		
 		view.initializePresenter(presenter);				// View zurück zu Presenter verbinden
 		model.initializePresenter(presenter);		
-		// view.setGameBoard(); // Model zurück zu Presenter verbinden
 		
 		// - - - BOOTEN - - - 
 		
 		QLog.log("main", "", "-> view.initializeView()");
 		view.initializeView();
+		view.setGameBoard(); // Model zurück zu Presenter verbinden
+		// presenter.startDefaultGame();
 		// presenter.deligateInitializeView();		// GUI und alles erstellen
 		QLog.log("main", "", "- - - MAIN IST DURCH - - -");
 	}

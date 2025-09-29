@@ -144,12 +144,14 @@ public class GameBoard {
 		// - - - SETTER - - -
 	
 	public void setBoardClear() { clearBoard(); }
+	
 	public void setSquareAt(SquareType square, int row, int col){
 		squares[row][col] = square;
 	}
+	
 	public void setPieceAt(PieceType piece, int row, int col) {
 		pieces[row][col] = piece;
-		System.out.println("GameBoard: setPieceAt (" + row + "," + col + ") ");
+		// System.out.println("GameBoard: setPieceAt (" + row + "," + col + ") ");
 	}
 	
     public void setHighlightAt(int row, int col) {
@@ -169,9 +171,6 @@ public class GameBoard {
 		}
 		
 		TraceLogger.log("gameBoard", "SetMouseHoverPos:", true, "– – –");
-	}
-	
-
-	
+	}	
 	
 }

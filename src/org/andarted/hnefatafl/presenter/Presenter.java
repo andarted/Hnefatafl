@@ -99,10 +99,9 @@ public class Presenter implements IPresenter {
     public void handleNewGameItem(int size, Variant variant) {
     	this.gameBoard = model.newGame(size, variant);
     	System.out.println("Presenter: handleNewGameItem (" + size + ", " + variant.toString() + ")");
-    	
-    	// view.setGameBoard(model.getGameBoard());    	
+    	    	
     	view.initializeNewGame(model.getGameBoard());
-    	
+    	view.setGameBoard();
     }
     
     @Override

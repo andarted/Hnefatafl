@@ -96,12 +96,16 @@ public class View implements IView {
 		createMainPanel();
 		QLog.log("view", "initializeView()", "-> view.createBoardPanel()");
 		createBoardPanel();
-		QLog.log("view", "initializeView()", "-> view.createSidePanel()");
-		createSidePanel();
 		QLog.log("view", "initializeView()", "-> view.createBoardPanelWrapper()");
 		createBoardPanelWrapper();
+		QLog.log("view", "initializeView()", "-> view.createSidePanel()");
+		createSidePanel();
 		QLog.log("view", "initializeView()", "-> view.assembleElements()");
 		assembleElements();
+		
+		//
+		QLog.log("view", "initializeView()", "-> view.setGameBoard()");
+		setGameBoard(); // Model zurück zu Presenter verbinden
 		
 		// initializeBoardPanelListener();
 		QLog.log("view", "initializeView()", "-> view.mainFrame.setVisibile()");
@@ -467,7 +471,7 @@ public class View implements IView {
 	@Override
 	public void setGameBoard() {
 		this.gameBoard = presenter.getGameBoard();
-		boardPanel.setGameBoard(gameBoard);
+		boardPanel.setGameBoard(this.gameBoard);
 	}
 	
 
