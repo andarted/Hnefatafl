@@ -4,10 +4,8 @@ import org.andarted.hnefatafl.model.SquareType;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -15,38 +13,21 @@ import javax.imageio.ImageIO;
 public class RendererIso implements IRender{
 	
 	private BufferedImage spriteSheet;
-	// private GameBoard gameBoard;
 	private final int tileWidth;
 	private final int tileHeight;
-	private final int tileWidthHalf;
 	private final int tileHeightHalf;
 	private final int screenOffsetX;
 	private final int screenOffsetY;
 	
 	private final static String DEFAULT_STRITESHEET_PATH = "/sprites/spriteSheetIso00_64.png";
-	
-	/*
-	private final int[] mouseListenerX = new int[] {
-			7, 7, 6, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0,
-			0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7
-	};
-	private final int[] mouseListenerY = new int[] {
-			0, 1, 2, 3, 4, 5, 6, 7, 7, 6, 5, 4, 3, 2, 1, 0
-	};
-	*/
-	
-	// private Map <SquareType, Point> tileCoordOnSpriteSheet;
+
 	
 	public RendererIso(String sheetResourcePath, int tileWidth, int tileHeight) throws IOException {
 		System.out.println("Pfad: " + getClass().getResource("/sprites/spriteSheetIso00_64.png"));
-		// this.gameBoard = gameBoard;
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
-		this.tileWidthHalf = tileWidth / 2;
 		this.tileHeightHalf = tileHeight / 2;
-		
-		// int boardSize = gameBoard.getBoardSize(); // <- NullPointerException 
-		
+				
 		// Falls das Board noch nachgerichtet werden muss
 		this.screenOffsetX = 8 * tileWidth; 
 		this.screenOffsetY = tileHeight / 2;
@@ -92,9 +73,9 @@ public class RendererIso implements IRender{
 		// highlight
 		if (highlight) {
 			SquareAppearance mouseHover = SquareTypeAppearanceMapper.getAppearance(SquareType.MOUSE_HOVER);
-			int syH = mouseHover.spritePos.x * tileWidth;
-			int sxH = mouseHover.spritePos.x * tileWidth;
-			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sxH, syH, sxH + tileWidth, syH + tileHeight, null);
+			int sPosYH = mouseHover.spritePos.x * tileWidth;
+			int sPosXH = mouseHover.spritePos.y * tileWidth;
+			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sPosXH, sPosYH, sPosXH + tileWidth, sPosYH + tileHeight, null);
 			
 			/*
 			g.setColor(new Color(255, 255, 0, 80));
@@ -109,46 +90,12 @@ public class RendererIso implements IRender{
 			// hier die vertikalverschiebung der pieces
 			int pieceOffsetY = y - tileHeightHalf - 2;
 			
-			// int piece
-			g.drawImage(spriteSheet, x, pieceOffsetY, x + tileWidth, pieceOffsetY + tileHeight, px, py, px + tileWidth, py + tileHeight, null);
-			
+			g.drawImage(spriteSheet, x, pieceOffsetY, x + tileWidth, pieceOffsetY + tileHeight, px, py, px + tileWidth, py + tileHeight, null);			
 			// System.out.println(row+","+col+" -- SQUARE|PIECE: "+square+" ("+sx+"/"+sy+") | "+piece+" ("+px+"/"+py+")");
 		}
-		
 
-		
 	}
 	
-	// super fast and super precise MouseListener
-	
-	
-	
-	/*
-	// magic Mauskoordinatentrasformation
-	Point screenToGrid(int screenX, int screenY) {
-		
-		// Falls das Board noch nachgerichtet werden muss
-		// int offsetX = 0;
-		// int offsetY = 0;
-		
-		int relX = screenX - screenOffsetX;
-		int relY = screenY - screenOffsetY;
-		
-		// Isometrische Transformation Umkehren
-		double col = (relX / (double)tileWidthHalf + relY / (double)tileHeight) / 2.0;
-		double row = (relY / (double)tileHeight - relX / (double)tileWidthHalf) / 2.0;
-		
-		return new Point((int)Math.floor(col), (int)Math.floor(row));
-	}
-	*/
-
-	
-
-	@Override
-	public void setBoardBorder() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public Point screenToGrid(int screenX, int screenY, int tileSize) {
@@ -193,29 +140,22 @@ public class RendererIso implements IRender{
 		
 	}
 
+	
+	/*
 	@Override
-	public void showMouseHoverIndicator(int row, int col) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {}
+    
+    @Override
+    public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {}
+	
+	@Override
+	public void setBoardBorder() {}
+	
+	@Override
+	public void showMouseHoverIndicator(int row, int col) {}
 
 	@Override
-	public void clearMouseHoverIndicator() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void clearMouseHoverIndicator() {}
+	*/
 
 }

@@ -1,8 +1,6 @@
 package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.common.TraceLogger;
-// import org.andarted.hnefatafl.model.SquareType;
-// import org.andarted.hnefatafl.model.PieceType;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -40,18 +38,7 @@ class RendererSwing implements IRender {
             g.drawString(initial, x + cellSize/2 - 4, y + cellSize/2 + 5);
         }
     }
-    
-    
 
-
-    @Override
-    public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {}
-    @Override
-    public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {}
-    @Override
-    public void setBoardBorder() {}
-    // @Override
-    // public void showHighlights() {}
 
 	@Override
 	public Point screenToGrid(int screenX, int screenY, int cellSize) {
@@ -61,16 +48,27 @@ class RendererSwing implements IRender {
 
 		return new Point (col, row);
 	}
-
-
+	
+	
+	
+    // @Override
+    // public void showHighlights() {}
+	
+	/*
 	@Override
-	public void showMouseHoverIndicator(int row, int col) {
-		
-		
-	}
+    public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {}
+    
+    @Override
+    public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {}
 	
 	@Override
-	public void clearMouseHoverIndicator() {
-		
-	}
+	public void setBoardBorder() {}
+	
+	@Override
+	public void showMouseHoverIndicator(int row, int col) {}
+
+	@Override
+	public void clearMouseHoverIndicator() {}
+	*/
+
 }

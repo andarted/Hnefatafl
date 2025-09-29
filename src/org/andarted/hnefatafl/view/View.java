@@ -61,6 +61,7 @@ public class View implements IView {
     private IRender renderer;
     
     private IRender currendRenderer;
+    private IListen iListen;
     
     // private IRender rendererSprites101;
     
@@ -249,29 +250,7 @@ public class View implements IView {
 		initializeBoardPanelListener();
 	}
 	
-    private void initializeBoardPanelListener() {
-    	if(boardPanel != null) {
-    		this.boardPanel.setBoardPanelListener(new BoardPanelListener() {
-    			@Override
-    			public void onFieldClick(int row, int col) {
-    				if (presenter != null) {
-    					presenter.onSquareClicked(row,col);
-    				}
-    			}
-    			@Override
-    			public void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY) {
-    				if (presenter != null) {
-    					TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [1/2]:", true, "view.passingOnUpdateHoverPosToSidePanel()");
-    					passingOnUpdateHoverPosToSidePanel(screenX, screenY);
-    					
-    					TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [2/2]:", true, "delegateOnFieldHoverToPresenter()");
-    					delegateOnFieldHoverToPresenter(row, col);
-    					// presenter.onFieldHover(row, col);
-    				}
-    			}
-    		});
-    	}
-    }
+
     
 	
 	// - - - SIDE PANEL - - -
@@ -281,6 +260,76 @@ public class View implements IView {
 		
 		initializeSidePanelListener();
 	}
+	
+    
+    // - - - LISTENER - - -
+	
+	private void initialViewListener() {
+		this.iListen.setIListen(new IListen() {
+
+			@Override
+			public void onFieldClick(int row, int col) {}
+
+			@Override
+			public void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY) {}
+
+			@Override
+			public void clickOnSkipButton() {}
+
+			@Override
+			public void clickOnFreeMovementButton() {}
+
+			@Override
+			public void clickOnGetAnarchistButton() {}
+
+			@Override
+			public void clickOnGetRoyalistButton() {}
+
+			@Override
+			public void clickOnGetKingButton() {}
+
+			@Override
+			public void clickOnGetRemoveButton() {}
+
+			@Override
+			public void clickOnShowRoyalistDeathZoneButton() {}
+
+			@Override
+			public void clickOnShowAnarchistDeathZoneButton() {}
+
+			@Override
+			public void setIListen(IListen iListen) {}
+			
+			@Override
+			public void setBoardPanelListener(BoardPanelListener boardPanelListener) {}
+			
+			@Override
+			public void setSidePanelListener(SidePanelListener sidePanelListener) {}
+			
+		});
+	}
+	
+    private void initializeBoardPanelListener() {
+    	this.boardPanel.setBoardPanelListener(new BoardPanelListener() {
+    		@Override
+    		public void onFieldClick(int row, int col) {
+    			if (presenter != null) {
+    				presenter.onSquareClicked(row,col);
+    			}
+    		}
+    		@Override
+    		public void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY) {
+    			if (presenter != null) {
+    				TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [1/2]:", true, "view.passingOnUpdateHoverPosToSidePanel()");
+    				passingOnUpdateHoverPosToSidePanel(screenX, screenY);
+    				
+    				TraceLogger.log("boardPanelListener [@view]", "delegateOnFieldHover [2/2]:", true, "delegateOnFieldHoverToPresenter()");
+    				delegateOnFieldHoverToPresenter(row, col);
+    			}
+    		}
+    	});
+    	
+    }
 	
     private void initializeSidePanelListener() {
     	this.sidePanel.setSidePanelListener(new SidePanelListener() {
@@ -318,7 +367,6 @@ public class View implements IView {
 			}
 		});
     }
-	
 	
     // - - - ASSEMBLE - - -
     
@@ -371,38 +419,6 @@ public class View implements IView {
 	}
 	
 	
-
-    
-    
-    /*
-	@Override
-	public void setAnarchist(int row, int col) {
-    	gameBoard.setPieceAt(PieceType.ANARCHIST, row, col);
-    	System.out.println("DEBUG Model: "+gameBoard.getPieceAt(row, col)); // => Muss ANARCHIST zeigen
-    	boardPanel.repaint();
-	}
-
-	@Override
-	public void setRoyalist(int row, int col) {
-    	gameBoard.setPieceAt(PieceType.ROYALIST, row, col);
-    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
-    	boardPanel.repaint();
-	}
-
-	@Override
-	public void setKing(int row, int col) {
-    	gameBoard.setPieceAt(PieceType.KING, row, col);
-    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
-    	boardPanel.repaint();
-	}
-
-	@Override
-	public void removePiece(int row, int col) {
-    	gameBoard.setPieceAt(PieceType.NOBODY, row, col);
-    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
-    	boardPanel.repaint();
-	}
-	*/
 	@Override
 	public void setActivePlayerDisplay(String newActivePlayer) {
 		if (activePlayerLabel != null) {
@@ -431,36 +447,11 @@ public class View implements IView {
     	boardPanel.repaint();
     }
     
-	/*
-    @Override
-    public void delegateClearHighlight() {
-    	gameBoard.ClearHighlight();
-    	boardPanel.repaint();
-    }
-    
-    @Override
-    public void delegateSetHighlightAt(int row, int col) {
-    	gameBoard.setHighlightAt(row, col);
-    }
-    
-    @Override
-    public void delegateClearHighlightAt(int row, int col) {
-    	gameBoard.clearHighlightAt(row, col);
-    }
-    */
     
     public void delegateSetRenderer(IRender newRenderer) {
     	boardPanel.setRenderer(newRenderer);
     }
-    /*
-	private void set
-    boardPanel.setBoardPanelListener(new BoardPanelListener(){
-		@Override
-		public void onMouseHover(int row, int col, int screenX, int screenY) {
-			
-		}
-	});
-	*/
+
     
 	// - - - GETTER - - -
 	public Color getBaseColor() {return BASE_COLOR;}
@@ -475,7 +466,6 @@ public class View implements IView {
 	}
 	
 
-
 	@Override
 	public void onFieldHover(int row, int col, int screenX, int screenY) {
 		if (presenter != null) {
@@ -483,15 +473,6 @@ public class View implements IView {
 		}
 		
 	}
-
-	@Override
-	public void setMouseHoverPos(int row, int col) {
-		this.mouseHoverPosX = row;
-		this.mouseHoverPosY = col;
-		renderer.clearMouseHoverIndicator();
-		renderer.showMouseHoverIndicator(row, col);
-	}
-
 
 	@Override
 	public void delegateRepaint() {
@@ -521,6 +502,52 @@ public class View implements IView {
 	public PieceType getPieceAr(int row, int col) {
 		return presenter.getPieceAr(row, col);
 	}
+	
+	
+    /*
+    @Override
+    public void delegateClearHighlight() {
+    	gameBoard.ClearHighlight();
+    	boardPanel.repaint();
+    }
+    
+    @Override
+    public void delegateSetHighlightAt(int row, int col) {
+    	gameBoard.setHighlightAt(row, col);
+    }
+    
+    @Override
+    public void delegateClearHighlightAt(int row, int col) {
+    	gameBoard.clearHighlightAt(row, col);
+    }
+	@Override
+	public void setAnarchist(int row, int col) {
+    	gameBoard.setPieceAt(PieceType.ANARCHIST, row, col);
+    	System.out.println("DEBUG Model: "+gameBoard.getPieceAt(row, col)); // => Muss ANARCHIST zeigen
+    	boardPanel.repaint();
+	}
+
+	@Override
+	public void setRoyalist(int row, int col) {
+    	gameBoard.setPieceAt(PieceType.ROYALIST, row, col);
+    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
+    	boardPanel.repaint();
+	}
+
+	@Override
+	public void setKing(int row, int col) {
+    	gameBoard.setPieceAt(PieceType.KING, row, col);
+    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
+    	boardPanel.repaint();
+	}
+
+	@Override
+	public void removePiece(int row, int col) {
+    	gameBoard.setPieceAt(PieceType.NOBODY, row, col);
+    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
+    	boardPanel.repaint();
+	}
+	*/
 
 
 

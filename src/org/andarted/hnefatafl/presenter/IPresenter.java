@@ -29,6 +29,8 @@ public interface IPresenter {
     SquareType getSquareAt(int row, int col);
     PieceType getPieceAr(int row, int col);
     
+    void startDefaultGame();
+    
     
     
     // void deligateInitializeView();

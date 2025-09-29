@@ -32,6 +32,7 @@ public class Main {
 		
 		QLog.log("main", "", "-> view.initializeView()");
 		view.initializeView();
+		QLog.log("main", "", "-> view.setGameBoard()");
 		view.setGameBoard(); // Model zurück zu Presenter verbinden
 		// presenter.startDefaultGame();
 		// presenter.deligateInitializeView();		// GUI und alles erstellen

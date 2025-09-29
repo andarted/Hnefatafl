@@ -1,11 +1,15 @@
 package org.andarted.hnefatafl.view;
 
+import org.andarted.hnefatafl.view.BoardPanel;
+
 class Listen implements IListen{
 
+	//BoardPanel
+	
 	@Override
 	public void onFieldClick(int row, int col) {
-		// TODO Auto-generated method stub
-		
+		// boardPanel.onFieldClicked()
+	
 	}
 
 	@Override
@@ -58,6 +62,24 @@ class Listen implements IListen{
 
 	@Override
 	public void clickOnShowAnarchistDeathZoneButton() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setIListen(IListen iListen) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setBoardPanelListener(BoardPanelListener boardPanelListener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSidePanelListener(SidePanelListener sidePanelListener) {
 		// TODO Auto-generated method stub
 		
 	}

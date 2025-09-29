@@ -1,6 +1,11 @@
 package org.andarted.hnefatafl.view;
 
 interface IListen {
+	// Generel
+	void setIListen(IListen iListen);
+	void setBoardPanelListener(BoardPanelListener boardPanelListener);
+	void setSidePanelListener(SidePanelListener sidePanelListener);
+	
 	//BoardPanel
 	void onFieldClick(int row, int col);
 	void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY);
@@ -14,4 +19,5 @@ interface IListen {
 	void clickOnGetRemoveButton();
 	void clickOnShowRoyalistDeathZoneButton();
 	void clickOnShowAnarchistDeathZoneButton();
+	
 }

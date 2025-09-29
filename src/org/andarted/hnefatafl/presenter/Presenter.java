@@ -43,9 +43,14 @@ public class Presenter implements IPresenter {
     
     // - - - METHODEN - - -
     
-	private void startDefaultGame() {
+    @Override
+	public void startDefaultGame() {
 		QLog.log("presenter", "startDefaultGame()", "-> model.newDefaultGame()");
 		this.gameBoard = model.newDefaultGame();
+		/*
+		view.initializeView();
+		view.setGameBoard();
+		*/
 	}
     
 	

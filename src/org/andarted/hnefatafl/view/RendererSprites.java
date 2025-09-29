@@ -1,14 +1,9 @@
 package org.andarted.hnefatafl.view;
 
-// import org.andarted.hnefatafl.common.SquareType;
-// import org.andarted.hnefatafl.common.PieceType;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -19,10 +14,8 @@ class RendererSprites implements IRender{
 	private BufferedImage spriteSheet;
 	private final int tileWidth;
 	private final int tileHeight;
-	
 	private final static String DEFAULT_STRITESHEET_PATH = "/sprites/spriteSheet00.png"; 
 	
-	// private Map <SquareType, Point> tileCoordOnSpriteSheet;
 	
 	public RendererSprites(String sheetResourcePath, int tileWidth, int tileHeight) throws IOException {
 		System.out.println("Pfad: " + getClass().getResource("/sprites/spriteSheet00.png"));
@@ -57,7 +50,7 @@ class RendererSprites implements IRender{
 		if (highlight) {
 			SquareAppearance mouseHover = SquareTypeAppearanceMapper.getAppearance(SquareType.MOUSE_HOVER);
 			int syH = mouseHover.spritePos.x * tileWidth;
-			int sxH = mouseHover.spritePos.x * tileWidth;
+			int sxH = mouseHover.spritePos.y * tileWidth;
 			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sxH, syH, sxH + tileWidth, syH + tileHeight, null);
 			/*
 			g.setColor(new Color(255, 255, 0, 80));
@@ -67,7 +60,6 @@ class RendererSprites implements IRender{
 		
 		// draw Piece
 		if (piece != null) {
-			// SquareAppearance mouseHover = SquareTypeAppearanceMapper.getAppearance(SquareType.MOUSE_HOVER);
 			int py = piece.spritePos().x * tileWidth;
 			int px = piece.spritePos().y * tileHeight;
 			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, px, py, px + tileWidth, py + tileHeight, null);
@@ -76,11 +68,6 @@ class RendererSprites implements IRender{
 	}
 
 
-	@Override
-	public void setBoardBorder() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public Point screenToGrid(int screenX, int screenY, int cellSize) {
@@ -89,28 +76,22 @@ class RendererSprites implements IRender{
 		return new Point (col, row);
 	}
 
+	
+	/*
 	@Override
-	public void showMouseHoverIndicator(int row, int col) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {}
+    
+    @Override
+    public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {}
+	
+	@Override
+	public void setBoardBorder() {}
+	
+	@Override
+	public void showMouseHoverIndicator(int row, int col) {}
 
 	@Override
-	public void clearMouseHoverIndicator() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void clearMouseHoverIndicator() {}
+	*/
 
 }
