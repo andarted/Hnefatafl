@@ -7,14 +7,15 @@ import org.andarted.hnefatafl.common.Variant;
 
 public interface IModel {
 
-	GameBoard newGameBoard(int size, Variant variant);
-	GameBoard newGame(int size, Variant variant);
 	GameBoard newDefaultGame();
+	GameBoard newGame(int size, Variant variant);
 
-	int getBoardSize();
 	GameBoard getGameBoard();
 	SquareType getSquareAt(int row, int col);
 	PieceType getPieceAt(int row, int col);
+
+	int getBoardSize();
+	String getActiveParty();
 	
 	void setFreshLineUp(int size, Variant variant);
 	void setPiece(PieceType pieceType, int row, int col);
@@ -23,4 +24,5 @@ public interface IModel {
 	
 	// void initializePresenter(Presenter presenter);
 	
+	void debugPanelToggleActiveParty();
 }

@@ -10,7 +10,7 @@ public interface IView {
 	void initializeView();
 	void updateDebugDisplay(String string);
 	void initializeNewGame(GameBoard gameBoard);
-	void setActivePlayerDisplay(String activeSide);
+	void setActivePartyDisplay(String activeSide);
 
 	void congratWin(String string);
 

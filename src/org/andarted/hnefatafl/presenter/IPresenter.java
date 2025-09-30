@@ -11,7 +11,7 @@ public interface IPresenter {
     void handleNewGameItem(int size, Variant variant);
     void handleExitItem();    
     
-    void handleDebugSkipButton();
+    void handleToggleActivePartyButton();
     void handleDebugFreeMovementButton();
     
     void handleDebugGetRoyalist();
@@ -28,6 +28,7 @@ public interface IPresenter {
     GameBoard getGameBoard();
     SquareType getSquareAt(int row, int col);
     PieceType getPieceAr(int row, int col);
+    String getActiveParty();
     
     void startDefaultGame();
     

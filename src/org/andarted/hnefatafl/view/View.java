@@ -91,18 +91,26 @@ public class View implements IView {
 	public void initializeView() {
 		QLog.log("view", "initializeView()", "-> view.createMainFrame()");
 		createMainFrame();
+		
 		QLog.log("view", "initializeView()", "-> view.createMenuBar()");
 		createMenuBar();
+		
 		QLog.log("view", "initializeView()", "-> view.createMainPanel()");
 		createMainPanel();
+		
 		QLog.log("view", "initializeView()", "-> view.createBoardPanel()");
 		createBoardPanel();
+		
 		QLog.log("view", "initializeView()", "-> view.createBoardPanelWrapper()");
 		createBoardPanelWrapper();
+		
 		QLog.log("view", "initializeView()", "-> view.createSidePanel()");
 		createSidePanel();
+		
 		QLog.log("view", "initializeView()", "-> view.assembleElements()");
 		assembleElements();
+		
+		setActivePartyDisplay(presenter.getActiveParty());
 		
 		//
 		QLog.log("view", "initializeView()", "-> view.setGameBoard()");
@@ -257,13 +265,13 @@ public class View implements IView {
 	
 	private void createSidePanel() {
 		this.sidePanel = new SidePanel();
-		
 		initializeSidePanelListener();
 	}
 	
     
     // - - - LISTENER - - -
 	
+	/*
 	private void initialViewListener() {
 		this.iListen.setIListen(new IListen() {
 
@@ -274,7 +282,12 @@ public class View implements IView {
 			public void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY) {}
 
 			@Override
-			public void clickOnSkipButton() {}
+			public void clickOnToggleActivePartyButton() {
+				
+				// QLog.log("Listen", "clickOnToggleActivePartyButton()", "[initializiert von view.initialViewListener]");
+				// presenter.handleToggleActivePartyButton();
+				
+			}
 
 			@Override
 			public void clickOnFreeMovementButton() {}
@@ -308,6 +321,7 @@ public class View implements IView {
 			
 		});
 	}
+	*/
 	
     private void initializeBoardPanelListener() {
     	this.boardPanel.setBoardPanelListener(new BoardPanelListener() {
@@ -335,7 +349,9 @@ public class View implements IView {
     	this.sidePanel.setSidePanelListener(new SidePanelListener() {
 			@Override
 			public void clickOnSkipButton() {
-				presenter.handleDebugSkipButton();
+				QLog.log("sidePanelListener", "clickOnToggleActivePartyButton()", "[initializiert von view.initializeSidePanelListener()]");
+				// presenter.handleToggleActivePartyButton();
+				presenter.handleToggleActivePartyButton();
 			}
 			@Override
 			public void clickOnFreeMovementButton() {
@@ -420,18 +436,15 @@ public class View implements IView {
 	
 	
 	@Override
-	public void setActivePlayerDisplay(String newActivePlayer) {
-		if (activePlayerLabel != null) {
-			activePlayerLabel.setText(newActivePlayer);
-			activePlayerLabel.revalidate();
-			activePlayerLabel.repaint();
-		}
+	public void setActivePartyDisplay(String newActivePlayer) {
+		QLog.log("view", "setActivePartyDisplay", "-> sidePanel.setActivePartyDisplay(String)");
+		sidePanel.setActivePartyDisplay(newActivePlayer);
 	}
 	
 	@Override
 	public void updateDebugDisplay(String newActivePlayer) {
 		if (sidePanel != null) {
-			sidePanel.setActivePlayerDisplay(newActivePlayer);
+			sidePanel.setActivePartyDisplay(newActivePlayer);
 		}
 	}
 	

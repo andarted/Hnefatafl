@@ -19,7 +19,7 @@ class Listen implements IListen{
 	}
 
 	@Override
-	public void clickOnSkipButton() {
+	public void clickOnToggleActivePartyButton() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -17,14 +17,6 @@ public class Presenter implements IPresenter {
     private final IView view;
     private final IModel model;
     private GameBoard gameBoard;
-    // private String[][] board = new String[11][11];
-    
-    private final char charForAnarchist = 'A';
-    private final char charForRoyalist = 'R';
-    private final char charForKing = 'K';
-    private final char charForEmptySpace = '.';
-    private char currentPieceChar = charForEmptySpace;
-    private char activePlayer = currentPieceChar;
     
     private PieceType currentPiece = PieceType.NOBODY;
     
@@ -53,50 +45,11 @@ public class Presenter implements IPresenter {
 		*/
 	}
     
-	
-	/*
-    private void deligateSetPiece(PieceType pieceType, int row, int col) {
-    	switch (pieceType) {
-    	case NOBODY: model.setPiece(pieceType, row, col);
-    	}
-    }
-    */
     
-    // - - - DEBUG BUTTONS - - -
-    
-    void updateDisplayToAnarchists() {
-		activePlayer = charForAnarchist;
-		view.updateDebugDisplay("Anarchists");
-		System.out.println("Presenter: Anarchists turn");
-	}
-	
-	void updateDisplayToRoyalists() {
-		activePlayer = charForRoyalist;
-		System.out.println("Presenter: Royalists turn");
-		view.updateDebugDisplay("Royalists");
-	}
-
-
     @Override
     public void onSquareClicked(int row, int col) {
 
         System.out.println("Presenter: Kilck auf Feld (" + row + "," + col + ").");
-        /*
-        switch (currentPiece) {
-        case 'A':
-        	view.setAnarchist(row, col);
-        	break;
-        case 'R':
-        	view.setRoyalist(row, col);
-        	break;
-        case 'K':
-        	view.setKing(row, col);
-        	break;
-        case '.':
-        	view.removePiece(row, col);
-        	break;
-        	}
-        */
     }
     
     
@@ -114,13 +67,22 @@ public class Presenter implements IPresenter {
     	System.exit(0);
     }
     
+    
+    // - - - DEBUG BUTTONS - - -
+    
+	@Override
+	public void handleToggleActivePartyButton() {
+		QLog.log("presenter", "handleToggleActivePartyButton()", "-> model.toggleActiveParty()");
+		model.debugPanelToggleActiveParty();
+		QLog.log("presenter", "handleToggleActivePartyButton()", "-> view.setActivePartyDisplay");
+		view.setActivePartyDisplay(model.getActiveParty());
+	}
+    
     @Override
     public void handleDebugGetRoyalist() {
     	currentPiece = PieceType.ROYALIST;
 		System.out.println("Presenter: debug set royalist pieces is now active");
 		view.updateDebugDisplay("Mode: Drop Royalists");
-		
-    	currentPieceChar = 'R';
     }
     
     @Override
@@ -128,8 +90,6 @@ public class Presenter implements IPresenter {
     	currentPiece = PieceType.ANARCHIST;
 		System.out.println("Presenter: debug set anarchist pieces is now active");
 		view.updateDebugDisplay("Mode: Drop Anarchists");
-		
-    	currentPieceChar = 'A';
     }
     
     @Override
@@ -137,8 +97,6 @@ public class Presenter implements IPresenter {
     	currentPiece = PieceType.KING;
 		System.out.println("Presenter: debug set king pieces is now active");
 		view.updateDebugDisplay("Mode: Drop Kings");
-		
-    	currentPieceChar = 'K';
     }
     
     @Override
@@ -146,26 +104,9 @@ public class Presenter implements IPresenter {
     	currentPiece = PieceType.NOBODY;
 		System.out.println("Presenter: debug remove pieces is now active");
 		view.updateDebugDisplay("Mode: Remove Pieces");
-		
-    	currentPieceChar ='.';
     }
 
-	@Override
-	public void handleDebugSkipButton() {
-		switch (activePlayer) {
-		case 'A':
-			updateDisplayToRoyalists();
-			break;
-		case 'R':
-			updateDisplayToAnarchists();
-			break;
-		case 'K':
-			updateDisplayToAnarchists();
-			break;
-		default:
-			updateDisplayToRoyalists();		
-		}
-	}
+
 
 	@Override
 	public void handleDebugFreeMovementButton() {
@@ -221,6 +162,11 @@ public class Presenter implements IPresenter {
 	@Override
 	public GameBoard getGameBoard() {
 		return model.getGameBoard();
+	}
+	
+	@Override
+	public String getActiveParty() {
+		return model.getActiveParty();
 	}
 	
 	

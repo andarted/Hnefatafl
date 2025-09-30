@@ -11,7 +11,7 @@ interface IListen {
 	void delegateOnFieldHoverToView(int row, int col, int screenX, int screenY);
 	
 	// SidePanel
-	void clickOnSkipButton();
+	void clickOnToggleActivePartyButton();
 	void clickOnFreeMovementButton();
 	void clickOnGetAnarchistButton();
 	void clickOnGetRoyalistButton();

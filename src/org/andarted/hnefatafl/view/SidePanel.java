@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
+import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.common.TraceLogger;
 
 class SidePanel extends JPanel { // Listener Interface wird in der Methode setSideListener() "implementiert"
@@ -51,7 +52,8 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		addMouseModul();
     }
     
-    public void setActivePlayerDisplay(String newActivePlayer) {
+    public void setActivePartyDisplay(String newActivePlayer) {
+    	QLog.log("sidePanel", "setActiveDisplay()", "Setzte Display auf " + newActivePlayer);
     	if(activePlayerLabel != null) {
     		activePlayerLabel.setText(newActivePlayer);
     		activePlayerLabel.revalidate();
@@ -108,11 +110,10 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		skipToButton.setFocusPainted(false);
 		skipToButton.addActionListener(e -> {
 	    	if (listener != null) listener.clickOnSkipButton();
-	    	System.out.println("SidePanel: aktuelle Partei setzt aus");
+	    	// System.out.println("SidePanel: aktuelle Partei setzt aus");
+	    	QLog.log("sidePanelLis[…]", "clickOnSkipButton()", "[über sidePanel.addSkipTpPlayerButton() gesetzt.");
 	    	// presenter.handleDebugSkipButton(); <- habe extra einen Listener eingerichtet, damit das hier über die View läuft, Junge. 
 		});
-		
-		
 		debugPanel.add(skipToButton);
 		// sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
 	}

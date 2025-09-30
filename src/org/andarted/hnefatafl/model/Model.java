@@ -21,8 +21,8 @@ public class Model implements IModel {
 	
 	private char[][] lineUpCharMatrix;
 	
-	private Point aktivePiece = new Point(-1,-1);
-	private Participant aktiveParty = Participant.ROYALISTS;
+	private Point activeSquare = new Point(-1,-1);
+	private Participant activeParty = Participant.ROYALISTS;
 	
 
 	
@@ -57,6 +57,37 @@ public class Model implements IModel {
      *  
      */
     
+    private void takeTurn() {
+    	// ????????????????????????
+    }
+    
+
+    private Point grabPiece(int row, int col) {
+    	PieceType piece = currentState[row][col];
+    	
+    	if (piece.party == this.activeParty) {
+    		QLog.log("model", "grabPiece()", "grabPiece at " + row + " " + col + ".");
+    		this.activeSquare = new Point (row, col);
+    		return this.activeSquare;
+    	}
+    	else {
+    		QLog.log("model", "grabPiece()", "X X X - Piece at " + row + " " + col + " is not from active Party. Return instead -1 -1. - X X X");
+    		return new Point(-1,-1); 
+    	}
+    	
+    }
+    
+    private void toggleActiveParty() {
+    	if (activeParty == Participant.ROYALISTS) {
+    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ANARCHISTS");
+    		activeParty = Participant.ANARCHISTS;
+    	}
+    	else {
+    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ANARCHISTS");
+    		activeParty = Participant.ROYALISTS;
+    	}
+    }
+    
     // - - - OVERRIDES - - - 
     
     @Override
@@ -76,13 +107,7 @@ public class Model implements IModel {
     	return gameBoard;
     }
     
-    @Override
-    public GameBoard newGameBoard(int size, Variant variant) {
-    	this.gameBoard = new GameBoard(size, variant);
-    	recallSpecificLineUp(size, variant);
-    	return gameBoard;
-    }
-    
+
     /*
     private void generateLineUp(LineUp lineUp, Variant variant) {
     	this.currentState = LineUpFactory.createLineUp(lineUp, variant);
@@ -223,6 +248,13 @@ public class Model implements IModel {
     public PieceType getPieceAt(int row, int col) {
     	return gameBoard.getPieceAt(row,  col);
     }
+    
+    @Override
+    public String getActiveParty() {
+    	return activeParty.toString();
+    }
+    
+
 
     
     // - - - SETTER - - -
@@ -245,6 +277,12 @@ public class Model implements IModel {
 
 
 
+	// - - - DEBUG - - -
+	
+    @Override
+    public void debugPanelToggleActiveParty() {
+    	toggleActiveParty();
+    }
 
 	
 }
