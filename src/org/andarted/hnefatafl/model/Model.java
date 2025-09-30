@@ -1,7 +1,9 @@
 package org.andarted.hnefatafl.model;
 
+// import java.awt.List;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 // import org.andarted.hnefatafl.common.PieceType;
 import org.andarted.hnefatafl.common.QLog;
@@ -61,19 +63,33 @@ public class Model implements IModel {
     	// ????????????????????????
     }
     
-
-    private Point grabPiece(int row, int col) {
-    	PieceType piece = currentState[row][col];
+    @Override
+    public void grabPiece(int row, int col) {
+    	PieceType piece = gameBoard.pieces[row][col];
+    	Participant party = piece.party;
     	
-    	if (piece.party == this.activeParty) {
+    	if (party == this.activeParty) {
     		QLog.log("model", "grabPiece()", "grabPiece at " + row + " " + col + ".");
     		this.activeSquare = new Point (row, col);
-    		return this.activeSquare;
+    		
+    		getReach(row, col); // >>> Issue #6
+    		
+    		movePiece(-1, -1, -1, -1); // >>> Issue #7
+    		
     	}
     	else {
-    		QLog.log("model", "grabPiece()", "X X X - Piece at " + row + " " + col + " is not from active Party. Return instead -1 -1. - X X X");
-    		return new Point(-1,-1); 
+    		QLog.log("model", "grabPiece()", "Piece at " + row + " " + col + " is not from active Party " + activeParty + " but from " + party);
     	}
+    	
+    }
+    
+    private List<Point> getReach(int row, int col) {
+    	List<Point> reach = new ArrayList<>();
+    	reach.add(new Point(1, 1));
+    	return reach;
+    }
+    
+    private void movePiece(int rowStart, int colStart, int rowEnd, int colEnd) {
     	
     }
     

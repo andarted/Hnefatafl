@@ -25,4 +25,5 @@ public interface IModel {
 	// void initializePresenter(Presenter presenter);
 	
 	void debugPanelToggleActiveParty();
+	void grabPiece(int row, int col);
 }

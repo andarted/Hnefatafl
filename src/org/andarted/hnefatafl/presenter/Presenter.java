@@ -48,8 +48,8 @@ public class Presenter implements IPresenter {
     
     @Override
     public void onSquareClicked(int row, int col) {
-
         System.out.println("Presenter: Kilck auf Feld (" + row + "," + col + ").");
+        model.grabPiece(row, col);
     }
     
     
