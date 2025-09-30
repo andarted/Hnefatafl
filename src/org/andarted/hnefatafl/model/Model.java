@@ -20,6 +20,10 @@ public class Model implements IModel {
 	private PieceType[][] lineUpPieceTypeMatrix;
 	
 	private char[][] lineUpCharMatrix;
+	
+	private Point aktivePiece = new Point(-1,-1);
+	private Participant aktiveParty = Participant.ROYALISTS;
+	
 
 	
 	// - - - CONSTRUCTOR - - -
@@ -38,6 +42,22 @@ public class Model implements IModel {
 	
 	// - - - METHODES - - - 
     
+    /*
+     * Zug
+     *  - nimm Figur
+     *  - zeige mögliche neue Positionen
+     *  - stelle Figur auf neue Position -/- breche ab
+     *  - repaint
+     *  - breechne neue Death Zone Gegner
+     *  - entferne alle Figurne aus Deathzone
+     *  - repaint
+     *  - checke Siegbedingungen
+     *  - wechsel aktive Spielerin
+     *  
+     *  
+     */
+    
+    // - - - OVERRIDES - - - 
     
     @Override
     public GameBoard newDefaultGame() {
