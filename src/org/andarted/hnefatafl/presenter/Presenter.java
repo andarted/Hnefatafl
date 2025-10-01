@@ -5,11 +5,10 @@ import org.andarted.hnefatafl.model.IModel;
 import org.andarted.hnefatafl.model.ModeType;
 import org.andarted.hnefatafl.model.PieceType;
 import org.andarted.hnefatafl.model.SquareType;
+import org.andarted.hnefatafl.model.Variant;
 import org.andarted.hnefatafl.view.IView;
 import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.common.TraceLogger;
-import org.andarted.hnefatafl.common.Variant;
-
 
 import java.awt.Color;
 
@@ -49,9 +48,10 @@ public class Presenter implements IPresenter {
     
     @Override
     public void onSquareClicked(int row, int col) {
-    	QLog.log("presenter", "onSquareClicked()", "-> model.onSquareClicked()");
-        // System.out.println("Presenter: Kilck auf Feld (" + row + "," + col + ").");
+    	QLog.log("presenter", "onSquareClicked[1/2]", "-> model.onSquareClicked()");        // System.out.println("Presenter: Kilck auf Feld (" + row + "," + col + ").");
         model.onSquareClicked(row, col);
+        QLog.log("presenter", "onSquareClicked[2/2]", "-> view.delegateRepaint()");     
+        view.delegateRepaint();
     }
     
     
@@ -85,7 +85,6 @@ public class Presenter implements IPresenter {
     	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
     	model.debugSetPiece(PieceType.ROYALIST);
     	
-    	// ???
     	
     	QLog.log("presenter", "handleDebugGetRoyalist()", "-> view.updateDebugDisplay()");
     	view.updateDebugDisplay("Mode: Drop Royalists");
@@ -93,23 +92,26 @@ public class Presenter implements IPresenter {
     
     @Override
     public void handleDebugGetAnarchist() {
-    	currentPiece = PieceType.ANARCHIST;
-		System.out.println("Presenter: debug set anarchist pieces is now active");
-		view.updateDebugDisplay("Mode: Drop Anarchists");
+    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
+    	model.debugSetPiece(PieceType.ANARCHIST);
     }
     
     @Override
     public void handleDebugGetKing() {
+    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
+    	model.debugSetPiece(PieceType.KING);
+    	/*
     	currentPiece = PieceType.KING;
-		System.out.println("Presenter: debug set king pieces is now active");
-		view.updateDebugDisplay("Mode: Drop Kings");
+		*/
     }
     
     @Override
     public void handleDebugGetRemove() {
+    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
+    	model.debugSetPiece(PieceType.NOBODY);
+    	/*
     	currentPiece = PieceType.NOBODY;
-		System.out.println("Presenter: debug remove pieces is now active");
-		view.updateDebugDisplay("Mode: Remove Pieces");
+		*/
     }
 
 

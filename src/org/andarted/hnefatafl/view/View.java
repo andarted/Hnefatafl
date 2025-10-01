@@ -2,10 +2,10 @@ package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.presenter.IPresenter;
 import org.andarted.hnefatafl.presenter.Presenter;
-import org.andarted.hnefatafl.common.Variant;
 import org.andarted.hnefatafl.model.GameBoard;
 import org.andarted.hnefatafl.model.PieceType;
 import org.andarted.hnefatafl.model.SquareType;
+import org.andarted.hnefatafl.model.Variant;
 import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.common.TraceLogger;
 
@@ -13,6 +13,7 @@ import org.andarted.hnefatafl.common.TraceLogger;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -70,7 +71,7 @@ public class View implements IView {
 	private int mouseHoverPosX = 0;
 	private int mouseHoverPosY = 0;
 	
-	
+	private String blub = "das ist ein Text";
 	// - - - Konstruktor - - -
 	
 	public View() {
@@ -121,10 +122,10 @@ public class View implements IView {
         mainFrame.setVisible(true);
 	}
 	
-	
 	// - - - MENU BAR - - -
 	
 	private void createMenuBar() {
+		
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("Datei");

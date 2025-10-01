@@ -1,9 +1,9 @@
 package org.andarted.hnefatafl.presenter;
 
-import org.andarted.hnefatafl.common.Variant;
 import org.andarted.hnefatafl.model.GameBoard;
 import org.andarted.hnefatafl.model.PieceType;
 import org.andarted.hnefatafl.model.SquareType;
+import org.andarted.hnefatafl.model.Variant;
 
 public interface IPresenter {
     void onSquareClicked(int row, int col);

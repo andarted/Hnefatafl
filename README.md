@@ -16,4 +16,4 @@ andarted they/she (<https://github.com/andarted>)
 - GUI built with Swing
 
 ## Installation / Build
-Requires Java 8 or newer.  
+Requires Java 11 or newer.  

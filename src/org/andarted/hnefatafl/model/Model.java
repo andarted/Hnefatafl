@@ -3,13 +3,14 @@ package org.andarted.hnefatafl.model;
 // import java.awt.List;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // import org.andarted.hnefatafl.common.PieceType;
 import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.common.TraceLogger;
 import org.andarted.hnefatafl.presenter.IPresenter;
-import org.andarted.hnefatafl.common.Variant;
 
 public class Model implements IModel {
 	
@@ -18,7 +19,7 @@ public class Model implements IModel {
 	private IPresenter presenter;
 	private GameBoard gameBoard;
 	private String[] LineUpAsStringArray;
-	private PieceType[][] currentState;
+	// private PieceType[][] currentState;
 	private PieceType[][] lineUpPieceTypeMatrix;
 	
 	private char[][] lineUpCharMatrix;
@@ -26,10 +27,12 @@ public class Model implements IModel {
 	private Point activeSquare = new Point(-1,-1);
 	private Participant activeParty = Participant.ANARCHISTS;
 	private Participant currentEnemy = Participant.ROYALISTS;	
-	private List<Point> currentReach;
+	
+	private Set<Point> currentReach;
 	private PieceType currentPieceType = PieceType.ANARCHIST;
 	private ModeType currentMode = ModeType.PLAY;
 	private Phase currentPhase = Phase.CHECK_IF_MOVE_IS_POSSIBLE;
+	
 
 	
 	// - - - CONSTRUCTOR - - -
@@ -93,7 +96,7 @@ public class Model implements IModel {
     		QLog.log("model", "grabPiece()", "grabPiece at " + row + " " + col + ".");
     		this.activeSquare = new Point (row, col);
     		
-    		getReach(row, col); // >>> Issue #6
+    		setReach(row, col); // >>> Issue #6
     		
     		movePiece(-1, -1, -1, -1); // >>> Issue #7
     		
@@ -104,11 +107,63 @@ public class Model implements IModel {
     	
     }
     
-    private List<Point> getReach(int row, int col) {
-    	List<Point> reach = new ArrayList<>();
-    	reach.add(new Point(1, 1));
+    private void setReach(int row, int col) {
+    	this.currentReach = new HashSet<Point>();
+    	this.activeSquare = new Point (row, col);
+    	
+    	int rowN = row;
+    	int colN = col;
+    	while (gameBoard.getPieceNorthFrom(rowN, colN) == PieceType.NOBODY && colN >= 0) {
+    		this.currentReach.add(new Point (rowN-1,colN));
+    		rowN--;
+    		QLog.log("model", "setReach", "Auf Pos " + rowN + "," + colN + " ist ein Squaretype " + gameBoard.getSquareAt(rowN, colN) + ".");
+    	}
+
+    	int rowE = row;
+    	int colE = col;
+    	while (gameBoard.getPieceEastFrom(rowE, colE) == PieceType.NOBODY && colE <= gameBoard.getBoardSize()) {
+    		this.currentReach.add(new Point (rowE,colE+1));
+    		colE++;
+    	}
+    	
+    	int rowS = row;
+    	int colS = col;
+    	while (gameBoard.getPieceSouthFrom(rowS, colS) == PieceType.NOBODY && rowS >= 0) {
+    		this.currentReach.add(new Point (rowS+1,colS));
+    		rowS++;
+    	}
+    	
+    	int rowW = row;
+    	int colW = col;
+    	while (gameBoard.getPieceWestFrom(rowW, colW) == PieceType.NOBODY && rowW <= gameBoard.getBoardSize()) {
+    		this.currentReach.add(new Point (rowW,colW-1));
+    		colW--;
+    	}
+    	
+    	if (currentPieceType != PieceType.KING) {
+    		this.currentReach.removeAll(this.gameBoard.getSpecialTerrain());
+    	}
+    	
+    	QLog.log("model", "setReach", currentReach.toString());
+//    	gameBoard.clearHighlight();
+    	gameBoard.setReach(currentReach);
     	// - nicht vergessen : Was wenn Liste leer ist? Stichwort: NullPointerException
-    	return reach;
+    }
+   
+    private Point northOf(Point p) {
+    	return new Point(p.x+1,p.y);
+    }
+    
+    private Point eastOf(Point p) {
+    	return new Point(p.x,p.y+1);
+    }
+    
+    private Point southOf(Point p) {
+    	return new Point(p.x+1,p.y);
+    }
+    
+    private Point westOf(Point p) {
+    	return new Point(p.x,p.y-1);
     }
     
     private void movePiece(int rowStart, int colStart, int rowEnd, int colEnd) {
@@ -309,14 +364,20 @@ public class Model implements IModel {
 
 	@Override
     public void debugSetPiece(PieceType pieceType) {
-		QLog.log("model", "setPieceType", "currentPieceType ist " + pieceType);
-		this.currentPieceType = pieceType;
+		QLog.log("model", "debugSetPiece", "currentMode ist " + currentMode);
 		this.currentMode = ModeType.DEBUG;
+		QLog.log("model", "debugSetPiece", "currentPieceType ist " + pieceType);
+		this.currentPieceType = pieceType;
+		
     }
     
 	@Override
     public void setPiece(PieceType pieceType, int row, int col) {
-    	this.currentState[row][col] = pieceType;
+		// QLog.log("model", "setPiece", "Aktuell liegt auf dem Zielfeld: " + this.currentState[row][col] + ".");
+		QLog.log("model", "setPiece", "Setzte " + pieceType + " auf (" + row + "," + col + ").");
+		gameBoard.setPieceAt(pieceType, row, col);
+		
+    	// this.currentState[row][col] = pieceType;
     }
 	
 	@Override
@@ -350,6 +411,7 @@ public class Model implements IModel {
 				break;
 			case DEBUG:
 				QLog.log("", "", "weil im DEBUG-Mode -> setPiece auf " + row + "," + col + ".");
+				debugSetPiece(currentPieceType);
 				setPiece(currentPieceType, row, col);
 				break;
 			default:

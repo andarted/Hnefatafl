@@ -1,11 +1,14 @@
 package org.andarted.hnefatafl.model;
 
 import java.awt.Point;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 // import org.andarted.hnefatafl.model.PieceType;
 // import org.andarted.hnefatafl.model.SquareType;
 import org.andarted.hnefatafl.common.TraceLogger;
-import org.andarted.hnefatafl.common.Variant;
 
 public class GameBoard {
 	private final int boardSize;
@@ -120,12 +123,7 @@ public class GameBoard {
     	this.mouseHoverPosX = 1;
     	this.mouseHoverPosY = 1;
     }
-    
-    public void ClearHighlight() {
-    	initializeHighlight();
-    }
-	
-	
+    	
 	public void clearHoverPosition() {
 		initializeHighlight();
 	}
@@ -135,11 +133,116 @@ public class GameBoard {
 	
 		// - - - GETTER - - - 
 	
-	public SquareType getSquareAt(int row, int col) {return squares[row][col];}
+	public SquareType getSquareAt(int row, int col) {
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return squares[row][col];
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public SquareType getSquareNorthFrom(int row, int col) {
+		row--;
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return squares[row][col];
+		}
+		else {
+			return null;
+		}}
+	public SquareType getSquareEastFrom(int row, int col) {
+		col++;
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return squares[row][col];
+		}
+		else {
+			return null;
+		}}
+	
+	public SquareType getSquareSouthFrom(int row, int col) {
+		row++;
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return squares[row][col];
+		}
+		else {
+			return null;
+		}}
+	public SquareType getSquareWestFrom(int row, int col) {
+		col--;
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return squares[row][col];
+		}
+		else {
+			return null;
+		}}
+	
+	public PieceType getPieceNorthFrom(int row, int col) {
+		row--;
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return pieces[row][col];
+		}
+		else {
+			return null;
+		}}
+	public PieceType getPieceEastFrom(int row, int col) {
+		col++;
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return pieces[row][col];
+		}
+		else {
+			return null;
+		}}
+	
+	public PieceType getPieceSouthFrom(int row, int col) {
+		row++;
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return pieces[row][col];
+		}
+		else {
+			return null;
+		}}
+	public PieceType getPieceWestFrom(int row, int col) {
+		col--;
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return pieces[row][col];
+		}
+		else {
+			return null;
+		}}
+	
 	public PieceType getPieceAt(int row, int col) {return pieces[row][col];}
+	
 	public int getBoardSize() {return boardSize;}
+	
 	public int getCentre() {return centre;}
+	
+	public Set<Point> getSpecialTerrain() {
+		Set<Point> specialTerrain = new HashSet<>();
+		specialTerrain.add(new Point(this.centre,this.centre));
+		specialTerrain.add(new Point(0,0));
+		specialTerrain.add(new Point(0,this.boardSize));
+		specialTerrain.add(new Point(this.boardSize,0));
+		specialTerrain.add(new Point(this.boardSize,this.boardSize));
+		return specialTerrain;
+	}
+	
 	public boolean isHighlighted(int row, int col) {return squareSelection[row][col];}
+	
+    private Point northOf(int row, int col) {
+    	return new Point(row-1,col);
+    }
+    
+    private Point eastOf(int row, int col) {
+    	return new Point(row,col+1);
+    }
+    
+    private Point southOf(int row, int col) {
+    	return new Point(row+1,col);
+    }
+    
+    private Point westOf(int row, int col) {
+    	return new Point(row,col-1);
+    }
 	
 		// - - - SETTER - - -
 	
@@ -156,6 +259,20 @@ public class GameBoard {
 	
     public void setHighlightAt(int row, int col) {
     	squareSelection[row][col] = true;
+    }
+    
+    public void setReach(Set<Point> reach) {
+    	for (Point p : reach) {
+    		setHighlightAt(p.x, p.y);
+    	}
+    }
+    
+    public void clearHighlight() {
+    	for (int row = 0; row < this.boardSize; row++) {
+    		for (int col = 0; col < this.boardSize; col--) {
+    			this.squareSelection[row][col] = false;
+    		}
+    	}
     }
     
     public void clearHighlightAt(int row, int col) {
