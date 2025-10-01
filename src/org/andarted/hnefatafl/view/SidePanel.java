@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
@@ -24,13 +25,14 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 	
 	private SidePanelListener listener;
 	
-	
+	private JPanel displayPanel;
 	private JPanel debugPanel;
 	private JPanel infoPanel;
+	private JPanel mousePosPanel;
 	
     private JLabel activePlayerLabel;
     private String activePlayer = "nicht festgelegt";
-    private JLabel mousePositionLabel = new JLabel("pos. -1 -1");
+    private JLabel mousePosLabel = new JLabel(" -1 -1");
     private int mouseXAxis = -1;
     private int mouseYAxis = -1;
 	
@@ -41,21 +43,24 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
     
     public SidePanel() {
     	// setPreferredSize(new Dimension(220,450));
-    	setBackground(Color.LIGHT_GRAY);
-		setBorder(BorderFactory.createTitledBorder("Operation Panel"));
+    	setBackground(Color.ORANGE);
+		// setBorder(BorderFactory.createTitledBorder("Operation Panel"));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		add(Box.createRigidArea(new Dimension(0, 5)));
-		addActivePlayerModul();
+		// add(Box.createRigidArea(new Dimension(0, 5)));
+		addDisplayModul();
+		add(Box.createRigidArea(new Dimension(0, 8)));
 		addDebugModul();
+		add(Box.createRigidArea(new Dimension(0, 8)));
 		addInfoModul();
+		add(Box.createRigidArea(new Dimension(0, 8)));
 		addMouseModul();
     }
     
     public void setActivePartyDisplay(String newActivePlayer) {
     	QLog.log("sidePanel", "setActiveDisplay()", "Setzte Display auf " + newActivePlayer);
     	if(activePlayerLabel != null) {
-    		activePlayerLabel.setText(newActivePlayer);
+    		activePlayerLabel.setText(" " + newActivePlayer);
     		activePlayerLabel.revalidate();
     		activePlayerLabel.repaint();
     	}
@@ -63,20 +68,20 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 	
 	// - - - ACTIVE PLAYER MODUL - - -
 	
-	private void addActivePlayerModul() {
-		JPanel activePlayerPanel = new JPanel();
+	private void addDisplayModul() {
+		displayPanel = new JPanel();
 		
-		activePlayerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		activePlayerPanel.setMaximumSize(MODUL_MAX_DIMENSION);
-		activePlayerPanel.setBorder(BorderFactory.createTitledBorder("aktive player"));
+		displayPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		displayPanel.setMaximumSize(MODUL_MAX_DIMENSION);
+		displayPanel.setBorder(BorderFactory.createTitledBorder("active player"));
 				
-	    activePlayerPanel.setLayout(new BorderLayout());
+	    displayPanel.setLayout(new BorderLayout());
 	    activePlayerLabel = new JLabel(activePlayer);
 	    activePlayerLabel.setFont(new Font("Arial", Font.BOLD, 10));
-	    activePlayerPanel.add(activePlayerLabel, BorderLayout.NORTH);
+	    displayPanel.add(activePlayerLabel, BorderLayout.NORTH);
 	    
-	    add(activePlayerPanel);
-        add(Box.createRigidArea(new Dimension(0, 10))); // Abstand
+	    add(displayPanel);
+        // add(Box.createRigidArea(new Dimension(0, 10))); // Abstand
 	}
 	
 	// - - - DEBUG MODUL - - -
@@ -91,17 +96,18 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		debugPanel.setLayout(new BoxLayout(debugPanel, BoxLayout.Y_AXIS));
 		
 		addSkipToPlayerButton();
-		addFreeMovement();
-		addImportUnit();
-		addImportKingButton();
-		addExportUnit();
-				
+		debugPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+		debugPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+		addDebugModeTButton();
+		addImportUnit1of2();
+		addImportUnit2of2();
+		
 		add(debugPanel);
 		// add(Box.createRigidArea(new Dimension(0, 10)));
 	}
 	
 	private void addSkipToPlayerButton() {
-		JButton skipToButton = new JButton("skip to player");
+		JButton skipToButton = new JButton("toggle active party");
 		
 		skipToButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		skipToButton.setMaximumSize(BUTTON_MAX_DIMENSION);
@@ -117,26 +123,28 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		debugPanel.add(skipToButton);
 		// sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
 	}
+
 	
-	private void addFreeMovement() {
-		JToggleButton freeMovementButton = new JToggleButton("aktivate Free Movement");
+	private void addDebugModeTButton() {
+		JToggleButton debugModeTButton = new JToggleButton("debug mode");
 		
-		freeMovementButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		freeMovementButton.setMaximumSize(BUTTON_MAX_DIMENSION);
-		freeMovementButton.setFont(new Font("Arial", Font.BOLD, 10));
-		freeMovementButton.setHorizontalAlignment(SwingConstants.CENTER);
-		freeMovementButton.setFocusPainted(false);
-		freeMovementButton.addActionListener(e -> {
-			if (listener != null) listener.clickOnFreeMovementButton();
-				System.out.println("View: Free Movement Aktivated");
+		debugModeTButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		debugModeTButton.setMaximumSize(BUTTON_MAX_DIMENSION);
+		debugModeTButton.setFont(new Font("Arial", Font.BOLD, 10));
+		debugModeTButton.setHorizontalAlignment(SwingConstants.CENTER);
+		debugModeTButton.setFocusPainted(false);
+		debugModeTButton.addActionListener(e -> {
+			if (listener != null) listener.clickOnDebugModeTButton();
+				System.out.println("Clicked on DebugModeTButton");
 				// presenter.handleDebugFreeMovementButton();
 		});
 		
-		// debugPanel.add(freeMovementButton);
-		// sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		
+		debugPanel.add(debugModeTButton);
 	}
 	
-	private void addImportUnit() {
+	
+	private void addImportUnit1of2() {
 		JPanel importUnitPanel = new JPanel();
 		
 		importUnitPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -145,14 +153,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		importUnitPanel.setLayout(new BoxLayout(importUnitPanel, BoxLayout.X_AXIS));
 
 		
-		JButton importAnarchistButton = new JButton("A");
-		importAnarchistButton.setFont(new Font("Arial", Font.BOLD, 10));
-		importAnarchistButton.setFocusPainted(false);
-		importAnarchistButton.addActionListener(e -> {
-			if (listener != null) listener.clickOnGetAnarchistButton();
-				System.out.println("View: new Anarchist may arrive");
-				// presenter.handleDebugGetAnarchist();
-		});
+
 		
 		JButton importRoyalistButton = new JButton("R");
 		importRoyalistButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -163,6 +164,14 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 				// presenter.handleDebugGetRoyalist();
 		});
 		
+		JButton importAnarchistButton = new JButton("A");
+		importAnarchistButton.setFont(new Font("Arial", Font.BOLD, 10));
+		importAnarchistButton.setFocusPainted(false);
+		importAnarchistButton.addActionListener(e -> {
+			if (listener != null) listener.clickOnGetAnarchistButton();
+				System.out.println("View: new Anarchist may arrive");
+				// presenter.handleDebugGetAnarchist();
+		});
 		
 		importUnitPanel.add(Box.createRigidArea(new Dimension(6, 10)));
 		importUnitPanel.add(importRoyalistButton);
@@ -173,42 +182,44 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		debugPanel.add(importUnitPanel);
 		// sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
 	}
-
-	private void addImportKingButton() {
-		JButton importKingButton = new JButton("lang lebe der König");
+	
+	private void addImportUnit2of2() {
+		JPanel importUnitPanel = new JPanel();
 		
-		importKingButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		importKingButton.setMaximumSize(BUTTON_MAX_DIMENSION);
-		importKingButton.setFocusPainted(false);
+		importUnitPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		importUnitPanel.setMaximumSize(BUTTON_MAX_DIMENSION);
+		
+		importUnitPanel.setLayout(new BoxLayout(importUnitPanel, BoxLayout.X_AXIS));
+		
+		JButton importKingButton = new JButton("K");
 		importKingButton.setFont(new Font("Arial", Font.BOLD, 10));
+		importKingButton.setFocusPainted(false);
 		importKingButton.addActionListener(e -> {
 			if (listener != null) listener.clickOnGetKingButton();
 				System.out.println("View: new Kings may arrive");
 				// presenter.handleDebugGetKing();
 		});
 		
-		debugPanel.add(importKingButton);
-		
-	}
-	
-	private void addExportUnit() {
-		JButton exportUnitPanel = new JButton("verbanne Einheit");
-		
-		exportUnitPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		exportUnitPanel.setMaximumSize(BUTTON_MAX_DIMENSION);
-		exportUnitPanel.setFocusPainted(false);
+		JButton exportUnitPanel = new JButton("BAN");
 		exportUnitPanel.setFont(new Font("Arial", Font.BOLD, 10));
+		exportUnitPanel.setFocusPainted(false);
 		exportUnitPanel.addActionListener(e -> {
 			if (listener != null) listener.clickOnGetRemoveButton();
 				System.out.println("View: Einheit fängt ein neues Leben an");
 				// presenter.handleDebugGetRemove();
 		});
 		
-		debugPanel.add(exportUnitPanel);
-		// sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		importUnitPanel.add(Box.createRigidArea(new Dimension(6, 10)));
+		importUnitPanel.add(importKingButton);		
+		importUnitPanel.add(Box.createRigidArea(new Dimension(6, 10)));
+		importUnitPanel.add(exportUnitPanel);
+		importUnitPanel.add(Box.createRigidArea(new Dimension(6, 10)));
 		
+		debugPanel.add(importUnitPanel);
+		// sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));		
 	}
 		
+	
 	// - - - INFO MODUL - - -
 	
 	private void addInfoModul() {
@@ -220,7 +231,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		
-		JToggleButton showRoyalistDeathZone = new JToggleButton("Royalist Death-Zone");
+		JToggleButton showRoyalistDeathZone = new JToggleButton("royalist death zone");
 		showRoyalistDeathZone.setMaximumSize(BUTTON_MAX_DIMENSION);
 		showRoyalistDeathZone.setFont(new Font("Arial", Font.BOLD, 10));
 		showRoyalistDeathZone.setHorizontalAlignment(SwingConstants.CENTER);
@@ -233,7 +244,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		
 		infoPanel.add(showRoyalistDeathZone);
 
-		JToggleButton showAnarchistDeathZone = new JToggleButton("Anarchist Death-Zone");
+		JToggleButton showAnarchistDeathZone = new JToggleButton("anarchist death zone");
 		showAnarchistDeathZone.setMaximumSize(BUTTON_MAX_DIMENSION);
 		showAnarchistDeathZone.setFont(new Font("Arial", Font.BOLD, 10));
 		showAnarchistDeathZone.setHorizontalAlignment(SwingConstants.CENTER);
@@ -245,26 +256,29 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		});
 		
 		infoPanel.add(showAnarchistDeathZone);
-
+		
 		add(infoPanel);
-		add(Box.createRigidArea(new Dimension(0, 5)));
+
+		// add(infoPanel);
+		// add(Box.createRigidArea(new Dimension(0, 5)));
 		
 	}
+	
 	
 	
 	// – – – MOUSE MODUL - - -
 	
 	private void addMouseModul() {
-		JPanel mousePositionPanel = new JPanel();
+		mousePosPanel = new JPanel();
 		
-		mousePositionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		mousePositionPanel.setMaximumSize(MODUL_MAX_DIMENSION);
-		mousePositionPanel.setBorder(BorderFactory.createTitledBorder("Mouse Position"));
+		mousePosPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		mousePosPanel.setMaximumSize(MODUL_MAX_DIMENSION);
+		mousePosPanel.setBorder(BorderFactory.createTitledBorder("mouse pos"));
 				
-		mousePositionPanel.setLayout(new BorderLayout());
-		mousePositionLabel.setFont(new Font("Arial", Font.BOLD, 10));
-		mousePositionPanel.add(mousePositionLabel, BorderLayout.NORTH);
-		add(mousePositionPanel);
+		mousePosPanel.setLayout(new BorderLayout());
+		mousePosLabel.setFont(new Font("Arial", Font.BOLD, 10));
+		mousePosPanel.add(mousePosLabel, BorderLayout.NORTH);
+		add(mousePosPanel);
 	    
         // add(Box.createRigidArea(new Dimension(0, 10))); // Abstand
 	}
@@ -274,7 +288,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		mouseXAxis = screenX;
 		mouseYAxis = screenY;
 		TraceLogger.log("sidePanel", "updateHoverPos:", true, "- - -");
-		mousePositionLabel.setText("pos. " + mouseXAxis + " " + mouseYAxis);
+		mousePosLabel.setText(" " + mouseXAxis + " " + mouseYAxis);
 	}
 	
 	

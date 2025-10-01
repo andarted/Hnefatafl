@@ -2,7 +2,7 @@ package org.andarted.hnefatafl.view;
 
 public interface SidePanelListener {
 	void clickOnSkipButton();
-	void clickOnFreeMovementButton();
+	void clickOnDebugModeTButton();
 	void clickOnGetAnarchistButton();
 	void clickOnGetRoyalistButton();
 	void clickOnGetKingButton();

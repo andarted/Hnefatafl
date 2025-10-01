@@ -2,6 +2,7 @@ package org.andarted.hnefatafl.presenter;
 
 import org.andarted.hnefatafl.model.GameBoard;
 import org.andarted.hnefatafl.model.IModel;
+import org.andarted.hnefatafl.model.ModeType;
 import org.andarted.hnefatafl.model.PieceType;
 import org.andarted.hnefatafl.model.SquareType;
 import org.andarted.hnefatafl.view.IView;
@@ -48,8 +49,9 @@ public class Presenter implements IPresenter {
     
     @Override
     public void onSquareClicked(int row, int col) {
-        System.out.println("Presenter: Kilck auf Feld (" + row + "," + col + ").");
-        model.grabPiece(row, col);
+    	QLog.log("presenter", "onSquareClicked()", "-> model.onSquareClicked()");
+        // System.out.println("Presenter: Kilck auf Feld (" + row + "," + col + ").");
+        model.onSquareClicked(row, col);
     }
     
     
@@ -80,9 +82,13 @@ public class Presenter implements IPresenter {
     
     @Override
     public void handleDebugGetRoyalist() {
-    	currentPiece = PieceType.ROYALIST;
-		System.out.println("Presenter: debug set royalist pieces is now active");
-		view.updateDebugDisplay("Mode: Drop Royalists");
+    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
+    	model.debugSetPiece(PieceType.ROYALIST);
+    	
+    	// ???
+    	
+    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> view.updateDebugDisplay()");
+    	view.updateDebugDisplay("Mode: Drop Royalists");
     }
     
     @Override

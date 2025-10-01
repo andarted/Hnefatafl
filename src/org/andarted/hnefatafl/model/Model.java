@@ -24,8 +24,12 @@ public class Model implements IModel {
 	private char[][] lineUpCharMatrix;
 	
 	private Point activeSquare = new Point(-1,-1);
-	private Participant activeParty = Participant.ROYALISTS;
-	
+	private Participant activeParty = Participant.ANARCHISTS;
+	private Participant currentEnemy = Participant.ROYALISTS;	
+	private List<Point> currentReach;
+	private PieceType currentPieceType = PieceType.ANARCHIST;
+	private ModeType currentMode = ModeType.PLAY;
+	private Phase currentPhase = Phase.CHECK_IF_MOVE_IS_POSSIBLE;
 
 	
 	// - - - CONSTRUCTOR - - -
@@ -46,6 +50,7 @@ public class Model implements IModel {
     
     /*
      * Zug
+     *  - checken, ob Zug überhaupt möglich ist.
      *  - nimm Figur
      *  - zeige mögliche neue Positionen
      *  - stelle Figur auf neue Position -/- breche ab
@@ -60,8 +65,24 @@ public class Model implements IModel {
      */
     
     private void takeTurn() {
-    	// ????????????????????????
+    	switch (this.currentPhase) {
+    	case CHECK_IF_MOVE_IS_POSSIBLE:
+    		// fall through
+    	case GRAB_PIECE:
+    		// fall through
+    	case DROP_PIECE:
+    		// fall through
+    	case CATCH_ENEMY:
+    		// fall through
+    	case CHECK_WIN_CONDITION:
+    		// fall through
+    	case END_TURN:
+    		break;
+    	default:
+    		QLog.log("model", "takTurn", "XXX ERROR XXX - somehow this.currentPhase is " + this.currentPhase.toString() + " - which doesn't exist!");
+    	}
     }
+    
     
     @Override
     public void grabPiece(int row, int col) {
@@ -78,7 +99,7 @@ public class Model implements IModel {
     		
     	}
     	else {
-    		QLog.log("model", "grabPiece()", "Piece at " + row + " " + col + " is not from active Party " + activeParty + " but from " + party);
+    		QLog.log("model", "grabPiece", "Piece at " + row + " " + col + " is not from " + activeParty + " (aka activeParty) but from " + party);
     	}
     	
     }
@@ -86,6 +107,7 @@ public class Model implements IModel {
     private List<Point> getReach(int row, int col) {
     	List<Point> reach = new ArrayList<>();
     	reach.add(new Point(1, 1));
+    	// - nicht vergessen : Was wenn Liste leer ist? Stichwort: NullPointerException
     	return reach;
     }
     
@@ -93,14 +115,20 @@ public class Model implements IModel {
     	
     }
     
+    private void checkMovePossible() {
+    	
+    }
+    
     private void toggleActiveParty() {
     	if (activeParty == Participant.ROYALISTS) {
     		QLog.log("model", "toggleActiveParty", "setzt active Party auf ANARCHISTS");
     		activeParty = Participant.ANARCHISTS;
+    		currentEnemy = Participant.ROYALISTS;
     	}
     	else {
-    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ANARCHISTS");
+    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ROYALISTS");
     		activeParty = Participant.ROYALISTS;
+    		currentEnemy = Participant.ANARCHISTS;
     	}
     }
     
@@ -280,9 +308,22 @@ public class Model implements IModel {
     }
 
 	@Override
+    public void debugSetPiece(PieceType pieceType) {
+		QLog.log("model", "setPieceType", "currentPieceType ist " + pieceType);
+		this.currentPieceType = pieceType;
+		this.currentMode = ModeType.DEBUG;
+    }
+    
+	@Override
     public void setPiece(PieceType pieceType, int row, int col) {
     	this.currentState[row][col] = pieceType;
     }
+	
+	@Override
+	public void setMode(ModeType mode) {
+		QLog.log("model", "setMode", "currentMode wird gesetzt auf " + mode.toString() + ".");
+		this.currentMode = mode;
+	}
 
 
 	@Override
@@ -291,6 +332,31 @@ public class Model implements IModel {
 		gameBoard.setMouseHoverPos(row,col);
 	}
 
+	
+	// - - - HANDLE - - -
+	
+	@Override
+	public void onSquareClicked(int row, int col) {
+		QLog.log("model", "onSquareClicked", "registriere Click auf " + row + "," + col);
+		/*
+		QLog.log("", "", "weil im PLAY-Mode -> grabPice auf " + row + "," + col + ".");
+		grabPiece(row,col);
+		*/
+		
+		switch (this.currentMode){
+			case PLAY:
+				QLog.log("", "", "weil im PLAY-Mode -> grabPice auf " + row + "," + col + ".");
+				grabPiece(row,col);
+				break;
+			case DEBUG:
+				QLog.log("", "", "weil im DEBUG-Mode -> setPiece auf " + row + "," + col + ".");
+				setPiece(currentPieceType, row, col);
+				break;
+			default:
+				System.out.println("model.onSquareClicked:   XXX ERROR XXX - Wie konnte das passieren?");
+		}
+		
+	}
 
 
 	// - - - DEBUG - - -

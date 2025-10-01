@@ -354,7 +354,7 @@ public class View implements IView {
 				presenter.handleToggleActivePartyButton();
 			}
 			@Override
-			public void clickOnFreeMovementButton() {
+			public void clickOnDebugModeTButton() {
 				presenter.handleDebugFreeMovementButton();
 			}
 			@Override

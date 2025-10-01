@@ -19,6 +19,8 @@ public interface IModel {
 	
 	void setFreshLineUp(int size, Variant variant);
 	void setPiece(PieceType pieceType, int row, int col);
+	void debugSetPiece(PieceType pieceType);
+	void setMode(ModeType mode);
 	
 	void delegateSetMouseHoverPos(int row,int col);
 	
@@ -26,4 +28,6 @@ public interface IModel {
 	
 	void debugPanelToggleActiveParty();
 	void grabPiece(int row, int col);
+	
+	void onSquareClicked(int row, int col);
 }
