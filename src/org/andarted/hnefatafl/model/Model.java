@@ -355,11 +355,11 @@ public class Model implements IModel {
     		QLog.log("model", "simpleCapture", "capture piece north");
     		setPiece(PieceType.NOBODY, rowN1, col);
     	}
-    	if (col < getBoardSize()-1 && getPieceAt(row, colE1) == foe && getPieceAt(row, colE2).party == activeParty) {
+    	if (col < getBoardSize()-2 && getPieceAt(row, colE1) == foe && getPieceAt(row, colE2).party == activeParty) {
     		QLog.log("model", "simpleCapture", "capture piece east");
     		setPiece(PieceType.NOBODY, row, colE1);
     	}
-    	if (row < getBoardSize()-1 && getPieceAt(rowS1, col) == foe && getPieceAt(rowS2, col).party == activeParty) {
+    	if (row < getBoardSize()-2 && getPieceAt(rowS1, col) == foe && getPieceAt(rowS2, col).party == activeParty) {
     		QLog.log("model", "simpleCapture", "capture piece south");
     		setPiece(PieceType.NOBODY, rowS1, col);
     	}
@@ -369,6 +369,109 @@ public class Model implements IModel {
     	}
     }
     
+    
+    private void shieldWallCapture(int row, int col) {
+    	int rowN2 = row-2, rowN1 = row-1, rowS1 = row+1, rowS2 = row+2;
+    	int colW2 = col-2, colW1 = col-1, colE1 = col+1, colE2 = col+2;
+    	PieceType foe;
+    	Set<Integer> wallOfFoes = new HashSet<>();
+    	Set<Point> allWallOfFoes = new HashSet<>();
+    	boolean contestIsActive = true;
+    	
+    	if (activeParty == Participant.ANARCHISTS) {foe = PieceType.ROYALIST;}
+    		else {foe = PieceType.ANARCHIST;}
+    	
+    	QLog.log("model", "shieldWallCapture", "CHECKE AB, OB ES EINE WALL ZU CATCHEN GIBT");
+    	// !!! wichtig für folgende if: nur wegen reihenfolge der Bedingungen gibt's keine NullPointerExcaption !!!!
+    	
+    	if (row == 1 && getPieceAt(rowN1, col) == foe) {
+    		QLog.log("model", "shildWallCapture", "conflict at the north wall");
+    		allWallOfFoes.addAll(shieldWallCompetitionRow(col, row, rowN1));
+    	}
+    	if (col == getBoardSize()-2 && getPieceAt(row, colE1) == foe) {
+    		QLog.log("model", "shildWallCapture", "conflict at the east wall");
+    		allWallOfFoes.addAll(shieldWallCompetitionCol(col, row, colE1));
+    	}
+    	if (row == getBoardSize()-2 && getPieceAt(rowS1, col) == foe) {
+    		QLog.log("model", "shildWallCapture", "conflict at the south wall");
+    		allWallOfFoes.addAll(shieldWallCompetitionRow(col, row, rowS1));
+    	}
+    	if (col == 1 && getPieceAt(row, colW1) == foe) {
+    		QLog.log("model", "shildWallCapture", "conflict at the west wall");
+    		allWallOfFoes.addAll(shieldWallCompetitionCol(col, row, colW1));
+    	}
+    	
+    	// König aussortieren
+    	allWallOfFoes.removeIf(p -> getPieceAt(p.x,p.y) == PieceType.KING);
+    	
+    	// Foes gefangen nehmen
+    	for (Point p : allWallOfFoes) {
+    		setPiece(PieceType.NOBODY, p.x, p.y);
+    	}
+    }
+    
+
+    private Set<Point> shieldWallCompetitionRow(int origin, int friendWall, int foeWall) {
+    	Set<Point> wallOfFoes = new HashSet<>();
+    	int walker = origin;
+    	QLog.log("model", "shieldWallCompetitionRow", "suche linkes Ende");
+    	// finde anfang
+    	while (getPieceAt(foeWall, walker).party == currentEnemy) {
+    		QLog.log("", "", "" + walker);
+    		walker--;
+    	}
+    	QLog.log("", "", "linkes Ende ist auf " + walker);
+    	
+    	// falls anfang legitim ist
+    	if (getPieceAt(foeWall, walker).party == activeParty || getSquareAt(foeWall, walker) == SquareType.ESCAPE) {
+    		QLog.log("", "", "foe wall ist links eingekesselt");
+    		QLog.log("", "", "walker geht einen Schritt nach rechts");
+    		walker++;
+    		// gehe durch die Reihe
+    		while (getPieceAt(foeWall, walker).party == currentEnemy && getPieceAt(friendWall, walker).party == activeParty) {
+    			wallOfFoes.add(new Point(foeWall,walker));
+    			QLog.log("", "", "" + walker);
+    			walker++;
+    		}
+    	}
+    	// checke ob die Wall irgendwo bricht
+    	if (getPieceAt(foeWall, walker).party != activeParty && getSquareAt(foeWall, walker) != SquareType.ESCAPE) {
+    		wallOfFoes.clear();
+    	}
+    	return wallOfFoes;
+    }
+    
+    
+    private Set<Point> shieldWallCompetitionCol(int friendWall, int origin, int foeWall) {
+    	Set<Point> wallOfFoes = new HashSet<>();
+    	int walker = origin;
+    	QLog.log("model", "shieldWallCompetitionRow", "suche nördlichen Ende");
+    	// finde anfang
+    	QLog.log("", "", "Piece auf (" + walker + "," + foeWall + ") gehört zu " + getPieceAt(walker, foeWall).party);
+    	while (getPieceAt(walker, foeWall).party == currentEnemy) {
+    		QLog.log("", "", "" + walker);
+    		walker--;
+    	}
+    	QLog.log("", "", "nördliches Ende ist auf " + walker);
+    	
+    	// falls anfang legitim ist
+    	if (getPieceAt(walker, foeWall).party == activeParty || getSquareAt(walker, foeWall) == SquareType.ESCAPE) {
+    		QLog.log("", "", "foe wall ist nördlich eingekesselt");
+    		QLog.log("", "", "walker geht einen Schritt nach süden");
+    		walker++;
+    		// gehe durch die Reihe
+    		while (getPieceAt(walker, foeWall).party == currentEnemy && getPieceAt(walker, friendWall).party == activeParty) {
+    			wallOfFoes.add(new Point(walker, foeWall));
+    			QLog.log("", "", "" + walker);
+    			walker++;
+    		}
+    	}
+    	// checke ob die Wall irgendwo bricht
+    	if (getPieceAt(walker, foeWall).party != activeParty && getSquareAt(walker, foeWall) != SquareType.ESCAPE) {
+    		wallOfFoes.clear();
+    	}
+    	return wallOfFoes;
+    }
     
     // - - - GETTER - - -
     
@@ -474,7 +577,9 @@ public class Model implements IModel {
 	}
 
 	private void trapAllEnemies(int row, int col){
+		// QLog.log("model", "trapAllEnemies", "-> simpleCapture");
 		simpleCapture(row,col);
+		shieldWallCapture(row,col);
 	}
 	
 
