@@ -146,8 +146,6 @@ public class Model implements IModel {
     	
     	QLog.log("model", "setReach", currentReach.toString());
     	gameBoard.setReach(currentReach);
-    	
-    	// - nicht vergessen : Was wenn Liste leer ist? Stichwort: NullPointerException
     }
    
     private Point northOf(Point p) {
