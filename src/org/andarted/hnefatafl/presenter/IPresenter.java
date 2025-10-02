@@ -12,7 +12,7 @@ public interface IPresenter {
     void handleExitItem();    
     
     void handleToggleActiveParty();
-    void handleDebugFreeMovementButton();
+    void handleDebugModeTButton();
     
     void handleDebugGetRoyalist();
     void handleDebugGetAnarchist();
@@ -32,6 +32,7 @@ public interface IPresenter {
     
     void startDefaultGame();
     
+    void setDebugModeTButton(boolean enabled);
     
     
     // void deligateInitializeView();

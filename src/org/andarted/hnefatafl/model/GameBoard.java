@@ -142,7 +142,7 @@ public class GameBoard {
 	
 	public SquareType getSquareNorthFrom(int row, int col) {
 		row--;
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return squares[row][col];
 		}
 		else {
@@ -150,7 +150,7 @@ public class GameBoard {
 		}}
 	public SquareType getSquareEastFrom(int row, int col) {
 		col++;
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return squares[row][col];
 		}
 		else {
@@ -159,7 +159,7 @@ public class GameBoard {
 	
 	public SquareType getSquareSouthFrom(int row, int col) {
 		row++;
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return squares[row][col];
 		}
 		else {
@@ -167,7 +167,7 @@ public class GameBoard {
 		}}
 	public SquareType getSquareWestFrom(int row, int col) {
 		col--;
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return squares[row][col];
 		}
 		else {
@@ -176,7 +176,7 @@ public class GameBoard {
 	
 	public PieceType getPieceNorthFrom(int row, int col) {
 		row--;
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return pieces[row][col];
 		}
 		else {
@@ -184,7 +184,7 @@ public class GameBoard {
 		}}
 	public PieceType getPieceEastFrom(int row, int col) {
 		col++;
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return pieces[row][col];
 		}
 		else {
@@ -193,7 +193,7 @@ public class GameBoard {
 	
 	public PieceType getPieceSouthFrom(int row, int col) {
 		row++;
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return pieces[row][col];
 		}
 		else {
@@ -201,7 +201,7 @@ public class GameBoard {
 		}}
 	public PieceType getPieceWestFrom(int row, int col) {
 		col--;
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return pieces[row][col];
 		}
 		else {
@@ -209,7 +209,7 @@ public class GameBoard {
 		}}
 	
 	public SquareType getSquareAt(int row, int col) {
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
 			return squares[row][col];
 		}
 		else {
@@ -225,11 +225,11 @@ public class GameBoard {
 	
 	public Set<Point> getSpecialTerrain() {
 		Set<Point> specialTerrain = new HashSet<>();
-		specialTerrain.add(new Point(this.centre,this.centre));
-		specialTerrain.add(new Point(0,0));
-		specialTerrain.add(new Point(0,this.boardSize));
-		specialTerrain.add(new Point(this.boardSize,0));
-		specialTerrain.add(new Point(this.boardSize,this.boardSize));
+		specialTerrain.add(new Point(centre,centre));
+		specialTerrain.add(new Point(topRow,lefCol));
+		specialTerrain.add(new Point(topRow,rigCol));
+		specialTerrain.add(new Point(botRow,lefCol));
+		specialTerrain.add(new Point(botRow,lefCol));
 		return specialTerrain;
 	}
 	
@@ -295,8 +295,8 @@ public class GameBoard {
 
     public void clearReachHighlight() {
     	QLog.log("gameBoard", "clearReachHighlight", "clear reach highlight. |");
-    	for (int row = 0; row < this.boardSize; row++) {
-    		for (int col = 0; col < this.boardSize; col++) {
+    	for (int row = 0; row < boardSize; row++) {
+    		for (int col = 0; col < boardSize; col++) {
     			this.reachSelection[row][col] = false;
     		}
     	}

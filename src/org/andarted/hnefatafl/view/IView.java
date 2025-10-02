@@ -11,7 +11,9 @@ public interface IView {
 	void updateDebugDisplay(String string);
 	void initializeNewGame(GameBoard gameBoard);
 	void setActivePartyDisplay(String activeSide);
-
+	
+	void setDebugModeTButton(boolean enabled);
+	
 	void congratWin(String string);
 
 	void highlightReach(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol);
@@ -25,6 +27,7 @@ public interface IView {
 	
 	SquareType getSquareAt(int row, int col);
 	PieceType getPieceAr(int row, int col);
+	
 	
 	
 	/*

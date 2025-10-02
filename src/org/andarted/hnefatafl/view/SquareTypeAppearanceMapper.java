@@ -12,7 +12,7 @@ public class SquareTypeAppearanceMapper {
 			case THRONE:
 				return new SquareAppearance(Color.LIGHT_GRAY, ' ', new Point (0,2));
 			case ESCAPE:
-				return new SquareAppearance(new Color(150, 150, 200), ' ', new Point(0,1));
+				return new SquareAppearance(new Color(150, 150, 200), ' ', new Point(0,3));
 			case MOUSE_HOVER:
 				return new SquareAppearance(Color.WHITE, ' ', new Point (1,0));
 			case HIGHLIGHTED:

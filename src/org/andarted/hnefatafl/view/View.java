@@ -356,7 +356,7 @@ public class View implements IView {
 			}
 			@Override
 			public void clickOnDebugModeTButton() {
-				presenter.handleDebugFreeMovementButton();
+				presenter.handleDebugModeTButton();
 			}
 			@Override
 			public void clickOnGetRoyalistButton() {
@@ -484,8 +484,12 @@ public class View implements IView {
 	public void onFieldHover(int row, int col, int screenX, int screenY) {
 		if (presenter != null) {
 			presenter.onFieldHover(row, col);
-		}
-		
+		}	
+	}
+	
+	@Override
+	public void setDebugModeTButton(boolean enabled) {
+		sidePanel.debugModeTButton.setSelected(enabled);
 	}
 
 	@Override

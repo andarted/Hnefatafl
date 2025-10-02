@@ -170,12 +170,14 @@ public class Model implements IModel {
     
     private void moveCurrentPieceTo(int row, int col) {
     	if(gameBoard.inReach(row, col)) {
-    		QLog.log("model", "moveCurrendPieceTo", "in Reach [1/3] -> gameBoard.removePieceAt");
+    		QLog.log("model", "moveCurrendPieceTo", "in Reach [1/4] -> gameBoard.removePieceAt");
     		gameBoard.removePieceAt(this.activeSquare.x, this.activeSquare.y);
-    		QLog.log("model", "moveCurrendPieceTo", "in Reach [2/3] -> gameBoard.setPieceAt " + this.activeSquare.x + "," + this.activeSquare.y + ".");
+    		QLog.log("model", "moveCurrendPieceTo", "in Reach [2/4] -> gameBoard.setPieceAt " + this.activeSquare.x + "," + this.activeSquare.y + ".");
     		gameBoard.movePieceTo(currentPieceType, row, col);
-    		QLog.log("model", "moveCurrendPieceTo", "in Reach [3/3] -> gameBoard.clearReachHighlight");
+    		QLog.log("model", "moveCurrendPieceTo", "in Reach [3/4] -> gameBoard.clearReachHighlight");
     		gameBoard.clearReachHighlight();
+    		QLog.log("model", "moveCurrendPieceTo", "in Reach [4/4] -> trapAllEnemies");
+    		trapAllEnemies(row,col);
 			presenter.handleToggleActiveParty();
     	}
     	else {
@@ -184,10 +186,6 @@ public class Model implements IModel {
     		QLog.log("model", "moveCurrendPieceTo", "NOT in Reach [1/2] -> current Mode back to GRAB_PIECE");
     		currentMode = ModeType.GRAB_PIECE;
     	}
-    }
-    
-    private void checkMovePossible() {
-    	
     }
     
     private void toggleActiveParty() {
@@ -371,6 +369,11 @@ public class Model implements IModel {
     	return activeParty.toString();
     }
     
+    @Override
+    public ModeType getModeType() {
+    	return currentMode;
+    }
+    
 
 
     
@@ -417,10 +420,6 @@ public class Model implements IModel {
 	@Override
 	public void onSquareClicked(int row, int col) {
 		QLog.log("model", "onSquareClicked", "registriere Click auf " + row + "," + col);
-		/*
-		QLog.log("", "", "weil im PLAY-Mode -> grabPice auf " + row + "," + col + ".");
-		grabPiece(row,col);
-		*/
 		
 		switch (this.currentMode){
 			case GRAB_PIECE:
@@ -430,7 +429,8 @@ public class Model implements IModel {
 			case MOVE_PIECE:
 				QLog.log("model", "onSquareClicked[1/2]", "case MOVE_PIECE: -> moveCurrentPieceTo(row,col)");
 				moveCurrentPieceTo(row,col);
-				// -> check if someone gets attacked
+				// -> check ob gewinnbedingung erfüllt wurde
+				// -> capture all trapped enemies
 				QLog.log("model", "onSquareClicked[2/2]", "case MOVE_PIECE: -> currentMode is GRAB_PIECE");
 				this.currentMode = ModeType.GRAB_PIECE;
 				break;
@@ -445,12 +445,28 @@ public class Model implements IModel {
 		
 	}
 
+	private void trapAllEnemies(int row, int col){
+		
+	}
+	
 
 	// - - - DEBUG - - -
 	
     @Override
     public void debugPanelToggleActiveParty() {
     	toggleActiveParty();
+    }
+    
+    @Override
+    public void handleDebugModeTButton() {
+    	if(currentMode != ModeType.DEBUG) {
+    		currentMode = ModeType.DEBUG;
+    		presenter.setDebugModeTButton(true);    		
+    	}
+    	else {
+    		currentMode = ModeType.GRAB_PIECE;
+    		presenter.setDebugModeTButton(false);
+    	}
     }
 
 	

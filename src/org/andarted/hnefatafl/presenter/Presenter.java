@@ -74,53 +74,73 @@ public class Presenter implements IPresenter {
     
 	@Override
 	public void handleToggleActiveParty() {
-		QLog.log("presenter", "handleToggleActivePartyButton()", "-> model.toggleActiveParty()");
-		model.debugPanelToggleActiveParty();
-		QLog.log("presenter", "handleToggleActivePartyButton()", "-> view.setActivePartyDisplay");
-		view.setActivePartyDisplay(model.getActiveParty());
+		if (model.getModeType() != ModeType.DEBUG) {
+			QLog.log("presenter", "handleToggleActivePartyButton()", "-> model.toggleActiveParty()");
+			model.debugPanelToggleActiveParty();
+			QLog.log("presenter", "handleToggleActivePartyButton()", "-> view.setActivePartyDisplay");
+			view.setActivePartyDisplay(model.getActiveParty());	
+		}
 	}
     
+	
+	@Override
+	public void handleDebugModeTButton() {
+		QLog.log("presenter", "handleDebugModeTButton", "-> model.handleDebugModeTButton");
+		model.handleDebugModeTButton();
+		
+	}
+	
     @Override
     public void handleDebugGetRoyalist() {
-    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
+    	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.setDebugModeTButton");
+    	view.setDebugModeTButton(true);
+    	
+    	QLog.log("presenter", "handleDebugGetRoyalist", "-> model.debugSetPiece");
     	model.debugSetPiece(PieceType.ROYALIST);
     	
-    	
-    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> view.updateDebugDisplay()");
-    	view.updateDebugDisplay("Mode: Drop Royalists");
+    	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.updateDebugDisplay");
+    	view.updateDebugDisplay("debug mode: drop royalists");
     }
     
     @Override
     public void handleDebugGetAnarchist() {
-    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
+    	QLog.log("presenter", "handleDebugGetAnarchist", "-> view.setDebugModeTButton");
+    	view.setDebugModeTButton(true);
+    	
+    	QLog.log("presenter", "handleDebugGetAnarchist", "-> model.debugSetPiece");
     	model.debugSetPiece(PieceType.ANARCHIST);
+    	
+    	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.updateDebugDisplay");
+    	view.updateDebugDisplay("debug mode: drop anarchists");
     }
     
     @Override
     public void handleDebugGetKing() {
-    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
+    	QLog.log("presenter", "handleDebugGetKing", "-> view.setDebugModeTButton");
+    	view.setDebugModeTButton(true);
+    	
+    	QLog.log("presenter", "handleDebugGetRoyaKing", "-> model.debugSetPiece");
     	model.debugSetPiece(PieceType.KING);
-    	/*
-    	currentPiece = PieceType.KING;
-		*/
+    	
+    	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.updateDebugDisplay");
+    	view.updateDebugDisplay("debug mode: drop kings");
     }
     
     @Override
     public void handleDebugGetRemove() {
-    	QLog.log("presenter", "handleDebugGetRoyalist()", "-> model.debugSetPiece()");
+    	QLog.log("presenter", "handleDebugGetRemove", "-> view.setDebugModeTButton");
+    	view.setDebugModeTButton(true);
+    	
+    	QLog.log("presenter", "handleDebugGetRemove", "-> model.debugSetPiece");
     	model.debugSetPiece(PieceType.NOBODY);
-    	/*
-    	currentPiece = PieceType.NOBODY;
-		*/
+    	
+    	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.updateDebugDisplay");
+    	view.updateDebugDisplay("debug mode: remove piece");
     }
 
 
 
-	@Override
-	public void handleDebugFreeMovementButton() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void handleDebugShowRoyalistDeathZoneButton() {
@@ -177,5 +197,13 @@ public class Presenter implements IPresenter {
 		return model.getActiveParty();
 	}
 	
+	@Override
+	public void setDebugModeTButton(boolean enabled) {
+		view.setDebugModeTButton(enabled);
+		view.delegateRepaint();
+		if (!enabled) {
+			view.setActivePartyDisplay(model.getActiveParty());
+		}
+	}
 	
 }

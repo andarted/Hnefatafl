@@ -10,6 +10,7 @@ public interface IModel {
 	GameBoard getGameBoard();
 	SquareType getSquareAt(int row, int col);
 	PieceType getPieceAt(int row, int col);
+	ModeType getModeType();
 
 	int getBoardSize();
 	String getActiveParty();
@@ -24,7 +25,9 @@ public interface IModel {
 	// void initializePresenter(Presenter presenter);
 	
 	void debugPanelToggleActiveParty();
+	void handleDebugModeTButton();
 	// void grabPiece(int row, int col);
 	
 	void onSquareClicked(int row, int col);
+	
 }

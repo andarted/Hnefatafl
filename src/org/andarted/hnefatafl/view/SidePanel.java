@@ -30,6 +30,8 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 	private JPanel infoPanel;
 	private JPanel mousePosPanel;
 	
+	JToggleButton debugModeTButton;
+	
     private JLabel activePlayerLabel;
     private String activePlayer = "nicht festgelegt";
     private JLabel mousePosLabel = new JLabel(" -1 -1");
@@ -97,7 +99,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		
 		addSkipToPlayerButton();
 		debugPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-		debugPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+		// debugPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
 		addDebugModeTButton();
 		addImportUnit1of2();
 		addImportUnit2of2();
@@ -126,7 +128,7 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 
 	
 	private void addDebugModeTButton() {
-		JToggleButton debugModeTButton = new JToggleButton("debug mode");
+		this.debugModeTButton = new JToggleButton("debug mode");
 		
 		debugModeTButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		debugModeTButton.setMaximumSize(BUTTON_MAX_DIMENSION);
@@ -257,9 +259,8 @@ class SidePanel extends JPanel { // Listener Interface wird in der Methode setSi
 		
 		infoPanel.add(showAnarchistDeathZone);
 		
-		add(infoPanel);
-
 		// add(infoPanel);
+
 		// add(Box.createRigidArea(new Dimension(0, 5)));
 		
 	}
