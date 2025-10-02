@@ -71,7 +71,8 @@ class BoardPanel extends JPanel{
 				
 				SquareType squareType = gameBoard.getSquareAt(row, col);
 				PieceType pieceType = gameBoard.getPieceAt(row, col);
-				boolean highlight = gameBoard.isHighlighted(row, col);
+				boolean isCurrentlyInReach = gameBoard.inReach(row, col);
+				boolean isBeneathMouse = gameBoard.squareIsBeneathMouse(row, col);
 				
 				SquareAppearance squareAppearance = SquareTypeAppearanceMapper.getAppearance(squareType);
 				PieceAppearance pieceAppearance =
@@ -84,7 +85,7 @@ class BoardPanel extends JPanel{
 				if (squareAppearance == null) System.out.println("squareAppearance null bei sqType " + squareType + " @ " + row + "," + col);
 				if (pieceAppearance == null && pieceType != PieceType.NOBODY) System.out.println("pieceAppearance null trotz pieceType=" + pieceType + " bei " + row + "," + col);
 				
-				renderer.renderCell(g, row, col, cellSize, squareAppearance, pieceAppearance, highlight);
+				renderer.renderCell(g, row, col, cellSize, squareAppearance, pieceAppearance, isCurrentlyInReach, isBeneathMouse);
 				
 			}
 		}

@@ -9,7 +9,7 @@ import java.awt.Point;
 class RendererSwing implements IRender {
 
     @Override
-    public void renderCell(Graphics2D g, int row, int col, int cellSize, SquareAppearance square, PieceAppearance piece, boolean highlight) {
+    public void renderCell(Graphics2D g, int row, int col, int cellSize, SquareAppearance square, PieceAppearance piece, boolean inReach, boolean isBeneathMouse) {
         int x = col * cellSize;
         int y = row * cellSize;
         
@@ -18,8 +18,13 @@ class RendererSwing implements IRender {
         g.fillRect(x, y, cellSize, cellSize);
 
         // Optional: Selektion hervorheben
-        if (highlight) {
-            g.setColor(new Color(255,255,0, 80));
+        if (inReach) {
+            g.setColor(new Color(255,255,0, 25));
+            g.fillRect(x, y, cellSize, cellSize);
+        }
+        
+        if (isBeneathMouse) {
+            g.setColor(new Color(255,255,0, 75));
             g.fillRect(x, y, cellSize, cellSize);
         }
 

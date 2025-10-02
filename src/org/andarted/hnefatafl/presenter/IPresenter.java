@@ -11,7 +11,7 @@ public interface IPresenter {
     void handleNewGameItem(int size, Variant variant);
     void handleExitItem();    
     
-    void handleToggleActivePartyButton();
+    void handleToggleActiveParty();
     void handleDebugFreeMovementButton();
     
     void handleDebugGetRoyalist();

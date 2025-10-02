@@ -73,7 +73,7 @@ public class Presenter implements IPresenter {
     // - - - DEBUG BUTTONS - - -
     
 	@Override
-	public void handleToggleActivePartyButton() {
+	public void handleToggleActiveParty() {
 		QLog.log("presenter", "handleToggleActivePartyButton()", "-> model.toggleActiveParty()");
 		model.debugPanelToggleActiveParty();
 		QLog.log("presenter", "handleToggleActivePartyButton()", "-> view.setActivePartyDisplay");

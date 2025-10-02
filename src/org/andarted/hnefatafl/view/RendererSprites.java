@@ -32,7 +32,7 @@ class RendererSprites implements IRender{
 
 	@Override
 	public void renderCell(Graphics2D g, int row, int col, int cellSize, SquareAppearance square, PieceAppearance piece,
-			boolean highlight) {
+			boolean inReach, boolean isBeneathMouse) {
 		// koordinaten am board
 		int x = col*tileWidth;
 		int y = row*tileWidth;
@@ -47,7 +47,19 @@ class RendererSprites implements IRender{
 		g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sPosX, sPosY, sPosX + tileWidth, sPosY + tileHeight, null);
 		
 		// highlight
-		if (highlight) {
+		if (inReach) {
+			/*
+			SquareAppearance mouseHover = SquareTypeAppearanceMapper.getAppearance(SquareType.MOUSE_HOVER);
+			int syH = mouseHover.spritePos.x * tileWidth;
+			int sxH = mouseHover.spritePos.y * tileWidth;
+			g.drawImage(spriteSheet, x, y, x + tileWidth, y + tileWidth, sxH, syH, sxH + tileWidth, syH + tileHeight, null);
+			*/
+			g.setColor(new Color(255, 255, 0, 25));
+			g.fillRect(x, y, cellSize, cellSize);
+			
+		}
+		
+		if (isBeneathMouse) {
 			SquareAppearance mouseHover = SquareTypeAppearanceMapper.getAppearance(SquareType.MOUSE_HOVER);
 			int syH = mouseHover.spritePos.x * tileWidth;
 			int sxH = mouseHover.spritePos.y * tileWidth;

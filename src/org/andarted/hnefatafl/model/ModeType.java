@@ -1,6 +1,7 @@
 package org.andarted.hnefatafl.model;
 
 public enum ModeType {
-	PLAY,
+	GRAB_PIECE,
+	MOVE_PIECE,
 	DEBUG;
 }

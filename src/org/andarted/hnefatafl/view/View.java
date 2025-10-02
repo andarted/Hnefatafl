@@ -352,7 +352,7 @@ public class View implements IView {
 			public void clickOnSkipButton() {
 				QLog.log("sidePanelListener", "clickOnToggleActivePartyButton()", "[initializiert von view.initializeSidePanelListener()]");
 				// presenter.handleToggleActivePartyButton();
-				presenter.handleToggleActivePartyButton();
+				presenter.handleToggleActiveParty();
 			}
 			@Override
 			public void clickOnDebugModeTButton() {

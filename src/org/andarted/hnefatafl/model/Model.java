@@ -30,7 +30,7 @@ public class Model implements IModel {
 	
 	private Set<Point> currentReach;
 	private PieceType currentPieceType = PieceType.ANARCHIST;
-	private ModeType currentMode = ModeType.PLAY;
+	private ModeType currentMode = ModeType.GRAB_PIECE;
 	private Phase currentPhase = Phase.CHECK_IF_MOVE_IS_POSSIBLE;
 	
 
@@ -87,18 +87,18 @@ public class Model implements IModel {
     }
     
     
-    @Override
-    public void grabPiece(int row, int col) {
+    
+    private void grabPiece(int row, int col) {
     	PieceType piece = gameBoard.pieces[row][col];
     	Participant party = piece.party;
     	
     	if (party == this.activeParty) {
     		QLog.log("model", "grabPiece()", "grabPiece at " + row + " " + col + ".");
     		this.activeSquare = new Point (row, col);
-    		
+    		this.currentPieceType = piece;
     		setReach(row, col); // >>> Issue #6
-    		
-    		movePiece(-1, -1, -1, -1); // >>> Issue #7
+    		this.currentMode = ModeType.MOVE_PIECE;
+    		// movePiece(-1, -1, -1, -1); // >>> Issue #7
     		
     	}
     	else {
@@ -145,8 +145,8 @@ public class Model implements IModel {
     	}
     	
     	QLog.log("model", "setReach", currentReach.toString());
-//    	gameBoard.clearHighlight();
     	gameBoard.setReach(currentReach);
+    	
     	// - nicht vergessen : Was wenn Liste leer ist? Stichwort: NullPointerException
     }
    
@@ -170,18 +170,36 @@ public class Model implements IModel {
     	
     }
     
+    private void moveCurrentPieceTo(int row, int col) {
+    	if(gameBoard.inReach(row, col)) {
+    		QLog.log("model", "moveCurrendPieceTo", "in Reach [1/3] -> gameBoard.removePieceAt");
+    		gameBoard.removePieceAt(this.activeSquare.x, this.activeSquare.y);
+    		QLog.log("model", "moveCurrendPieceTo", "in Reach [2/3] -> gameBoard.setPieceAt " + this.activeSquare.x + "," + this.activeSquare.y + ".");
+    		gameBoard.movePieceTo(currentPieceType, row, col);
+    		QLog.log("model", "moveCurrendPieceTo", "in Reach [3/3] -> gameBoard.clearReachHighlight");
+    		gameBoard.clearReachHighlight();
+			presenter.handleToggleActiveParty();
+    	}
+    	else {
+    		QLog.log("model", "moveCurrendPieceTo", "NOT in Reach [1/2] -> gameBoard.clearReachHighlight");
+    		gameBoard.clearReachHighlight();
+    		QLog.log("model", "moveCurrendPieceTo", "NOT in Reach [1/2] -> current Mode back to GRAB_PIECE");
+    		currentMode = ModeType.GRAB_PIECE;
+    	}
+    }
+    
     private void checkMovePossible() {
     	
     }
     
     private void toggleActiveParty() {
     	if (activeParty == Participant.ROYALISTS) {
-    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ANARCHISTS");
+    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ANARCHISTS|");
     		activeParty = Participant.ANARCHISTS;
     		currentEnemy = Participant.ROYALISTS;
     	}
     	else {
-    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ROYALISTS");
+    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ROYALISTS|");
     		activeParty = Participant.ROYALISTS;
     		currentEnemy = Participant.ANARCHISTS;
     	}
@@ -201,7 +219,7 @@ public class Model implements IModel {
     public GameBoard newGame(int size, Variant variant) {
     	QLog.log("model", "newGame[1/2]", "this.gameBoard ist neues GameBoard");
     	this.gameBoard = new GameBoard(size, variant);
-    	QLog.log("model", "newGame[2/2]", "-> model.setLineUp() [squares & pieces werden gemäß Aufstellung neu initialisiert");
+    	QLog.log("model", "newGame[2/2]", "-> model.setLineUp()");
     	setLineUp(size, variant);
     	return gameBoard;
     }
@@ -216,6 +234,7 @@ public class Model implements IModel {
     // - - - METHODS / LINE UP PIECES - - -
     
     private void setLineUp(int size, Variant variant){
+    	QLog.log("model", "setLineUp", "set up " + variant.toString() + " lineUp for boardSize " + size + " |");
     	int height = size;
     	int width = size;
     	PieceType piece = PieceType.NOBODY;
@@ -308,6 +327,7 @@ public class Model implements IModel {
     
     // - - - METHODS / HIT DEDECTION - - -
     
+    /*
     private ArrayList<Point> hitScanAnarchists(GameBoard gameBoard) {
     	ArrayList<Point> deathZoneAnarchists = new ArrayList<Point>();
     		
@@ -325,7 +345,7 @@ public class Model implements IModel {
     		
     	return deathZoneKings;
     }
-    
+    */
     
     // - - - GETTER - - -
     
@@ -376,7 +396,7 @@ public class Model implements IModel {
 		// QLog.log("model", "setPiece", "Aktuell liegt auf dem Zielfeld: " + this.currentState[row][col] + ".");
 		QLog.log("model", "setPiece", "Setzte " + pieceType + " auf (" + row + "," + col + ").");
 		gameBoard.setPieceAt(pieceType, row, col);
-		
+		gameBoard.clearReachHighlight();
     	// this.currentState[row][col] = pieceType;
     }
 	
@@ -405,12 +425,19 @@ public class Model implements IModel {
 		*/
 		
 		switch (this.currentMode){
-			case PLAY:
-				QLog.log("", "", "weil im PLAY-Mode -> grabPice auf " + row + "," + col + ".");
+			case GRAB_PIECE:
+				QLog.log("model", "onSquareClicked", "weil im GRAB_PIECE-Mode -> grabPiece from " + row + "," + col + ".");
 				grabPiece(row,col);
 				break;
+			case MOVE_PIECE:
+				QLog.log("model", "onSquareClicked[1/2]", "case MOVE_PIECE: -> moveCurrentPieceTo(row,col)");
+				moveCurrentPieceTo(row,col);
+				// -> check if someone gets attacked
+				QLog.log("model", "onSquareClicked[2/2]", "case MOVE_PIECE: -> currentMode is GRAB_PIECE");
+				this.currentMode = ModeType.GRAB_PIECE;
+				break;
 			case DEBUG:
-				QLog.log("", "", "weil im DEBUG-Mode -> setPiece auf " + row + "," + col + ".");
+				QLog.log("model", "onSquareClicked", "weil im DEBUG-Mode -> setPiece auf " + row + "," + col + ".");
 				debugSetPiece(currentPieceType);
 				setPiece(currentPieceType, row, col);
 				break;

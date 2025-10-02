@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.andarted.hnefatafl.common.QLog;
 // import org.andarted.hnefatafl.model.PieceType;
 // import org.andarted.hnefatafl.model.SquareType;
 import org.andarted.hnefatafl.common.TraceLogger;
@@ -15,7 +16,8 @@ public class GameBoard {
 	private final SquareType[][] squares;
 	public final PieceType[][] pieces;
 	
-	private boolean[][] squareSelection;
+	private boolean[][] squareBeneathMouse;
+	private boolean[][] reachSelection;
 	private int mouseHoverPosX = 0;
 	private int mouseHoverPosY = 0;
 	
@@ -29,6 +31,7 @@ public class GameBoard {
 	// - - - KONSTRUKTOR - - -
 	
 	public GameBoard(int size, Variant variant){
+		QLog.log("gameBoard", "", "NEUES GAMEBOARD WIRD ERSTELLT");
 		boardSize = size;
 		topRow = 0;
 		botRow = boardSize-1;
@@ -39,11 +42,13 @@ public class GameBoard {
 		
 		squares = new SquareType[size][size];
 		pieces = new PieceType[size][size];
-		squareSelection = new boolean[size][size];
+		squareBeneathMouse = new boolean[size][size];
+		reachSelection = new boolean[size][size];
 		for (int row = topRow; row <= botRow; row++) {
 			for (int col = lefCol; col <= rigCol; col++) {
 				squares[row][col] = SquareType.EMPTY;
 				pieces[row][col] = PieceType.NOBODY;
+				reachSelection[row][col] = false;
 			}
 		}
 		integrateBoardItems(size);
@@ -91,34 +96,34 @@ public class GameBoard {
 	 * einfach nur zum Laufen gebracht werden muss.
 	 */
 	
-	public void paintReachMap(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol) {
+	public void paintReachMap(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol) { // nicht genutzt !!
 
-		initializeHighlight();
+		clearReachHighlight();
 		addHorizonalReach(originRow, fromCol, toCol);
 		addVerticalReach(originCol, fromRow, toRow);
     }
 	
-	private void initializeHighlight() {
-		squareSelection = new boolean[boardSize][boardSize];
-		for (int row = 0; row < boardSize; row++) {
-			for (int col = 0; col < boardSize; col++) {
-				squareSelection[row][col] = false;
-			}
-		}
-	}
-	
 	private void addHorizonalReach(int col, int from, int to) {
 		for (int i = from; i <= to; i++) {
-    		squareSelection[col][i] = true;
-    	}
+			squareBeneathMouse[col][i] = true;
+		}
 	}
 	
 	private void addVerticalReach(int row, int from, int to) {
 		for (int i = from; i <= to; i++) {
-    		squareSelection[i][row] = true;
-    	}
+			squareBeneathMouse[i][row] = true;
+		}
 	}
-    
+
+	private void initializeHighlight() {
+		squareBeneathMouse = new boolean[boardSize][boardSize];
+		for (int row = 0; row < boardSize; row++) {
+			for (int col = 0; col < boardSize; col++) {
+				squareBeneathMouse[row][col] = false;
+			}
+		}
+	}
+	
     private void highlightHoverPosition() {
     	this.mouseHoverPosX = 1;
     	this.mouseHoverPosY = 1;
@@ -133,14 +138,7 @@ public class GameBoard {
 	
 		// - - - GETTER - - - 
 	
-	public SquareType getSquareAt(int row, int col) {
-		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
-			return squares[row][col];
-		}
-		else {
-			return null;
-		}
-	}
+
 	
 	public SquareType getSquareNorthFrom(int row, int col) {
 		row--;
@@ -210,6 +208,15 @@ public class GameBoard {
 			return null;
 		}}
 	
+	public SquareType getSquareAt(int row, int col) {
+		if (0 <= row && row < this.boardSize && 0 <= col && col < this.boardSize) {
+			return squares[row][col];
+		}
+		else {
+			return null;
+		}
+	}
+	
 	public PieceType getPieceAt(int row, int col) {return pieces[row][col];}
 	
 	public int getBoardSize() {return boardSize;}
@@ -226,7 +233,9 @@ public class GameBoard {
 		return specialTerrain;
 	}
 	
-	public boolean isHighlighted(int row, int col) {return squareSelection[row][col];}
+	public boolean inReach(int row, int col) {return reachSelection[row][col];}
+	
+	public boolean squareIsBeneathMouse(int row, int col) {return squareBeneathMouse[row][col];}
 	
     private Point northOf(int row, int col) {
     	return new Point(row-1,col);
@@ -253,38 +262,68 @@ public class GameBoard {
 	}
 	
 	public void setPieceAt(PieceType piece, int row, int col) {
+		QLog.log("gameBoard", "setPieceAt", "set " + piece +" Piece at (" + row + "," + col + ")|");
 		pieces[row][col] = piece;
-		// System.out.println("GameBoard: setPieceAt (" + row + "," + col + ") ");
+		
 	}
 	
-    public void setHighlightAt(int row, int col) {
-    	squareSelection[row][col] = true;
+	public void movePieceTo(PieceType piece, int row, int col) {
+		QLog.log("gameBoard", "movePieceTo", "move " + piece + " Piece to (" + row + "," + col + ")|");
+		pieces[row][col] = piece;
+	}
+	
+	public void removePieceAt(int row, int col) {
+		QLog.log("gameBoard", "removePieceAt", "remove Piece at (" + row + "," + col + ")|");
+		pieces[row][col] = PieceType.NOBODY;
+	}
+	
+	
+	public void clearReachHighlighAt(int row, int col) {
+		reachSelection[row][col] = false;
+	}
+
+	public void setReachHighlightAt(int row, int col) {
+    	reachSelection[row][col] = true;
     }
     
     public void setReach(Set<Point> reach) {
+    	clearReachHighlight();
     	for (Point p : reach) {
-    		setHighlightAt(p.x, p.y);
+    		setReachHighlightAt(p.x, p.y);
     	}
     }
-    
-    public void clearHighlight() {
+
+    public void clearReachHighlight() {
+    	QLog.log("gameBoard", "clearReachHighlight", "clear reach highlight. |");
     	for (int row = 0; row < this.boardSize; row++) {
-    		for (int col = 0; col < this.boardSize; col--) {
-    			this.squareSelection[row][col] = false;
+    		for (int col = 0; col < this.boardSize; col++) {
+    			this.reachSelection[row][col] = false;
     		}
     	}
     }
     
-    public void clearHighlightAt(int row, int col) {
-    	squareSelection[row][col] = true;
+    /*
+    public void clearHighlight() {
+    	for (int row = 0; row <= this.boardSize; row++) {
+    		for (int col = 0; col <= this.boardSize; col--) {
+    			this.squareBeneathMouse[row][col] = false;
+    		}
+    	}
     }
+    */
+    
+    public void clearHighlightAt(int row, int col) {
+    	squareBeneathMouse[row][col] = true;
+    }
+
+    
 	
 	public void setMouseHoverPos(int row, int col){
 		this.mouseHoverPosX = row;
 		this.mouseHoverPosY = col;
 		clearHoverPosition();
 		if (row != -1 || col != -1) {
-			squareSelection[row][col] = true;
+			squareBeneathMouse[row][col] = true;
 		}
 		
 		TraceLogger.log("gameBoard", "SetMouseHoverPos:", true, "– – –");
