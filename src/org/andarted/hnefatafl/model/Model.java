@@ -86,8 +86,6 @@ public class Model implements IModel {
     	}
     }
     
-    
-    
     private void grabPiece(int row, int col) {
     	PieceType piece = gameBoard.pieces[row][col];
     	Participant party = piece.party;
@@ -104,7 +102,6 @@ public class Model implements IModel {
     	else {
     		QLog.log("model", "grabPiece", "Piece at " + row + " " + col + " is not from " + activeParty + " (aka activeParty) but from " + party);
     	}
-    	
     }
     
     private void setReach(int row, int col) {
@@ -147,20 +144,20 @@ public class Model implements IModel {
     	QLog.log("model", "setReach", currentReach.toString());
     	gameBoard.setReach(currentReach);
     }
-   
-    private Point northOf(Point p) {
-    	return new Point(p.x+1,p.y);
+
+    private Point northOf(Point p, int distance) {
+    	return new Point(p.x+distance,p.y);
     }
     
-    private Point eastOf(Point p) {
+    private Point eastOf(Point p, int distance) {
     	return new Point(p.x,p.y+1);
     }
     
-    private Point southOf(Point p) {
+    private Point southOf(Point p, int distance) {
     	return new Point(p.x+1,p.y);
     }
     
-    private Point westOf(Point p) {
+    private Point westOf(Point p, int distance) {
     	return new Point(p.x,p.y-1);
     }
     
@@ -343,6 +340,36 @@ public class Model implements IModel {
     }
     */
     
+    // - - - METHODS TO CAPTURE
+    
+    private void simpleCapture(int row, int col) {
+    	int rowN2 = row-2, rowN1 = row-1, rowS1 = row+1, rowS2 = row+2;
+    	int colW2 = col-2, colW1 = col-1, colE1 = col+1, colE2 = col+2;
+    	PieceType foe;
+    	if (activeParty == Participant.ANARCHISTS) {foe = PieceType.ROYALIST;}
+    		else {foe = PieceType.ANARCHIST;}
+    	
+    	QLog.log("model", "simpleCapture", "CHECKE AB, OB ES EINE FIGUR ZU CATCHEN GIBT");
+    	// !!! wichtig für folgende if: nur wegen reihenfolge der Bedingungen gibt's keine NullPointerExcaption !!!!
+    	if (row > 1 && getPieceAt(rowN1, col) == foe && getPieceAt(rowN2, col).party == activeParty) { 
+    		QLog.log("model", "simpleCapture", "capture piece north");
+    		setPiece(PieceType.NOBODY, rowN1, col);
+    	}
+    	if (col < getBoardSize()-1 && getPieceAt(row, colE1) == foe && getPieceAt(row, colE2).party == activeParty) {
+    		QLog.log("model", "simpleCapture", "capture piece east");
+    		setPiece(PieceType.NOBODY, row, colE1);
+    	}
+    	if (row < getBoardSize()-1 && getPieceAt(rowS1, col) == foe && getPieceAt(rowS2, col).party == activeParty) {
+    		QLog.log("model", "simpleCapture", "capture piece south");
+    		setPiece(PieceType.NOBODY, rowS1, col);
+    	}
+    	if (col > 1 && getPieceAt(row, colW1) == foe && getPieceAt(row, colW2).party == activeParty) {
+    		QLog.log("model", "simpleCapture", "capture piece west");
+    		setPiece(PieceType.NOBODY, row, colW1);
+    	}
+    }
+    
+    
     // - - - GETTER - - -
     
     public GameBoard getGameBoard() {
@@ -427,11 +454,12 @@ public class Model implements IModel {
 				grabPiece(row,col);
 				break;
 			case MOVE_PIECE:
-				QLog.log("model", "onSquareClicked[1/2]", "case MOVE_PIECE: -> moveCurrentPieceTo(row,col)");
+				QLog.log("model", "onSquareClicked[1/3]", "case MOVE_PIECE: -> moveCurrentPieceTo(row,col)");
 				moveCurrentPieceTo(row,col);
 				// -> check ob gewinnbedingung erfüllt wurde
+				QLog.log("model", "onSquareClicked[2/3]", "case MOVE_PIECE: -> simpleCapture");
 				// -> capture all trapped enemies
-				QLog.log("model", "onSquareClicked[2/2]", "case MOVE_PIECE: -> currentMode is GRAB_PIECE");
+				QLog.log("model", "onSquareClicked[3/3]", "case MOVE_PIECE: -> currentMode is GRAB_PIECE");
 				this.currentMode = ModeType.GRAB_PIECE;
 				break;
 			case DEBUG:
@@ -446,7 +474,7 @@ public class Model implements IModel {
 	}
 
 	private void trapAllEnemies(int row, int col){
-		
+		simpleCapture(row,col);
 	}
 	
 

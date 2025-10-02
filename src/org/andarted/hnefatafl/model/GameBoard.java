@@ -101,17 +101,18 @@ public class GameBoard {
 		clearReachHighlight();
 		addHorizonalReach(originRow, fromCol, toCol);
 		addVerticalReach(originCol, fromRow, toRow);
+		// removeSpecialTerrain();
     }
 	
 	private void addHorizonalReach(int col, int from, int to) {
 		for (int i = from; i <= to; i++) {
-			squareBeneathMouse[col][i] = true;
+			reachSelection[col][i] = true;
 		}
 	}
 	
 	private void addVerticalReach(int row, int from, int to) {
 		for (int i = from; i <= to; i++) {
-			squareBeneathMouse[i][row] = true;
+			reachSelection[i][row] = true;
 		}
 	}
 
@@ -229,7 +230,7 @@ public class GameBoard {
 		specialTerrain.add(new Point(topRow,lefCol));
 		specialTerrain.add(new Point(topRow,rigCol));
 		specialTerrain.add(new Point(botRow,lefCol));
-		specialTerrain.add(new Point(botRow,lefCol));
+		specialTerrain.add(new Point(botRow,rigCol));
 		return specialTerrain;
 	}
 	
