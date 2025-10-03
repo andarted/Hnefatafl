@@ -17,6 +17,11 @@ public class Main {
 	
 	private static void startApplication() {
 		System.out.println("Hnefatafl startet!");
+		
+		// - - - JMENU BAR AUF MACOS IN MACOS STYLE - - -
+		
+		// System.setProperty("apple.laf.useScreenMenuBar", "true");  <-- Später vermutlich enablen. Zum testen würde es aber nerven.
+
         
 		// - - - VERKABELN - - -
 		

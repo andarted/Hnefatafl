@@ -28,19 +28,4 @@ public interface IView {
 	SquareType getSquareAt(int row, int col);
 	PieceType getPieceAr(int row, int col);
 	
-	
-	
-	/*
-	void setAnarchist(int row, int col);
-	void setRoyalist(int row, int col);
-	void setKing(int row, int col);
-	void removePiece(int row, int col);
-	*/
-	
-	/*
-	void delegateClearHighlight();
-	void delegateSetHighlightAt(int row, int col);
-	void delegateClearHighlightAt(int row, int col);
-	*/
-
 }

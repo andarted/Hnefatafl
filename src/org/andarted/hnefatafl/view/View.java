@@ -40,6 +40,7 @@ public class View implements IView {
     private JMenu classicSetUp;
     private JMenu altSetUp;
     
+    private JMenuItem aboutGame;
     private JMenuItem exitItem;
     
     private JMenuItem sizeSevenItem;
@@ -128,9 +129,10 @@ public class View implements IView {
 		
 		JMenuBar menuBar = new JMenuBar();
 		
-		JMenu fileMenu = new JMenu("Datei");
+		JMenu fileMenu = new JMenu("Hnefatafl");
 		JMenu viewMenu = new JMenu("Ansicht");
 		
+		aboutGame = new JMenuItem("About Hnefatafl");
 		newGame = new JMenu("Neustart");
 		classicSetUp = new JMenu("klassische Aufstellung");
 		altSetUp = new JMenu("alternative Aufstellung");
@@ -151,7 +153,10 @@ public class View implements IView {
 	    setSpriteRenderer = new JMenuItem("View B");
 	    setIsoRenderer = new JMenuItem("View C");
 		
-		fileMenu.add(newGame);
+	    fileMenu.add(aboutGame);
+	    fileMenu.addSeparator();
+	    fileMenu.add(newGame);
+	    fileMenu.addSeparator();
 		fileMenu.add(exitItem);
 		
 		newGame.add(classicSetUp);
@@ -457,15 +462,8 @@ public class View implements IView {
 	@Override
     public void highlightReach(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol) {
 		gameBoard.paintReachMap(originRow, originCol, fromRow, toRow, fromCol, toCol);
-		// renderer.renderCell();
     	boardPanel.repaint();
     }
-    
-    
-    public void delegateSetRenderer(IRender newRenderer) {
-    	boardPanel.setRenderer(newRenderer);
-    }
-
     
 	// - - - GETTER - - -
 	public Color getBaseColor() {return BASE_COLOR;}
@@ -520,54 +518,5 @@ public class View implements IView {
 	public PieceType getPieceAr(int row, int col) {
 		return presenter.getPieceAr(row, col);
 	}
-	
-	
-    /*
-    @Override
-    public void delegateClearHighlight() {
-    	gameBoard.ClearHighlight();
-    	boardPanel.repaint();
-    }
-    
-    @Override
-    public void delegateSetHighlightAt(int row, int col) {
-    	gameBoard.setHighlightAt(row, col);
-    }
-    
-    @Override
-    public void delegateClearHighlightAt(int row, int col) {
-    	gameBoard.clearHighlightAt(row, col);
-    }
-	@Override
-	public void setAnarchist(int row, int col) {
-    	gameBoard.setPieceAt(PieceType.ANARCHIST, row, col);
-    	System.out.println("DEBUG Model: "+gameBoard.getPieceAt(row, col)); // => Muss ANARCHIST zeigen
-    	boardPanel.repaint();
-	}
-
-	@Override
-	public void setRoyalist(int row, int col) {
-    	gameBoard.setPieceAt(PieceType.ROYALIST, row, col);
-    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
-    	boardPanel.repaint();
-	}
-
-	@Override
-	public void setKing(int row, int col) {
-    	gameBoard.setPieceAt(PieceType.KING, row, col);
-    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
-    	boardPanel.repaint();
-	}
-
-	@Override
-	public void removePiece(int row, int col) {
-    	gameBoard.setPieceAt(PieceType.NOBODY, row, col);
-    	// System.out.println("View: "+gameBoard.getPieceAt(row, col));
-    	boardPanel.repaint();
-	}
-	*/
-
-
-
     
 }

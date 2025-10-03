@@ -153,22 +153,4 @@ public class RendererIso implements IRender{
 		
 	}
 
-	
-	/*
-	@Override
-    public void setSquare(Graphics2D g, int row, int col, SquareAppearance square) {}
-    
-    @Override
-    public void setPiece(Graphics2D g, int row, int col, PieceAppearance piece) {}
-	
-	@Override
-	public void setBoardBorder() {}
-	
-	@Override
-	public void showMouseHoverIndicator(int row, int col) {}
-
-	@Override
-	public void clearMouseHoverIndicator() {}
-	*/
-
 }

@@ -1,6 +1,7 @@
 package org.andarted.hnefatafl.view;
 
 import org.andarted.hnefatafl.model.PieceType;
+
 import java.awt.Color;
 import java.awt.Point;
 
