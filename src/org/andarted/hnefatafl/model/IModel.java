@@ -13,7 +13,9 @@ public interface IModel {
 	ModeType getModeType();
 
 	int getBoardSize();
-	String getActiveParty();
+	Participant getActiveParty();
+	Participant getPartyAt(int row, int col);
+	String getActivePartyString();
 	
 	void setFreshLineUp(int size, Variant variant);
 	void setPiece(PieceType pieceType, int row, int col);

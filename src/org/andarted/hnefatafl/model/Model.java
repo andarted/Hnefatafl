@@ -495,7 +495,17 @@ public class Model implements IModel {
     }
     
     @Override
-    public String getActiveParty() {
+    public Participant getActiveParty() {
+    	return activeParty;
+    }
+    
+    @Override
+    public Participant getPartyAt(int row, int col) {
+    	return gameBoard.getPieceAt(row, col).party;
+    }
+    
+    @Override
+    public String getActivePartyString() {
     	return activeParty.toString();
     }
     
@@ -504,6 +514,7 @@ public class Model implements IModel {
     	return currentMode;
     }
     
+
 
 
     

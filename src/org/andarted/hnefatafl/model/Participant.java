@@ -1,6 +1,6 @@
 package org.andarted.hnefatafl.model;
 
-enum Participant {
+public enum Participant {
 	ANARCHISTS,
 	ROYALISTS,
 	NEUTRAL;

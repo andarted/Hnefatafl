@@ -78,7 +78,7 @@ public class Presenter implements IPresenter {
 			QLog.log("presenter", "handleToggleActivePartyButton()", "-> model.toggleActiveParty()");
 			model.debugPanelToggleActiveParty();
 			QLog.log("presenter", "handleToggleActivePartyButton()", "-> view.setActivePartyDisplay");
-			view.setActivePartyDisplay(model.getActiveParty());	
+			view.setActivePartyDisplay(model.getActivePartyString());	
 		}
 	}
     
@@ -194,7 +194,7 @@ public class Presenter implements IPresenter {
 	
 	@Override
 	public String getActiveParty() {
-		return model.getActiveParty();
+		return model.getActivePartyString();
 	}
 	
 	@Override
@@ -202,7 +202,7 @@ public class Presenter implements IPresenter {
 		view.setDebugModeTButton(enabled);
 		view.delegateRepaint();
 		if (!enabled) {
-			view.setActivePartyDisplay(model.getActiveParty());
+			view.setActivePartyDisplay(model.getActivePartyString());
 		}
 	}
 	

@@ -13,13 +13,13 @@ import org.andarted.hnefatafl.common.TraceLogger;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
-import java.util.Iterator;
+// import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+// import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -57,10 +57,10 @@ public class View implements IView {
     private JMenuItem setSwingRenderer;
     private JMenuItem setIsoRenderer;
     
-    private JLabel activePlayerLabel;
+    // private JLabel activePlayerLabel;
     
     private IPresenter presenter;
-    private IRender renderer;
+    // private IRender renderer;
     
     private IRender currendRenderer;
     private IListen iListen;
@@ -69,8 +69,8 @@ public class View implements IView {
     
 	private GameBoard gameBoard;
 	private BoardPanel boardPanel;
-	private int mouseHoverPosX = 0;
-	private int mouseHoverPosY = 0;
+	// private int mouseHoverPosX = 0;
+	// private int mouseHoverPosY = 0;
 	
 	private String blub = "das ist ein Text";
 	// - - - Konstruktor - - -
@@ -256,7 +256,7 @@ public class View implements IView {
 	}
 	
 	private void createBoardPanel(){	
-		renderer = currendRenderer;
+		// renderer = currendRenderer;
 		int boardSize = presenter.getBoardSize();
 		boardPanel = new BoardPanel(boardSize, currendRenderer, BASE_COLOR);
 		boardPanel.setOpaque(false);
@@ -397,7 +397,7 @@ public class View implements IView {
     	mainPanel.add(sidePanel, BorderLayout.EAST);
     	mainFrame.add(mainPanel, BorderLayout.CENTER);
     	mainFrame.pack();
-    	mainFrame.setLocationRelativeTo(null);
+    	mainFrame.setLocationRelativeTo(null); 
     }
     
     
@@ -411,7 +411,7 @@ public class View implements IView {
     
     
 	@Override
-	public void initializeNewGame(GameBoard gameBoard) {		// <- Löschen???
+	public void initializeNewGame(GameBoard gameBoard) {		// TODO  <-löschen?
 		// weg mit dem alten
 		if (boardPanel != null && boardPanelWrapper != null) {
 			boardPanelWrapper.remove(boardPanel);
@@ -419,7 +419,7 @@ public class View implements IView {
 		}
 		
 		this.gameBoard = gameBoard;
-		this.renderer = currendRenderer;
+		// this.renderer = currendRenderer;
 		this.boardPanel = new BoardPanel(presenter.getBoardSize(), currendRenderer, BASE_COLOR);
 		
 		System.out.println("View: [initializeNewGame]");

@@ -5,6 +5,7 @@ import javax.swing.SwingUtilities;
 import org.andarted.hnefatafl.presenter.Presenter;
 import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.model.Model;
+import org.andarted.hnefatafl.model.rules.Rules;
 import org.andarted.hnefatafl.view.View;
 
 
@@ -18,8 +19,9 @@ public class Main {
 	private static void startApplication() {
 		System.out.println("Hnefatafl startet!");
 		
-		// - - - JMENU BAR AUF MACOS IN MACOS STYLE - - -
+
 		
+		// - - - JMENU BAR AUF MACOS IN MACOS STYLE - - -
 		// System.setProperty("apple.laf.useScreenMenuBar", "true");  <-- Später vermutlich enablen. Zum testen würde es aber nerven.
 
         
@@ -32,6 +34,12 @@ public class Main {
 		
 		view.initializePresenter(presenter);				// View zurück zu Presenter verbinden
 		model.initializePresenter(presenter);		
+		
+		
+		// - - - RULES - - -
+		
+		Rules rules = new Rules();
+		rules.applyAll(model);
 		
 		// - - - BOOTEN - - - 
 		
