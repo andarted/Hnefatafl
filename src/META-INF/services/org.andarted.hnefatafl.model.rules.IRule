@@ -1,2 +1,3 @@
 org.andarted.hnefatafl.model.rules.MoveRule
 org.andarted.hnefatafl.model.rules.BeispielRule
+org.andarted.hnefatafl.model.rules.SimpleCaptureRule

@@ -10,6 +10,7 @@ import java.util.Set;
 // import org.andarted.hnefatafl.common.PieceType;
 import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.common.TraceLogger;
+import org.andarted.hnefatafl.model.rules.Rules;
 import org.andarted.hnefatafl.presenter.IPresenter;
 
 public class Model implements IModel {
@@ -18,9 +19,12 @@ public class Model implements IModel {
 	
 	private IPresenter presenter;
 	private GameBoard gameBoard;
-	private String[] LineUpAsStringArray;
+	
+	private final Rules rules = new Rules();
+	
+	// private String[] LineUpAsStringArray;
 	// private PieceType[][] currentState;
-	private PieceType[][] lineUpPieceTypeMatrix;
+	// private PieceType[][] lineUpPieceTypeMatrix;
 	
 	private char[][] lineUpCharMatrix;
 	
@@ -33,6 +37,7 @@ public class Model implements IModel {
 	private ModeType currentMode = ModeType.GRAB_PIECE;
 	private Phase currentPhase = Phase.CHECK_IF_MOVE_IS_POSSIBLE;
 	
+	private Point dropPos = new Point (3,3);
 
 	
 	// - - - CONSTRUCTOR - - -
@@ -67,6 +72,8 @@ public class Model implements IModel {
      *  
      */
     
+    
+    /*
     private void takeTurn() {
     	switch (this.currentPhase) {
     	case CHECK_IF_MOVE_IS_POSSIBLE:
@@ -82,9 +89,11 @@ public class Model implements IModel {
     	case END_TURN:
     		break;
     	default:
-    		QLog.log("model", "takTurn", "XXX ERROR XXX - somehow this.currentPhase is " + this.currentPhase.toString() + " - which doesn't exist!");
+    		QLog.log("model", "takTurn", " ERROR - somehow this.currentPhase is " + this.currentPhase.toString() + " - which doesn't exist!");
     	}
     }
+    
+    */
     
     private void grabPiece(int row, int col) {
     	PieceType piece = gameBoard.pieces[row][col];
@@ -94,10 +103,8 @@ public class Model implements IModel {
     		QLog.log("model", "grabPiece()", "grabPiece at " + row + " " + col + ".");
     		this.activeSquare = new Point (row, col);
     		this.currentPieceType = piece;
-    		setReach(row, col); // >>> Issue #6
+    		setReach(row, col);
     		this.currentMode = ModeType.MOVE_PIECE;
-    		// movePiece(-1, -1, -1, -1); // >>> Issue #7
-    		
     	}
     	else {
     		QLog.log("model", "grabPiece", "Piece at " + row + " " + col + " is not from " + activeParty + " (aka activeParty) but from " + party);
@@ -145,6 +152,8 @@ public class Model implements IModel {
     	gameBoard.setReach(currentReach);
     }
 
+    
+    /*
     private Point northOf(Point p, int distance) {
     	return new Point(p.x+distance,p.y);
     }
@@ -164,9 +173,11 @@ public class Model implements IModel {
     private void movePiece(int rowStart, int colStart, int rowEnd, int colEnd) {
     	
     }
+    */
     
     private void moveCurrentPieceTo(int row, int col) {
     	if(gameBoard.inReach(row, col)) {
+    		this.dropPos = new Point (row,col);
     		QLog.log("model", "moveCurrendPieceTo", "in Reach [1/4] -> gameBoard.removePieceAt");
     		gameBoard.removePieceAt(this.activeSquare.x, this.activeSquare.y);
     		QLog.log("model", "moveCurrendPieceTo", "in Reach [2/4] -> gameBoard.setPieceAt " + this.activeSquare.x + "," + this.activeSquare.y + ".");
@@ -369,6 +380,39 @@ public class Model implements IModel {
     	}
     }
     
+    private void escapeSquareCapture(int row, int col) {
+    	int rowN2 = row-2, rowN1 = row-1, rowS1 = row+1, rowS2 = row+2;
+    	int colW2 = col-2, colW1 = col-1, colE1 = col+1, colE2 = col+2;
+    	PieceType foe;
+    	if (activeParty == Participant.ANARCHISTS) {foe = PieceType.ROYALIST;}
+    		else {foe = PieceType.ANARCHIST;}
+    	
+    	QLog.log("model", "simpleCapture", "CHECKE AB, OB ES EINE FIGUR ZU CATCHEN GIBT");
+    	// !!! wichtig für folgende if: nur wegen reihenfolge der Bedingungen gibt's keine NullPointerExcaption !!!!
+    	if (row > 1 && getPieceAt(rowN1, col) == foe && getSquareAt(rowN2, col) == SquareType.ESCAPE) { 
+    		QLog.log("model", "escapeSquareCapture", "capture piece north");
+    		setPiece(PieceType.NOBODY, rowN1, col);
+    	}
+    	if (col < getBoardSize()-2 && getPieceAt(row, colE1) == foe && getSquareAt(row, colE2) == SquareType.ESCAPE) {
+    		QLog.log("model", "escapeSquareCapture", "capture piece east");
+    		setPiece(PieceType.NOBODY, row, colE1);
+    	}
+    	if (row < getBoardSize()-2 && getPieceAt(rowS1, col) == foe && getSquareAt(rowS2, col) == SquareType.ESCAPE) {
+    		QLog.log("model", "escapeSquareCapture", "capture piece south");
+    		setPiece(PieceType.NOBODY, rowS1, col);
+    	}
+    	if (col > 1 && getPieceAt(row, colW1) == foe && getSquareAt(row, colW2) == SquareType.ESCAPE) {
+    		QLog.log("model", "escapeSquareCapture", "capture piece west");
+    		setPiece(PieceType.NOBODY, row, colW1);
+    	}
+    }
+    
+    private void throneSquareCapture(int row, int col) {
+    	// TODO
+    }
+    
+    private 
+    
     
     private void shieldWallCapture(int row, int col) {
     	int rowN2 = row-2, rowN1 = row-1, rowS1 = row+1, rowS2 = row+2;
@@ -500,6 +544,11 @@ public class Model implements IModel {
     }
     
     @Override
+    public Participant getCurrentEnemy() {
+    	return currentEnemy;
+    }
+    
+    @Override
     public Participant getPartyAt(int row, int col) {
     	return gameBoard.getPieceAt(row, col).party;
     }
@@ -512,6 +561,11 @@ public class Model implements IModel {
     @Override
     public ModeType getModeType() {
     	return currentMode;
+    }
+    
+    @Override
+    public Point getDropPos() {
+    	return dropPos;
     }
     
 
@@ -589,7 +643,11 @@ public class Model implements IModel {
 
 	private void trapAllEnemies(int row, int col){
 		// QLog.log("model", "trapAllEnemies", "-> simpleCapture");
+		
+		// rules.applyAll(this);				//					TODO Issue #26 die ganze ServiceLoader Geschichte funktioniert nicht. 
 		simpleCapture(row,col);
+		escapeSquareCapture(row, col);
+		throneSquareCapture(row, col);
 		shieldWallCapture(row,col);
 	}
 	

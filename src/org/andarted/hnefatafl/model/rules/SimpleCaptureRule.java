@@ -1,19 +1,34 @@
 package org.andarted.hnefatafl.model.rules;
 
+import java.awt.Point;
+
 import org.andarted.hnefatafl.common.QLog;
 import org.andarted.hnefatafl.model.Participant;
 import org.andarted.hnefatafl.model.PieceType;
-import org.andarted.hnefatafl.model.IModel;
+import org.andarted.hnefatafl.model.Model;
 
-class SimpleCaptureRule {
+public class SimpleCaptureRule implements IRule{
 	
-	private final IModel model;
+	private Point dropPos;
+	private int row;
+	private int col;
 	
-    public SimpleCaptureRule(IModel model) {
-    	this.model = model;
-    }
+	
+	public SimpleCaptureRule() {
+		
+	}
 
-	void simpleCapture(int row, int col) {
+	
+	@Override
+	public void apply(Model model) {
+		dropPos = model.getDropPos();
+		
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		
+		this.row = dropPos.x;
+		this.col = dropPos.y;
+		
+		
     	int rowN2 = row-2, rowN1 = row-1, rowS1 = row+1, rowS2 = row+2;
     	int colW2 = col-2, colW1 = col-1, colE1 = col+1, colE2 = col+2;
     	PieceType foe;
@@ -38,6 +53,28 @@ class SimpleCaptureRule {
     		QLog.log("model", "simpleCapture", "capture piece west");
     		model.setPiece(PieceType.NOBODY, row, colW1);
     	}
-    }
-
+	}
 }
+
+
+	/*
+	private SquareType isAnAmboss(SquareType squareType) {
+		
+		return 
+	}
+	
+	private boolean ambossExists(int aRow, int aCol) {
+		boolean ambossExists = false;
+		
+		if (model.getPartyAt(aRow, aCol) == model.getCurrentEnemy() || model.getSquareAt(aRow, aCol) == SquareType.THRONE) {
+			
+		}
+		
+		return ambossExists;
+	}
+	
+	private void capture(int hammerRow, int hammerCol, int ambossRow, int ambossCol) {
+		// if
+	}
+	*/
+

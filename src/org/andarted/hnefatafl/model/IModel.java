@@ -1,5 +1,7 @@
 package org.andarted.hnefatafl.model;
 
+import java.awt.Point;
+
 // import org.andarted.hnefatafl.presenter.Presenter;
 
 public interface IModel {
@@ -14,7 +16,10 @@ public interface IModel {
 
 	int getBoardSize();
 	Participant getActiveParty();
+	Participant getCurrentEnemy();
 	Participant getPartyAt(int row, int col);
+	Point getDropPos();
+	
 	String getActivePartyString();
 	
 	void setFreshLineUp(int size, Variant variant);
