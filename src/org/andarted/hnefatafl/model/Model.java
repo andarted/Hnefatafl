@@ -411,7 +411,7 @@ public class Model implements IModel {
     	// TODO
     }
     
-    private 
+    
     
     
     private void shieldWallCapture(int row, int col) {
@@ -568,6 +568,10 @@ public class Model implements IModel {
     	return dropPos;
     }
     
+    @Override
+    public AreaType getAreaAt(Point point) {
+    	return gameBoard.area[point.x][point.y];
+    }
 
 
 
@@ -639,6 +643,7 @@ public class Model implements IModel {
 				System.out.println("model.onSquareClicked:   XXX ERROR XXX - Wie konnte das passieren?");
 		}
 		
+		QLog.log("model", "onSquareClicked", "Area is " + gameBoard.area[row][col].toString());
 	}
 
 	private void trapAllEnemies(int row, int col){

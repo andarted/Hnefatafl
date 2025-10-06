@@ -15,6 +15,7 @@ public class GameBoard {
 	private final int boardSize;
 	private final SquareType[][] squares;
 	public final PieceType[][] pieces;
+	public final AreaType[][] area;
 	
 	private boolean[][] squareBeneathMouse;
 	private boolean[][] reachSelection;
@@ -42,26 +43,58 @@ public class GameBoard {
 		
 		squares = new SquareType[size][size];
 		pieces = new PieceType[size][size];
+		area = new AreaType[size][size];
 		squareBeneathMouse = new boolean[size][size];
 		reachSelection = new boolean[size][size];
 		for (int row = topRow; row <= botRow; row++) {
 			for (int col = lefCol; col <= rigCol; col++) {
 				squares[row][col] = SquareType.EMPTY;
 				pieces[row][col] = PieceType.NOBODY;
+				area[row][col] = AreaType.COMMONS;
 				reachSelection[row][col] = false;
 			}
 		}
+		
 		integrateBoardItems(size);
+		divideLand(size);
 	}
 	
-	private void clearBoard() {
-		for (int row = topRow; row <= botRow; row++) {
-			for (int col = lefCol; col <= rigCol; col++) {
-				pieces[row][col] = PieceType.NOBODY;
-			}
+	private void divideLand(int size) {
+		for (int col = 1; col < size-1; col++) {				// NORTH
+			area[0][col] = AreaType.NORTH_WALL;
 		}
+		for (int col = 1; col < size-1; col++) {
+			area[1][col] = AreaType.NORTH_FIELD;
+		}
+		for (int row = 1; row < size-1; row++) {				// EAST
+			area[row][size-1] = AreaType.EAST_WALL;
+		}
+		for (int row = 1; row < size-2; row++) {
+			area[row][size-2] = AreaType.EAST_FIELD;
+		}
+		for (int col = 1; col < size-1; col++) {				// SOUTH
+			area[size-1][col] = AreaType.SOUTH_WALL;
+		}
+		for (int col = 1; col < size-1; col++) {
+			area[size-2][col] = AreaType.SOUTH_FIELD;
+		}
+		for (int row = 1; row < size-1; row++) {				// WEST
+			area[row][0] = AreaType.WEST_WALL;
+		}
+		for (int row = 1; row < size-2; row++) {
+			area[row][1] = AreaType.WEST_FIELD;
+		}
+		area[centre-1][centre] = AreaType.THRONE_NORTH_SQUARE;	// THRONE AREA
+		area[centre-2][centre] = AreaType.THRONE_NORTH_ATTACK;
+		area[centre][centre+1] = AreaType.THRONE_EAST_SQUARE;
+		area[centre][centre+2] = AreaType.THRONE_EAST_ATTACK;
+		area[centre+1][centre] = AreaType.THRONE_SOUTH_SQUARE;
+		area[centre+2][centre] = AreaType.THRONE_SOUTH_ATTACK;
+		area[centre][centre-1] = AreaType.THRONE_WEST_SQUARE;
+		area[centre][centre-2] = AreaType.THRONE_WEST_ATTACK;
+		area[centre][centre] = AreaType.THRONE_WITH_KING;		// THRONE
 	}
-	
+		
 	private void integrateBoardItems(int size) {
 		squares[topRow][lefCol] = SquareType.ESCAPE;
 		squares[topRow][rigCol] = SquareType.ESCAPE;
@@ -69,8 +102,17 @@ public class GameBoard {
 		squares[botRow][rigCol] = SquareType.ESCAPE;
 		squares[centre][centre] = SquareType.THRONE;
 	}
+
 	
 	// - - - METHODEN - - -
+
+	private void clearBoard() {
+		for (int row = topRow; row <= botRow; row++) {
+			for (int col = lefCol; col <= rigCol; col++) {
+				pieces[row][col] = PieceType.NOBODY;
+			}
+		}
+	}
 	
 			// - - - - - - - - - SPECIAL PAINT REACH MAP METHODE - - - - - - - - -
 	
@@ -125,10 +167,6 @@ public class GameBoard {
 		}
 	}
 	
-    private void highlightHoverPosition() {
-    	this.mouseHoverPosX = 1;
-    	this.mouseHoverPosY = 1;
-    }
     	
 	public void clearHoverPosition() {
 		initializeHighlight();
@@ -303,16 +341,6 @@ public class GameBoard {
     	}
     }
     
-    /*
-    public void clearHighlight() {
-    	for (int row = 0; row <= this.boardSize; row++) {
-    		for (int col = 0; col <= this.boardSize; col--) {
-    			this.squareBeneathMouse[row][col] = false;
-    		}
-    	}
-    }
-    */
-    
     public void clearHighlightAt(int row, int col) {
     	squareBeneathMouse[row][col] = true;
     }
@@ -326,7 +354,6 @@ public class GameBoard {
 		if (row != -1 || col != -1) {
 			squareBeneathMouse[row][col] = true;
 		}
-		
 		TraceLogger.log("gameBoard", "SetMouseHoverPos:", true, "– – –");
 	}	
 	

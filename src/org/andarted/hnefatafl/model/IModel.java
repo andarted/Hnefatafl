@@ -12,6 +12,7 @@ public interface IModel {
 	GameBoard getGameBoard();
 	SquareType getSquareAt(int row, int col);
 	PieceType getPieceAt(int row, int col);
+	AreaType getAreaAt(Point point);
 	ModeType getModeType();
 
 	int getBoardSize();
