@@ -8,7 +8,7 @@ import org.andarted.hnefatafl.presenter.Presenter;
 public interface IView {
 	
 	void initializeView();
-	void updateDebugDisplay(String string);
+	// void updateDebugDisplay(String string);
 	void initializeNewGame(GameBoard gameBoard);
 	void setActivePartyDisplay(String activeSide);
 	

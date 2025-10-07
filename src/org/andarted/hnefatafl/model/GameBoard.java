@@ -325,10 +325,10 @@ public class GameBoard {
     	reachSelection[row][col] = true;
     }
     
-    public void setReach(Set<Point> reach) {
+    public void setReach(Set<Coordinate> reach) {
     	clearReachHighlight();
-    	for (Point p : reach) {
-    		setReachHighlightAt(p.x, p.y);
+    	for (Coordinate c : reach) {
+    		setReachHighlightAt(c.row, c.col);
     	}
     }
 

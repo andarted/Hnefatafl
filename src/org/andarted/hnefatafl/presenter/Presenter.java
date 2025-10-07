@@ -39,30 +39,31 @@ public class Presenter implements IPresenter {
 	public void startDefaultGame() {
 		QLog.log("presenter", "startDefaultGame()", "-> model.newDefaultGame()");
 		this.gameBoard = model.newDefaultGame();
-		/*
-		view.initializeView();
-		view.setGameBoard();
-		*/
 	}
     
+    @Override
+    public void handleNewGameItem(int size, Variant variant) {
+    	System.out.println("Presenter: handleNewGameItem (" + size + ", " + variant.toString() + ")");
+    	QLog.log("presenter", "onSquareClicked[1/4]", "-> model.newGame()");
+    	this.gameBoard = model.newGame(size, variant);
+    	QLog.log("presenter", "onSquareClicked[3/4]", "-> view.initialize(model.getGameBoard())");
+    	view.initializeNewGame(model.getGameBoard());
+    	QLog.log("presenter", "onSquareClicked[3/4]", "-> view.setGameBpard()");     
+    	view.setGameBoard();
+    	QLog.log("presenter", "handleNewGameItem[4/4]", "-> view.delegateRepaint()");
+    	view.setActivePartyDisplay(model.getActivePartyString()); 
+
+    }
     
     @Override
     public void onSquareClicked(int row, int col) {
-    	QLog.log("presenter", "onSquareClicked[1/2]", "-> model.onSquareClicked()");        // System.out.println("Presenter: Kilck auf Feld (" + row + "," + col + ").");
+    	QLog.log("presenter", "onSquareClicked[1/2]", "-> model.onSquareClicked()");
         model.onSquareClicked(row, col);
         QLog.log("presenter", "onSquareClicked[2/2]", "-> view.delegateRepaint()");     
         view.delegateRepaint();
     }
     
     
-    @Override
-    public void handleNewGameItem(int size, Variant variant) {
-    	this.gameBoard = model.newGame(size, variant);
-    	System.out.println("Presenter: handleNewGameItem (" + size + ", " + variant.toString() + ")");
-    	    	
-    	view.initializeNewGame(model.getGameBoard());
-    	view.setGameBoard();
-    }
     
     @Override
     public void handleExitItem() {
@@ -99,7 +100,7 @@ public class Presenter implements IPresenter {
     	model.debugSetPiece(PieceType.ROYALIST);
     	
     	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.updateDebugDisplay");
-    	view.updateDebugDisplay("debug mode: drop royalists");
+    	view.setActivePartyDisplay("debug mode: drop royalists");
     }
     
     @Override
@@ -111,7 +112,7 @@ public class Presenter implements IPresenter {
     	model.debugSetPiece(PieceType.ANARCHIST);
     	
     	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.updateDebugDisplay");
-    	view.updateDebugDisplay("debug mode: drop anarchists");
+    	view.setActivePartyDisplay("debug mode: drop anarchists");
     }
     
     @Override
@@ -123,7 +124,7 @@ public class Presenter implements IPresenter {
     	model.debugSetPiece(PieceType.KING);
     	
     	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.updateDebugDisplay");
-    	view.updateDebugDisplay("debug mode: drop kings");
+    	view.setActivePartyDisplay("debug mode: drop kings");
     }
     
     @Override
@@ -135,7 +136,7 @@ public class Presenter implements IPresenter {
     	model.debugSetPiece(PieceType.NOBODY);
     	
     	QLog.log("presenter", "handleDebugGetRoyalist", "-> view.updateDebugDisplay");
-    	view.updateDebugDisplay("debug mode: remove piece");
+    	view.setActivePartyDisplay("debug mode: remove piece");
     }
 
 

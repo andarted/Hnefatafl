@@ -12,14 +12,15 @@ public interface IModel {
 	GameBoard getGameBoard();
 	SquareType getSquareAt(int row, int col);
 	PieceType getPieceAt(int row, int col);
-	AreaType getAreaAt(Point point);
+	AreaType getAreaAt(int row, int col);
 	ModeType getModeType();
 
 	int getBoardSize();
 	Participant getActiveParty();
 	Participant getCurrentEnemy();
 	Participant getPartyAt(int row, int col);
-	Point getDropPos();
+	int getClickX();
+	int getClickY();
 	
 	String getActivePartyString();
 	

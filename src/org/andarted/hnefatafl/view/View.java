@@ -447,12 +447,14 @@ public class View implements IView {
 		sidePanel.setActivePartyDisplay(newActivePlayer);
 	}
 	
+	/*
 	@Override
 	public void updateDebugDisplay(String newActivePlayer) {
 		if (sidePanel != null) {
 			sidePanel.setActivePartyDisplay(newActivePlayer);
 		}
 	}
+	*/
 	
 	@Override
     public void congratWin(String string) {
@@ -460,7 +462,7 @@ public class View implements IView {
     }
 	
 	@Override
-    public void highlightReach(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol) {
+    public void highlightReach(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol) { // TODO <- löschen? 
 		gameBoard.paintReachMap(originRow, originCol, fromRow, toRow, fromCol, toCol);
     	boardPanel.repaint();
     }
