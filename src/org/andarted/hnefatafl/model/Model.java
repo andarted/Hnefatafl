@@ -1,9 +1,6 @@
 package org.andarted.hnefatafl.model;
 
-// import java.awt.List;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.andarted.hnefatafl.common.QLog;
@@ -19,10 +16,6 @@ public class Model implements IModel {
 	private GameBoard gameBoard;
 	
 	private final Rules rules = new Rules();
-	
-	// private String[] LineUpAsStringArray;
-	// private PieceType[][] currentState;
-	// private PieceType[][] lineUpPieceTypeMatrix;
 	
 	private char[][] lineUpCharMatrix;
 	
@@ -83,7 +76,7 @@ public class Model implements IModel {
     		QLog.log("model", "moveCurrendPieceTo", "in Reach [2/4] -> gameBoard.setPieceAt " + row + "," + col + ".");
     		gameBoard.movePieceTo(currentPieceType, row, col);
     		QLog.log("model", "moveCurrendPieceTo", "in Reach [3/4] -> gameBoard.clearReachHighlight");
-    		gameBoard.clearReachHighlight();
+    		gameBoard.clearReachHighlight(); 
     		QLog.log("model", "moveCurrendPieceTo", "in Reach [4/4] -> trapAllEnemies");
     		trapAllEnemies(row,col);
     		presenter.handleToggleActiveParty();
@@ -91,7 +84,7 @@ public class Model implements IModel {
     	else {
     		QLog.log("model", "moveCurrendPieceTo", "NOT in Reach [1/2] -> gameBoard.clearReachHighlight");
     		gameBoard.clearReachHighlight();
-    		QLog.log("model", "moveCurrendPieceTo", "NOT in Reach [1/2] -> current Mode back to GRAB_PIECE");
+    		QLog.log("model", "moveCurrendPieceTo", "NOT in Reach [2/2] -> current Mode back to GRAB_PIECE");
     		currentMode = ModeType.GRAB_PIECE;
     	}
     }
@@ -120,25 +113,7 @@ public class Model implements IModel {
     }
     
     
-    // - - - OVERRIDES - - - 
-    
-    @Override
-    public GameBoard newDefaultGame() {
-    	QLog.log("model", "newDefaultGame", "-> model.newGame([default Einstellungen])");
-    	newGame(9, Variant.STANDARD);
-    	return this.gameBoard;
-    }
-    
-    
-    @Override
-    public GameBoard newGame(int size, Variant variant) {
-    	QLog.log("model", "newGame[1/2]", "this.gameBoard ist neues GameBoard");
-    	this.gameBoard = new GameBoard(size, variant);
-    	QLog.log("model", "newGame[2/2]", "-> model.setLineUp()");
-    	setLineUp(size, variant);
-    	setDefaultStartParty();
-    	return gameBoard;
-    }
+
     
     private void setDefaultStartParty() {
     	activeParty = Participant.ANARCHISTS;
@@ -163,6 +138,14 @@ public class Model implements IModel {
     	this.currentState = LineUpFactory.createLineUp(lineUp, variant);
     }
     */
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     // - - - METHODS / LINE UP PIECES - - -
@@ -259,6 +242,14 @@ public class Model implements IModel {
     }
     
     
+    
+    
+    
+    
+    
+    
+    
+    
     // - - - METHODS isInAnArea - - -
     
     
@@ -270,6 +261,30 @@ public class Model implements IModel {
     	return (0 <= row && row <= 2 || getBoardSize()-2 <= row && row <= getBoardSize()) &&
     		   (0 <= col && col <= 2 || getBoardSize()-2 <= row && row <= getBoardSize());
     }
+    
+    
+    
+    
+    // - - - OVERRIDES - - - 
+    
+    @Override
+    public GameBoard newDefaultGame() {
+    	QLog.log("model", "newDefaultGame", "-> model.newGame([default Einstellungen])");
+    	newGame(9, Variant.STANDARD);
+    	return this.gameBoard;
+    }
+    
+    
+    @Override
+    public GameBoard newGame(int size, Variant variant) {
+    	QLog.log("model", "newGame[1/2]", "this.gameBoard ist neues GameBoard");
+    	this.gameBoard = new GameBoard(size, variant);
+    	QLog.log("model", "newGame[2/2]", "-> model.setLineUp()");
+    	setLineUp(size, variant);
+    	setDefaultStartParty();
+    	return gameBoard;
+    }
+    
     
     
     // - - - GETTER - - -
