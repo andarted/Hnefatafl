@@ -12,7 +12,4 @@ public enum PieceType {
 	PieceType (Participant party){
 		this.party = party;	
 	}
-	public Participant getParty(PieceType pieceType) {
-		return pieceType.party;
-	}
 }

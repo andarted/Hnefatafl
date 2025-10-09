@@ -18,6 +18,7 @@ public class Model implements IModel {
 	private final Rules rules = new Rules();
 	
 	private char[][] lineUpCharMatrix;
+	private PieceType[][] lineUp;
 	
 	private Participant activeParty = Participant.ANARCHISTS;
 	private Participant currentEnemy = Participant.ROYALISTS;	
@@ -31,6 +32,8 @@ public class Model implements IModel {
 	private int putToCol = -1;
 	private int tookFromRow = -1;
 	private int tookFromCol = -1;
+	
+	
 
 	
 	// - - - CONSTRUCTOR - - -
@@ -45,6 +48,11 @@ public class Model implements IModel {
         this.presenter = presenter;
         QLog.log("model", "initializePresenter", "model initialisiert presenter");
     }
+    
+    
+    
+    
+    
     
     
 	// - - - METHODES - - - 
@@ -90,6 +98,12 @@ public class Model implements IModel {
     }
     
     
+    
+    
+    
+    
+    
+    
     // - - - METHODS REACH - - -
     
     private void setReach(int row, int col) {
@@ -112,33 +126,23 @@ public class Model implements IModel {
 			}
     }
     
-    
 
+    
+    
+    
+    
+    
     
     private void setDefaultStartParty() {
     	activeParty = Participant.ANARCHISTS;
-    	currentEnemy = Participant.ROYALISTS;
+    	currentEnemy = activeParty.getOpponent();
     }
     
     private void toggleActiveParty() {
-    	if (activeParty == Participant.ROYALISTS) {
-    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ANARCHISTS|");
-    		activeParty = Participant.ANARCHISTS;
-    		currentEnemy = Participant.ROYALISTS;
-    	}
-    	else {
-    		QLog.log("model", "toggleActiveParty", "setzt active Party auf ROYALISTS|");
-    		activeParty = Participant.ROYALISTS;
-    		currentEnemy = Participant.ANARCHISTS;
-    	}
+    	currentEnemy = activeParty;
+    	activeParty = activeParty.getOpponent();
     }
-
-    /*
-    private void generateLineUp(LineUp lineUp, Variant variant) {
-    	this.currentState = LineUpFactory.createLineUp(lineUp, variant);
-    }
-    */
-    
+        
     
     
     
@@ -265,6 +269,11 @@ public class Model implements IModel {
     
     
     
+    
+    
+    
+    
+    
     // - - - OVERRIDES - - - 
     
     @Override
@@ -280,7 +289,16 @@ public class Model implements IModel {
     	QLog.log("model", "newGame[1/2]", "this.gameBoard ist neues GameBoard");
     	this.gameBoard = new GameBoard(size, variant);
     	QLog.log("model", "newGame[2/2]", "-> model.setLineUp()");
-    	setLineUp(size, variant);
+    	
+    	/*
+    	PieceType[][] startLineUp = LineUpGenerator.generate(size, variant);		TODO
+    	for (int row = 0; row < startLineUp.length; row++) {
+    		for (int col = 0; row < startLineUp[0].length; col++) {
+    			gameBoard.setPieceAt(startLineUp[row][col], row, col);
+    		}
+    	}
+    	*/
+    	setLineUp(size, variant);												//	TODO
     	setDefaultStartParty();
     	return gameBoard;
     }
@@ -347,6 +365,8 @@ public class Model implements IModel {
     public AreaType getAreaAt(int row, int col) {
     	return gameBoard.area[row][col];
     }
+    
+    
 
 
     

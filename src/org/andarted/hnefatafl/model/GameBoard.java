@@ -172,80 +172,11 @@ public class GameBoard {
 		initializeHighlight();
 	}
 	
-			// - - - - - - - - - /SPECIAL PAINT REACH MAP METHODE - - - - - - - - -
+	
 	
 	
 		// - - - GETTER - - - 
-	
 
-	
-	public SquareType getSquareNorthFrom(int row, int col) {
-		row--;
-		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
-			return squares[row][col];
-		}
-		else {
-			return null;
-		}}
-	public SquareType getSquareEastFrom(int row, int col) {
-		col++;
-		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
-			return squares[row][col];
-		}
-		else {
-			return null;
-		}}
-	
-	public SquareType getSquareSouthFrom(int row, int col) {
-		row++;
-		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
-			return squares[row][col];
-		}
-		else {
-			return null;
-		}}
-	public SquareType getSquareWestFrom(int row, int col) {
-		col--;
-		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
-			return squares[row][col];
-		}
-		else {
-			return null;
-		}}
-	
-	public PieceType getPieceNorthFrom(int row, int col) {
-		row--;
-		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
-			return pieces[row][col];
-		}
-		else {
-			return null;
-		}}
-	public PieceType getPieceEastFrom(int row, int col) {
-		col++;
-		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
-			return pieces[row][col];
-		}
-		else {
-			return null;
-		}}
-	
-	public PieceType getPieceSouthFrom(int row, int col) {
-		row++;
-		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
-			return pieces[row][col];
-		}
-		else {
-			return null;
-		}}
-	public PieceType getPieceWestFrom(int row, int col) {
-		col--;
-		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
-			return pieces[row][col];
-		}
-		else {
-			return null;
-		}}
 	
 	public SquareType getSquareAt(int row, int col) {
 		if (0 <= row && row < boardSize && 0 <= col && col < boardSize) {
