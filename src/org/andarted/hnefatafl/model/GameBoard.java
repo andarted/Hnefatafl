@@ -114,49 +114,8 @@ public class GameBoard {
 		}
 	}
 	
-			// - - - - - - - - - SPECIAL PAINT REACH MAP METHODE - - - - - - - - -
-	
-	/* Diese ganze paintReach Sache, um zu eruieren welche Felde gehighlighted
-	 * werden sollen gehört eigentlich nicht in die View, das ist ein Job für's
-	 * Model oder dem Presenter. Weil die aber noch an grundelegenderen Problemen
-	 * arbeiten, habe ich das hier angelegt. ... Und es bald bereut.
-	 * 
-	 * Als ich nämlich einen zweiten Renderer auf Sprite basis angelegt habe,
-	 * merkte ich, dass ich mehr Infos haben möchte, als nur binäre welche Felder
-	 * gehilighted sind. Gerne wüsste ich wo die aktive Figur ist, und wo das in
-	 * räumlicher Relation zum gerade gepainteten Feld liegt, damit ich z.b. per
-	 * Animation anzeigen kann, wohin die Figur laufen kann.
-	 * 
-	 * Aber dafür müsste ich die ganze Highlight-verarbeitung in die Renderer
-	 * auslagern, was bedeutet, dass ich noch mal meinen alten Swing-basierten
-	 * Renderer umbauen müsste, und ich zudem furchtbar viel redundanten code
-	 * schreibe. Das sollte eigentlich alles an andere Stelle passieren, und die
-	 * View sollte nur erfahren, welches Feld einzeln jeweils wie aussehen soll.
-	 * 
-	 * Deswegen gibt's im Sprite Renderer nur ein langweiliges Highlighting. ...
-	 * Und vielleicht noch nicht mal das, weil der Presenter jetzt erst mal
-	 * einfach nur zum Laufen gebracht werden muss.
-	 */
-	
-	public void paintReachMap(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol) { // nicht genutzt !!
 
-		clearReachHighlight();
-		addHorizonalReach(originRow, fromCol, toCol);
-		addVerticalReach(originCol, fromRow, toRow);
-		// removeSpecialTerrain();
-    }
 	
-	private void addHorizonalReach(int col, int from, int to) {
-		for (int i = from; i <= to; i++) {
-			reachSelection[col][i] = true;
-		}
-	}
-	
-	private void addVerticalReach(int row, int from, int to) {
-		for (int i = from; i <= to; i++) {
-			reachSelection[i][row] = true;
-		}
-	}
 
 	private void initializeHighlight() {
 		squareBeneathMouse = new boolean[boardSize][boardSize];

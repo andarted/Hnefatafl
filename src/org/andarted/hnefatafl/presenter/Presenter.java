@@ -18,10 +18,6 @@ public class Presenter implements IPresenter {
     private final IModel model;
     private GameBoard gameBoard;
     
-    private PieceType currentPiece = PieceType.NOBODY;
-    
-    private boolean fieldHoverIsActive = false;
-    
     
     // - - - CONSTRUCTOR - - -
     

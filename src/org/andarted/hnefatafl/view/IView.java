@@ -16,8 +16,6 @@ public interface IView {
 	
 	void congratWin(String string);
 
-	void highlightReach(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol);
-
 	void initializePresenter(Presenter presenter);
 	void setGameBoard();
 	void onFieldHover(int row, int col, int screenX, int screenY);

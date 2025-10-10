@@ -17,9 +17,6 @@ public class Model implements IModel {
 	
 	private final Rules rules = new Rules();
 	
-	private char[][] lineUpCharMatrix;
-	private PieceType[][] lineUp;
-	
 	private Participant activeParty = Participant.ANARCHISTS;
 	private Participant currentEnemy = Participant.ROYALISTS;	
 	
@@ -102,6 +99,7 @@ public class Model implements IModel {
     // - - - METHODS REACH - - -
     
     private void setReach(int row, int col) {
+    	currentReach.clear();
     	QLog.log("model", "setReach", "beginne Reach zu setten");
     	for (Direction dir : Direction.values()) {
     		QLog.log("", "", "erst mal richtung " + dir);

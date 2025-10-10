@@ -458,12 +458,7 @@ public class View implements IView {
         JOptionPane.showMessageDialog(mainFrame, string, "Spielende", JOptionPane.INFORMATION_MESSAGE);
     }
 	
-	@Override
-    public void highlightReach(int originRow, int originCol, int fromRow, int toRow, int fromCol, int toCol) { // TODO <- löschen? 
-		gameBoard.paintReachMap(originRow, originCol, fromRow, toRow, fromCol, toCol);
-    	boardPanel.repaint();
-    }
-    
+	
 	// - - - GETTER - - -
 	public Color getBaseColor() {return BASE_COLOR;}
 
