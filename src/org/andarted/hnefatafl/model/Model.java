@@ -53,8 +53,6 @@ public class Model implements IModel {
     
     
     
-    
-    
 	// - - - METHODES - - - 
 
     private void grabPiece(int row, int col) {
@@ -101,9 +99,6 @@ public class Model implements IModel {
     
     
     
-    
-    
-    
     // - - - METHODS REACH - - -
     
     private void setReach(int row, int col) {
@@ -131,7 +126,7 @@ public class Model implements IModel {
     
     
     
-    
+    // - - - METHODS ACTIVE PARTY - - -
     
     private void setDefaultStartParty() {
     	activeParty = Participant.ANARCHISTS;
@@ -143,110 +138,6 @@ public class Model implements IModel {
     	activeParty = activeParty.getOpponent();
     }
         
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // - - - METHODS / LINE UP PIECES - - -
-    
-    private void setLineUp(int size, Variant variant){
-    	QLog.log("model", "setLineUp", "set up " + variant.toString() + " lineUp for boardSize " + size + " |");
-    	int height = size;
-    	int width = size;
-    	PieceType piece = PieceType.NOBODY;
-    	
-    	recallLineUp(size, variant);
-    	
-    	for (int row = 0; row < height; row++) {
-    		for (int col = 0; col < width; col++) {
-    			piece = recallPieceAt(lineUpCharMatrix, row, col);
-    			gameBoard.setPieceAt(piece, row, col);
-    		}
-    	}
-    }
-    
-    private PieceType recallPieceAt(char[][] charMatrix, int row, int col) {
-    	char pieceChar = lineUpCharMatrix[row][col];
-    	PieceType pieceType = PieceType.NOBODY;
-    	
-    	switch (pieceChar) {
-    	case '.': return PieceType.NOBODY;
-    	case 'A': return PieceType.ANARCHIST;
-    	case 'R': return PieceType.ROYALIST;
-    	case 'K': return PieceType.KING;
-    	
-    	default: 
-    		System.out.println("model.recallPieceAt(): How the Fuck messed I up???");
-    		return PieceType.PIECE_ERROR;
-    		
-    	}
-    }
-    
-    private void recallLineUp(int size, Variant variant){
-    	this.lineUpCharMatrix = translateToCharMatrix(recallSpecificLineUp(size, variant));
-    }
-    
-    private static String[] recallSpecificLineUp(int size, Variant variant) {
-    	switch (size) {
-    		case 7: 
-    			if (variant.thisIsTheAlt())
-    				return LineUp.SIZE_7_ALTERNATIVE.getLineUpString();
-    			else
-    				return LineUp.SIZE_7_STANDART.getLineUpString();
-    			
-    		case 9: 
-    			if (variant.thisIsTheAlt())
-    				return LineUp.SIZE_9_ALTERNATIVE.getLineUpString();
-    			else
-    				return LineUp.SIZE_9_STANDART.getLineUpString();
-    			
-    		case 11: 
-    			if (variant.thisIsTheAlt())
-    				return LineUp.SIZE_11_ALTERNATIVE.getLineUpString();
-    			else
-    				return LineUp.SIZE_11_STANDART.getLineUpString();
-    			
-    		case 13: 
-    			if (variant.thisIsTheAlt())
-    				return LineUp.SIZE_13_ALTERNATIVE.getLineUpString();
-    			else
-    				return LineUp.SIZE_13_STANDART.getLineUpString();
-    			
-    		default:
-    			throw new IllegalArgumentException("Model: Gibt kein LineUp für " + size + " && " + variant);
-    	}
-    }
-    
-    private static char[][] translateToCharMatrix(String[] stringArray){
-    	int rows = stringArray.length;
-    	int cols = findMaxCol(stringArray);
-    	
-    	char[][] charMap = new char[rows][cols];
-    	
-    	for (int row = 0; row < rows; row++) {
-    			charMap[row] = stringArray[row].toCharArray();
-    		}
-    	return charMap;
-    }
- 
-    private static int findMaxCol(String[] stringArray) {
-    	int maxStringLength = 0;
-    	int numberOfStrings = stringArray.length;
-    	for (int currentString = 0; currentString < numberOfStrings; currentString++) {
-    		if (maxStringLength < stringArray[currentString].length()) {
-    			maxStringLength = stringArray[currentString].length();
-    		}
-    	}
-    	return maxStringLength;
-    }
-    
-    
-    
     
     
     
@@ -270,10 +161,6 @@ public class Model implements IModel {
     
     
     
-    
-    
-    
-    
     // - - - OVERRIDES - - - 
     
     @Override
@@ -287,18 +174,19 @@ public class Model implements IModel {
     @Override
     public GameBoard newGame(int size, Variant variant) {
     	QLog.log("model", "newGame[1/2]", "this.gameBoard ist neues GameBoard");
-    	this.gameBoard = new GameBoard(size, variant);
+    	this.gameBoard = new GameBoard(size);
     	QLog.log("model", "newGame[2/2]", "-> model.setLineUp()");
     	
-    	/*
-    	PieceType[][] startLineUp = LineUpGenerator.generate(size, variant);		TODO
+    	PieceType[][] startLineUp = LineUpGenerator.generate(size, variant);
+    	System.out.println("startLineUp rows: " + startLineUp.length + " cols: " + startLineUp[0].length);
     	for (int row = 0; row < startLineUp.length; row++) {
-    		for (int col = 0; row < startLineUp[0].length; col++) {
+    		System.out.println("row number: " + row);
+    		for (int col = 0; col < startLineUp[0].length; col++) {
     			gameBoard.setPieceAt(startLineUp[row][col], row, col);
     		}
     	}
-    	*/
-    	setLineUp(size, variant);												//	TODO
+    	
+//    	setLineUp(size, variant);												//	TODO
     	setDefaultStartParty();
     	return gameBoard;
     }

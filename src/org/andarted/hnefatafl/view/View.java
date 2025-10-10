@@ -57,7 +57,6 @@ public class View implements IView {
     private JMenuItem setSwingRenderer;
     private JMenuItem setIsoRenderer;
     
-    // private JLabel activePlayerLabel;
     
     private IPresenter presenter;
     // private IRender renderer;
@@ -69,8 +68,6 @@ public class View implements IView {
     
 	private GameBoard gameBoard;
 	private BoardPanel boardPanel;
-	// private int mouseHoverPosX = 0;
-	// private int mouseHoverPosY = 0;
 	
 	private String blub = "das ist ein Text";
 	// - - - Konstruktor - - -

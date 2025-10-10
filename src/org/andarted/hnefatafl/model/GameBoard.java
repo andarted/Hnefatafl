@@ -31,7 +31,7 @@ public class GameBoard {
 
 	// - - - KONSTRUKTOR - - -
 	
-	public GameBoard(int size, Variant variant){
+	public GameBoard(int size){
 		QLog.log("gameBoard", "", "NEUES GAMEBOARD WIRD ERSTELLT");
 		boardSize = size;
 		topRow = 0;
@@ -233,7 +233,10 @@ public class GameBoard {
 	
 	public void setPieceAt(PieceType piece, int row, int col) {
 		QLog.log("gameBoard", "setPieceAt", "set " + piece +" Piece at (" + row + "," + col + ")|");
-		pieces[row][col] = piece;
+		pieces[row][col] = piece;		
+	}
+	
+	public void setLineUp(PieceType[][] lineUp) {
 		
 	}
 	
